@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-<<<<<<< HEAD
 import AdminNav from "../../components/AdminNav";
-=======
->>>>>>> origin/main
 import { getEvents, createEvent, updateEvent, deleteEvent, Event } from "../../lib/eventsService";
 
 // ─── Cloudinary uploader ────────────────────────────────────────────────────
