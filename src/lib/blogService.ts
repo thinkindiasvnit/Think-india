@@ -13,14 +13,14 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-// ── constants ────────────────────────────────────────────────────────
+// constants 
 const BLOGS_COLLECTION = "blogs";
 const LS_KEY = "think_india_blogs";
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "";
 
-// ── types ────────────────────────────────────────────────────────────
+// types 
 export type BlogStatus = "draft" | "review" | "published" | "archived";
 
 export const BLOG_STATUSES: BlogStatus[] = [
@@ -79,7 +79,7 @@ export interface Blog {
   updatedAt: string;
 }
 
-// ── helpers ──────────────────────────────────────────────────────────
+// helpers 
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -100,7 +100,7 @@ function tsToISO(val: unknown): string {
   return new Date().toISOString();
 }
 
-// ── localStorage fallback ────────────────────────────────────────────
+// localStorage fallback 
 function lsRead(): Blog[] {
   if (typeof window === "undefined") return [];
   try {
@@ -146,7 +146,7 @@ function docToBlog(id: string, data: Record<string, unknown>): Blog {
   };
 }
 
-// ── CRUD ─────────────────────────────────────────────────────────────
+// CRUD 
 
 /** Fetch all blogs regardless of status — for admin panel */
 export async function getAllBlogs(): Promise<Blog[]> {

@@ -119,7 +119,7 @@ export default function BlogDetailPage({
 
       {/* content area */}
       <article className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
-        {/* category (if no cover) */}
+        {/* category*/}
         {!blog.coverImageURL && (
           <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-950/40 text-amber-600 mb-4">
             {CATEGORY_LABELS[blog.category] || blog.category}

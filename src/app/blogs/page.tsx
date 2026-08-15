@@ -55,7 +55,7 @@ export default function BlogPage() {
     });
   }
 
-  /* ── loading ──────────────────────────────────────────────────── */
+  /* ── loading ── */
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-32 gap-4">
@@ -65,7 +65,7 @@ export default function BlogPage() {
     );
   }
 
-  /* ── page ──────────────────────────────────────────────────────── */
+  /* ── page ── */
   return (
     <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-zinc-950">
       {/* header */}
