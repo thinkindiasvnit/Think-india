@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+<<<<<<< HEAD
+import AdminNav from "../../components/AdminNav";
+=======
+>>>>>>> origin/main
 import { getEvents, createEvent, updateEvent, deleteEvent, Event } from "../../lib/eventsService";
 
 // ─── Cloudinary uploader ────────────────────────────────────────────────────
@@ -191,6 +195,9 @@ export default function AdminPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
+
+      {/* ── Admin Sub-nav ── */}
+      <AdminNav />
 
       {/* ── Page header ── */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6 mb-8">
