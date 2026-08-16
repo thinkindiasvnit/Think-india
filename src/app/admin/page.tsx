@@ -10,7 +10,6 @@ import {
   IconMic,
   IconClock,
   IconTag,
-  IconSparkles,
   IconPlus,
   IconEdit,
   IconTrash,
@@ -487,7 +486,7 @@ export default function AdminPage() {
                   <option value="talk">Talk / Conclave</option>
                   <option value="social">Social Drive</option>
                   <option value="other">Other</option>
-                  <option value="__custom__">✨ + Add Custom Event Type...</option>
+                  <option value="__custom__">+ Add Custom Event Type...</option>
                 </select>
                 {type === "__custom__" && (
                   <input
@@ -510,7 +509,7 @@ export default function AdminPage() {
                   <option value="workshop">Skill Workshops</option>
                   <option value="cultural">Social & Cultural</option>
                   <option value="research">Research & IPR</option>
-                  <option value="__custom__">✨ + Add Custom Genre...</option>
+                  <option value="__custom__">+ Add Custom Genre...</option>
                 </select>
                 {genre === "__custom__" && (
                   <input
@@ -530,7 +529,7 @@ export default function AdminPage() {
                   <option value="online">Online</option>
                   <option value="offline">Offline (On Campus)</option>
                   <option value="hybrid">Hybrid</option>
-                  <option value="__custom__">✨ + Add Custom Mode...</option>
+                  <option value="__custom__">+ Add Custom Mode...</option>
                 </select>
                 {mode === "__custom__" && (
                   <input
