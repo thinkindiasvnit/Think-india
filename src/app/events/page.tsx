@@ -181,6 +181,33 @@ export default function EventsPage() {
     );
   }, [events]);
 
+  // Dynamic All Genres List including custom admin genres
+  const genreOptions = useMemo(() => {
+    const defaultList = [
+      { id: "all", label: "All Genres", icon: IconLayers },
+      { id: "tech", label: "Technology & Hackathons", icon: IconLaptop },
+      { id: "leadership", label: "Leadership & Policy", icon: IconAward },
+      { id: "workshop", label: "Workshops & Skill Dev", icon: IconBookOpen },
+      { id: "cultural", label: "Social & Cultural", icon: IconUsers },
+      { id: "research", label: "Research & IPR", icon: IconShieldCheck },
+    ];
+    const knownIds = new Set(defaultList.map(g => g.id));
+    const extraGenres: { id: string; label: string; icon: typeof IconTag }[] = [];
+
+    events.forEach((ev) => {
+      if (ev.genre && !knownIds.has(ev.genre.toLowerCase())) {
+        knownIds.add(ev.genre.toLowerCase());
+        extraGenres.push({
+          id: ev.genre.toLowerCase(),
+          label: ev.genre.charAt(0).toUpperCase() + ev.genre.slice(1),
+          icon: IconTag,
+        });
+      }
+    });
+
+    return [...defaultList, ...extraGenres];
+  }, [events]);
+
   // Filtered Events
   const filteredEvents = useMemo(() => {
     return events.filter((event) => {
@@ -205,6 +232,7 @@ export default function EventsPage() {
         else if (activeGenre === "workshop") matchesGenre = event.genre === "workshop" || event.type === "workshop";
         else if (activeGenre === "cultural") matchesGenre = event.genre === "cultural" || event.type === "social";
         else if (activeGenre === "research") matchesGenre = event.genre === "research" || (event.tags && event.tags.some(t => t.toLowerCase().includes("ipr") || t.toLowerCase().includes("research")));
+        else matchesGenre = event.genre?.toLowerCase() === activeGenre.toLowerCase();
       }
 
       const matchesType = filterType === "all" || event.type === filterType;
@@ -386,14 +414,7 @@ export default function EventsPage() {
             </span>
           </div>
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-            {[
-              { id: "all", label: "All Genres", icon: IconLayers },
-              { id: "tech", label: "Technology & Hackathons", icon: IconLaptop },
-              { id: "leadership", label: "Leadership & Policy", icon: IconAward },
-              { id: "workshop", label: "Workshops & Skill Dev", icon: IconBookOpen },
-              { id: "cultural", label: "Social & Cultural", icon: IconUsers },
-              { id: "research", label: "Research & IPR", icon: IconShieldCheck },
-            ].map((g) => {
+            {genreOptions.map((g) => {
               const IconComp = g.icon;
               const isSelected = activeGenre === g.id;
               return (
