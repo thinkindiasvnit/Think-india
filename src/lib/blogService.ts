@@ -185,7 +185,6 @@ export async function getAllBlogs(): Promise<Blog[]> {
 export async function getPublishedBlogs(): Promise<Blog[]> {
   const all = await getAllBlogs();
   return all
-    .filter((b) => b.status === "published")
     .sort((a, b) => {
       // featured blogs first
       if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
