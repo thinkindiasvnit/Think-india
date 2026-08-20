@@ -139,108 +139,131 @@ export default function BlogPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map((blog) => (
+          <div className="flex flex-col">
+            {/* Featured Hero Blog */}
+            {filtered[0] && (
               <Link
-                key={blog.id}
-                href={`/blogs/${blog.slug}`}
-                className="group bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                href={`/blogs/${filtered[0].slug}`}
+                className="group flex flex-col lg:flex-row w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 mb-12 sm:mb-16"
               >
-                {/* cover */}
-                <div className="relative aspect-[16/9] overflow-hidden bg-zinc-200 dark:bg-zinc-800">
-                  {blog.coverImageURL ? (
+                {/* Left: Image */}
+                <div className="relative w-full lg:w-2/3 aspect-video lg:aspect-auto lg:min-h-[450px] overflow-hidden bg-zinc-200 dark:bg-zinc-800">
+                  {filtered[0].coverImageURL ? (
                     <img
-                      src={blog.coverImageURL}
-                      alt={blog.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      src={filtered[0].coverImageURL}
+                      alt={filtered[0].title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600">
-                      <span className="text-white/80 text-5xl font-black">
-                        {blog.title.charAt(0)}
+                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600">
+                      <span className="text-white/80 text-7xl sm:text-9xl font-black">
+                        {filtered[0].title.charAt(0)}
                       </span>
                     </div>
                   )}
-                  {/* category badge */}
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-600 text-white">
-                    {CATEGORY_LABELS[blog.category] || blog.category}
-                  </span>
-                  {/* featured badge */}
-                  {blog.isFeatured && (
-                    <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-600 text-white">
+                  {filtered[0].isFeatured && (
+                    <span className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-lg">
                       ⭐ Featured
                     </span>
                   )}
                 </div>
 
-                {/* body */}
-                <div className="p-6">
-                  {/* meta row */}
-                  <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
-                    {blog.authorPhotoURL ? (
-                      <img
-                        src={blog.authorPhotoURL}
-                        alt={blog.authorName}
-                        className="w-6 h-6 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center text-[10px] font-bold">
-                        {blog.authorName?.charAt(0) || "A"}
-                      </div>
-                    )}
-                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                      {blog.authorName || "Anonymous"}
-                    </span>
-                    <span>·</span>
-                    <span>{fmtDate(blog.publishedAt)}</span>
-                    <span>·</span>
-                    <span>{blog.readTimeMinutes} min read</span>
-                  </div>
-
-                  {/* title */}
-                  <h2 className="text-lg font-bold text-zinc-900 dark:text-white line-clamp-2 group-hover:text-amber-600 transition-colors">
-                    {blog.title}
-                  </h2>
-
-                  {/* summary */}
-                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed">
-                    {blog.summary}
-                  </p>
-
-                  {/* tags */}
-                  {blog.tags.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {blog.tags.slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-[10px] font-semibold text-zinc-600 dark:text-zinc-400"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
+                {/* Right: Colored Block */}
+                <div className="w-full lg:w-1/3 bg-amber-600 dark:bg-amber-700 text-white p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden">
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="flex flex-col gap-1 items-center text-center mb-8">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-100/80">
+                        {CATEGORY_LABELS[filtered[0].category] || filtered[0].category}
+                      </span>
+                      <span className="text-xs font-semibold text-amber-100">
+                        {fmtDate(filtered[0].publishedAt)}
+                      </span>
                     </div>
-                  )}
 
-                  {/* read more */}
-                  <div className="mt-4 flex items-center text-sm font-bold text-amber-600 group-hover:gap-2 transition-all">
-                    Read More
-                    <svg
-                      className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2.5}
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                      />
-                    </svg>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-center leading-[1.1] tracking-tight mb-6 group-hover:text-amber-100 transition-colors">
+                      {filtered[0].title}
+                    </h2>
+
+                    <p className="text-sm sm:text-base text-amber-50 text-center line-clamp-4 leading-relaxed mb-8 font-medium">
+                      {filtered[0].summary}
+                    </p>
+
+                    <div className="mt-auto flex justify-center text-xs font-bold uppercase tracking-widest text-amber-100/90">
+                      {filtered[0].authorName || "Anonymous"}
+                    </div>
                   </div>
                 </div>
               </Link>
-            ))}
+            )}
+
+            {/* Remaining Blogs Grid */}
+            {filtered.length > 1 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                {filtered.slice(1).map((blog) => (
+                  <Link
+                    key={blog.id}
+                    href={`/blogs/${blog.slug}`}
+                    className="group flex flex-col"
+                  >
+                    {/* Cover Image */}
+                    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-200 dark:bg-zinc-800 mb-5 border border-zinc-200/50 dark:border-zinc-700/50">
+                      {blog.coverImageURL ? (
+                        <img
+                          src={blog.coverImageURL}
+                          alt={blog.title}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600">
+                          <span className="text-white/80 text-5xl font-black">
+                            {blog.title.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                      {blog.isFeatured && (
+                        <span className="absolute top-3 left-3 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-md">
+                          ⭐ Featured
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-500 mb-3">
+                        <span>{CATEGORY_LABELS[blog.category] || blog.category}</span>
+                        <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                        <span className="text-zinc-500 dark:text-zinc-400">{fmtDate(blog.publishedAt)}</span>
+                      </div>
+                      
+                      <h3 className="text-2xl font-black text-zinc-900 dark:text-white leading-[1.2] tracking-tight mb-3 group-hover:text-amber-600 transition-colors">
+                        {blog.title}
+                      </h3>
+                      
+                      <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3 leading-relaxed mb-4">
+                        {blog.summary}
+                      </p>
+                      
+                      <div className="mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800/50 flex items-center gap-3">
+                        {blog.authorPhotoURL ? (
+                          <img
+                            src={blog.authorPhotoURL}
+                            alt={blog.authorName}
+                            className="w-7 h-7 rounded-full object-cover shadow-sm"
+                          />
+                        ) : (
+                          <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 flex items-center justify-center text-[10px] font-bold shadow-sm">
+                            {blog.authorName?.charAt(0) || "A"}
+                          </div>
+                        )}
+                        <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wide">
+                          {blog.authorName || "Anonymous"}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
