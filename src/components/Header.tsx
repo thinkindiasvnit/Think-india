@@ -27,20 +27,23 @@ export default function Header() {
       </div>
 
       {/* Main Header Container with Glassmorphism */}
-      <nav className="bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 sticky top-0">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-amber-300/80 sticky top-0 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-amber-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-amber-500/20">
-                  TI
-                </div>
+              <Link href="/" className="flex items-center gap-2.5 group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="Think India Logo"
+                  className="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-200 drop-shadow-sm"
+                />
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-xl tracking-tight text-zinc-900 dark:text-zinc-50">
+                  <span className="font-black text-xl tracking-tight text-slate-950 font-heading group-hover:text-amber-700 transition-colors">
                     THINK INDIA
                   </span>
-                  <span className="text-xs font-bold tracking-widest text-amber-600 -mt-1">
+                  <span className="text-[11px] font-black tracking-widest text-amber-700 -mt-1">
                     SVNIT CHAPTER
                   </span>
                 </div>
@@ -55,10 +58,10 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`text-sm font-semibold tracking-wide transition-colors duration-200 hover:text-amber-600 ${
+                    className={`text-xs font-extrabold tracking-wider transition-colors duration-200 hover:text-amber-700 ${
                       isActive
-                        ? "text-amber-600 dark:text-amber-500 border-b-2 border-amber-600 py-1"
-                        : "text-zinc-600 dark:text-zinc-300"
+                        ? "text-amber-700 border-b-2 border-amber-600 py-1"
+                        : "text-slate-800"
                     }`}
                   >
                     {link.name}
@@ -71,10 +74,10 @@ export default function Header() {
             <div className="hidden lg:flex items-center gap-4">
               <Link
                 href="/admin"
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold border transition-all duration-300 shadow-sm ${
                   pathname.startsWith("/admin")
-                    ? "bg-amber-600 border-amber-600 text-white hover:bg-amber-700"
-                    : "border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    ? "bg-amber-600 border-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-600/20"
+                    : "border-amber-300 bg-white text-slate-950 hover:bg-amber-100/60"
                 }`}
               >
                 <svg

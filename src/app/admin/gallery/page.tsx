@@ -215,19 +215,19 @@ export default function AdminGalleryPage() {
     } catch (err) { console.error(err); alert("Failed to save album."); }
   }
 
-  // ─── Render ───────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
-      <AdminNav />
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdminNav />
 
-      {/* ── Page Header ── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6 mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white">Gallery</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Manage photo albums and upload images for Think India SVNIT.
-          </p>
-        </div>
+        {/* ── Page Header ── */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-amber-300 pb-6 mb-8">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-950 font-heading">Gallery Management</h1>
+            <p className="text-sm font-semibold text-slate-800 mt-1">
+              Manage photo albums and upload images for Think India SVNIT.
+            </p>
+          </div>
         {!isFormOpen && !managingAlbum && (
           <button
             onClick={() => setIsFormOpen(true)}
@@ -240,8 +240,8 @@ export default function AdminGalleryPage() {
 
       {/* ── Album Form ── */}
       {isFormOpen && (
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl p-6 sm:p-8 mb-10">
-          <h2 className="text-xl font-bold text-zinc-950 dark:text-white mb-6">
+        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-2xl p-6 sm:p-8 mb-10 bg-white/95">
+          <h2 className="text-xl font-black text-slate-950 font-heading mb-6">
             {editId ? "Edit Album" : "Create New Album"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -450,23 +450,23 @@ export default function AdminGalleryPage() {
 
       {/* ── Albums Table ── */}
       {!managingAlbum && (
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-lg overflow-hidden">
+        <div className="bg-white border border-amber-300 rounded-3xl shadow-xl overflow-hidden">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-amber-600" />
-              <span className="mt-4 text-sm text-zinc-500">Loading albums...</span>
+              <span className="mt-4 text-sm font-bold text-slate-800">Loading albums...</span>
             </div>
           ) : albums.length === 0 ? (
-            <div className="text-center py-16 text-zinc-500">
+            <div className="text-center py-16 text-slate-700">
               <p className="text-4xl mb-3">&#128194;</p>
-              <p className="text-lg font-semibold">No albums yet.</p>
+              <p className="text-lg font-bold text-slate-950 font-heading">No albums yet.</p>
               <p className="text-sm mt-1">Click &quot;Add Album&quot; to create the first one.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-zinc-50 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 text-xs font-black uppercase text-zinc-500 tracking-wider">
+                  <tr className="bg-amber-100/70 border-b border-amber-300 text-xs font-black uppercase text-amber-950 tracking-wider font-heading">
                     <th className="py-4 px-4">Cover</th>
                     <th className="py-4 px-4">Title &amp; Description</th>
                     <th className="py-4 px-4">Category</th>
@@ -476,7 +476,7 @@ export default function AdminGalleryPage() {
                     <th className="py-4 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-sm text-zinc-800 dark:text-zinc-200">
+                <tbody className="divide-y divide-amber-200 text-sm text-slate-900 font-semibold">
                   {albums.map((album) => (
                     <tr key={album.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                       {/* Cover thumbnail */}
@@ -559,6 +559,7 @@ export default function AdminGalleryPage() {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

@@ -22,10 +22,10 @@ export default function AdminNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 ${
+            className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all duration-200 ${
               isActive
-                ? "bg-amber-600 text-white shadow-lg shadow-amber-500/20"
-                : "border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30"
+                : "bg-white border border-amber-300/80 text-slate-900 hover:bg-amber-100/60 hover:text-amber-950 shadow-sm"
             }`}
           >
             {tab.label}

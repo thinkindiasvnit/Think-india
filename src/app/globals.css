@@ -1,26 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffdfa;
+  --foreground: #09090b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fffdfa;
+  background-image: 
+    radial-gradient(circle at 50% -10%, #ffedd5 0%, #fff7ed 50%, #fffdfa 100%);
+  background-attachment: scroll; /* Fixes GPU scroll stutter */
+  color: #09090b !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  color: #09090b;
+}
+
+/* Light Theme Orange/Amber Gradient Utilities */
+.bg-orange-light-gradient {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fef3c7 100%);
+}
+
+.bg-orange-glow-radial-light {
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.06), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.06), transparent 45%);
+}
+
+.bg-amber-grid-pattern-light {
+  background-image: 
+    linear-gradient(to right, rgba(217, 119, 6, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(217, 119, 6, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.card-orange-glass-light {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(251, 146, 60, 0.28);
+  box-shadow: 0 4px 20px -2px rgba(217, 119, 6, 0.08);
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.card-orange-glass-light:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 10px 30px -4px rgba(217, 119, 6, 0.15);
+}
+
+/* Hardware Accelerated GPU Animation Utilities */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* 3D Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-3d {
+  transform-style: preserve-3d;
 }
