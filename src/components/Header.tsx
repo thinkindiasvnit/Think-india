@@ -22,8 +22,8 @@ export default function Header() {
   return (
     <header className="w-full z-50">
       {/* Top Announcement Bar */}
-      <div className="bg-amber-600 text-white text-center py-2 px-4 text-xs font-semibold tracking-wide">
-        🚀 Welcome to Think India SVNIT! Check out our latest events and apply directly.
+      <div className="bg-amber-600 text-white text-center py-2 px-4 text-xs font-bold tracking-wide uppercase">
+        Welcome to Think India SVNIT | Check out our latest events and apply directly.
       </div>
 
       {/* Main Header Container with Glassmorphism */}
