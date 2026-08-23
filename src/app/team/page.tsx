@@ -40,9 +40,9 @@ function MemberCard({ member }: { member: TeamMember }) {
   const hasSocials = member.socialLinks.linkedin || member.socialLinks.email;
 
   return (
-    <div className="group flex flex-col items-center text-center bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+    <div className="group flex flex-col items-center text-center card-orange-glass-light bg-white/95 rounded-3xl border border-amber-300 p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
       {/* Photo / Avatar */}
-      <div className="w-24 h-24 rounded-full overflow-hidden ring-2 ring-amber-500/30 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 shadow-lg mb-4">
+      <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-amber-400/40 ring-offset-2 ring-offset-white shadow-lg mb-4">
         {member.photoURL ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -51,19 +51,19 @@ function MemberCard({ member }: { member: TeamMember }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-2xl select-none">
+          <div className="w-full h-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-2xl select-none font-heading">
             {initials}
           </div>
         )}
       </div>
 
       {/* Name */}
-      <h3 className="font-bold text-zinc-900 dark:text-white text-base leading-tight">
+      <h3 className="font-black text-slate-950 text-base leading-tight font-heading">
         {member.name}
       </h3>
 
-      {/* Position — their specific role (e.g. "Technical Head") */}
-      <p className="text-amber-600 dark:text-amber-500 font-semibold text-sm mt-1">
+      {/* Position */}
+      <p className="text-amber-700 font-extrabold text-sm mt-1">
         {member.position}
       </p>
 
@@ -76,7 +76,7 @@ function MemberCard({ member }: { member: TeamMember }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${member.name} on LinkedIn`}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors border border-amber-200"
             >
               <LinkedInIcon />
             </a>
@@ -85,7 +85,7 @@ function MemberCard({ member }: { member: TeamMember }) {
             <a
               href={`mailto:${member.socialLinks.email}`}
               aria-label={`Email ${member.name}`}
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-700 hover:text-amber-700 hover:bg-amber-100 transition-colors border border-amber-200"
             >
               <EmailIcon />
             </a>
@@ -100,19 +100,20 @@ function MemberCard({ member }: { member: TeamMember }) {
 
 function TeamSection({ group }: { group: TeamGroup }) {
   return (
-    <section>
-      <div className="flex items-center gap-4 mb-6">
-        <div className="flex-shrink-0 w-1 h-8 rounded-full bg-amber-600" />
-        <div>
-          <h2 className="text-xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-            {group.designation}
-          </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            {group.members.length} {group.members.length === 1 ? "member" : "members"}
-          </p>
-        </div>
+    <section className="space-y-6">
+      {/* Category Header */}
+      <div className="flex items-center gap-3 border-b border-amber-300 pb-3">
+        <div className="w-1.5 h-7 rounded-full bg-amber-600" />
+        <h2 className="text-xl font-black text-slate-950 font-heading">
+          {group.designation}
+        </h2>
+        <span className="text-xs font-black text-amber-950 bg-amber-200 border border-amber-300 px-2.5 py-0.5 rounded-full font-heading">
+          {group.members.length}
+        </span>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+
+      {/* Members Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {group.members.map((member) => (
           <MemberCard key={member.id} member={member} />
         ))}
@@ -121,26 +122,26 @@ function TeamSection({ group }: { group: TeamGroup }) {
   );
 }
 
-// ─── Loading Skeleton ─────────────────────────────────────────────────────────
+// ─── Skeleton Loading State ───────────────────────────────────────────────────
 
-function LoadingSkeleton() {
+function SkeletonGrid() {
   return (
     <div className="space-y-12">
       {[1, 2].map((s) => (
         <div key={s} className="animate-pulse">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-1 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-            <div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-700 rounded-lg" />
+            <div className="w-1.5 h-8 rounded-full bg-amber-300" />
+            <div className="h-6 w-32 bg-amber-200 rounded-lg" />
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {[1, 2, 3, 4, 5].map((c) => (
               <div
                 key={c}
-                className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 flex flex-col items-center gap-3"
+                className="card-orange-glass-light bg-white/95 rounded-3xl border border-amber-300 p-6 flex flex-col items-center gap-3"
               >
-                <div className="w-24 h-24 rounded-full bg-zinc-200 dark:bg-zinc-700" />
-                <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-700 rounded" />
-                <div className="h-3 w-20 bg-zinc-200 dark:bg-zinc-700 rounded" />
+                <div className="w-24 h-24 rounded-full bg-amber-200" />
+                <div className="h-4 w-24 bg-amber-200 rounded" />
+                <div className="h-3 w-20 bg-amber-100 rounded" />
               </div>
             ))}
           </div>
@@ -195,42 +196,36 @@ export default function TeamPage() {
     loadMembers();
   }, [selectedYear, yearsLoaded]);
 
-  const totalMembers = groups.reduce((acc, g) => acc + g.members.length, 0);
-
   return (
-    <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-        {/* Decorative blobs */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-xl py-12 px-6 sm:px-12 bg-white/95 backdrop-blur-md">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             {/* Title */}
             <div>
-              <span className="inline-block text-xs font-black tracking-widest text-amber-600 uppercase mb-3">
+              <span className="inline-block text-xs font-black tracking-widest text-amber-700 uppercase mb-3 font-heading">
                 Think India · SVNIT Chapter
               </span>
-              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
-                Meet Our <span className="text-amber-600">Team</span>
+              <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 font-heading">
+                Meet Our <span className="text-amber-700">Team</span>
               </h1>
-              <p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
+              <p className="mt-3 text-base sm:text-lg text-slate-800 font-semibold max-w-xl leading-relaxed">
                 The passionate students driving innovation, leadership, and national spirit at SVNIT Surat.
               </p>
             </div>
 
-            {/* Year Dropdown — right side of hero */}
+            {/* Year Dropdown */}
             {sessionYears.length > 0 && (
               <div className="flex-shrink-0 flex flex-col gap-1">
-                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">
+                <label className="text-xs font-black text-slate-700 uppercase tracking-wider font-heading">
                   Session Year
                 </label>
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
-                  className="border border-zinc-300 dark:border-zinc-600 rounded-xl py-2.5 px-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm min-w-[140px]"
+                  className="border border-amber-300 rounded-2xl py-2.5 px-4 text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-slate-950 shadow-sm min-w-[140px]"
                 >
                   {sessionYears.map((year) => (
                     <option key={year} value={year}>
@@ -244,44 +239,26 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* ── Stats Bar ── */}
-      {!loading && groups.length > 0 && (
-        <div className="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap gap-6">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-black text-amber-600">{totalMembers}</span>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400 font-semibold">Members</span>
-            </div>
-            <div className="w-px bg-zinc-200 dark:bg-zinc-700" />
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-black text-amber-600">{groups.length}</span>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400 font-semibold">Groups</span>
-            </div>
-            <div className="w-px bg-zinc-200 dark:bg-zinc-700" />
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{selectedYear}</span>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400 font-semibold">Session</span>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ── Content ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {loading ? (
-          <LoadingSkeleton />
+          <SkeletonGrid />
         ) : groups.length === 0 ? (
-          <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700">
-            <div className="text-5xl mb-4">👥</div>
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-white">No Team Members Yet</h3>
-            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="text-center py-20 card-orange-glass-light bg-white/95 rounded-3xl border border-amber-300 shadow-md">
+            <div className="w-16 h-16 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center mx-auto mb-4 text-amber-700">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-black text-slate-950 font-heading">No Team Members Yet</h3>
+            <p className="mt-2 text-sm font-semibold text-slate-700">
               {sessionYears.length === 0
                 ? "No team data found. Please add members from the Admin Panel."
                 : `No members found for the ${selectedYear} session.`}
             </p>
             <a
               href="/admin/team"
-              className="mt-6 inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl shadow-sm transition-colors"
+              className="mt-6 inline-flex items-center px-5 py-2.5 text-sm font-extrabold text-white bg-amber-600 hover:bg-amber-700 rounded-2xl shadow-md transition-colors"
             >
               Go to Admin Panel →
             </a>

@@ -178,7 +178,7 @@ export default function AdminTeamPage() {
             onClick={() => setIsFormOpen(true)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-500/20 transition-all duration-200"
           >
-            ➕ Add Member
+            + Add Member
           </button>
         )}
       </div>
@@ -187,7 +187,7 @@ export default function AdminTeamPage() {
       {isFormOpen && (
         <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-2xl p-6 sm:p-8 mb-10 bg-white/95">
           <h2 className="text-xl font-black text-slate-950 font-heading mb-6">
-            {editId ? "✏️ Edit Team Member" : "📝 Add New Member"}
+            {editId ? "Edit Team Member" : "Add New Member"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
