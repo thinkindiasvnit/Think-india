@@ -3,15 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "./AuthProvider";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const pathname = usePathname();
+  const { user, isAuthenticated, loading, isAdmin, signIn, signOut } = useAuth();
 
   const navLinks = [
     { name: "HOME", href: "/" },
     { name: "EVENTS", href: "/events" },
     { name: "BLOGS", href: "/blogs" },
+    { name: "ARTICLES", href: "/articles" },
     { name: "GALLERY", href: "/gallery" },
     { name: "INTERNSHIPS", href: "/internships" },
     { name: "TEAM / MEMBERS", href: "/team" },
@@ -72,30 +76,75 @@ export default function Header() {
 
             {/* User Profile / Dashboard Link */}
             <div className="hidden lg:flex items-center gap-4">
-              <Link
-                href="/admin"
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold border transition-all duration-300 shadow-sm ${
-                  pathname.startsWith("/admin")
-                    ? "bg-amber-600 border-amber-600 text-white hover:bg-amber-700 shadow-md shadow-amber-600/20"
-                    : "border-amber-300 bg-white text-slate-950 hover:bg-amber-100/60"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-4 h-4"
+              {loading ? (
+                <div className="w-8 h-8 rounded-full border-2 border-amber-300 border-t-transparent animate-spin"></div>
+              ) : isAuthenticated && user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-300 bg-white hover:bg-amber-50 transition-colors shadow-sm"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={user.photoURL || "/default-avatar.png"}
+                      alt="Avatar"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="text-xs font-bold text-slate-900">
+                      {user.displayName.split(" ")[0]}
+                    </span>
+                  </button>
+
+                  {/* Dropdown menu */}
+                  {showDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-amber-200 rounded-xl shadow-xl py-2 z-50 overflow-hidden">
+                      <div className="px-4 py-2 border-b border-amber-100 mb-1 bg-amber-50/50">
+                        <p className="text-sm font-bold text-slate-900">{user.displayName}</p>
+                        <p className="text-xs font-medium text-amber-700">{user.collegeEmail}</p>
+                      </div>
+                      
+                      {isAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setShowDropdown(false)}
+                          className="block px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700"
+                        >
+                          Admin Panel
+                        </Link>
+                      )}
+                      <Link
+                        href="/articles/my"
+                        onClick={() => setShowDropdown(false)}
+                        className="block px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-700"
+                      >
+                        My Articles
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setShowDropdown(false);
+                          signOut();
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={signIn}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold border bg-amber-600 border-amber-600 text-white hover:bg-amber-700 transition-all shadow-md shadow-amber-600/20"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                  />
-                </svg>
-                Admin Panel
-              </Link>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-4 h-4 bg-white rounded-full p-0.5">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                  </svg>
+                  Sign In (SVNIT)
+                </button>
+              )}
             </div>
 
             {/* Mobile menu button */}
@@ -152,27 +201,65 @@ export default function Header() {
                   </Link>
                 );
               })}
-              <Link
-                href="/admin"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 mt-4 px-3 py-2 rounded-md text-base font-semibold bg-amber-600 text-white hover:bg-amber-700"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-5 h-5"
+              {isAuthenticated && user ? (
+                <>
+                  <div className="px-3 py-3 mt-4 border-t border-zinc-200 dark:border-zinc-700 bg-amber-50/50 dark:bg-zinc-800/50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={user.photoURL || "/default-avatar.png"}
+                        alt="Avatar"
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <div>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">{user.displayName}</p>
+                        <p className="text-xs text-amber-700 dark:text-amber-500">{user.collegeEmail}</p>
+                      </div>
+                    </div>
+                  </div>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setIsOpen(false)}
+                      className="block px-3 py-2 mt-2 rounded-md text-base font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-amber-50 dark:hover:bg-zinc-800"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+                  <Link
+                    href="/articles/my"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-3 py-2 mt-2 rounded-md text-base font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-amber-50 dark:hover:bg-zinc-800"
+                  >
+                    My Articles
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      signOut();
+                    }}
+                    className="w-full text-left px-3 py-2 mt-2 rounded-md text-base font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    signIn();
+                  }}
+                  className="flex items-center gap-2 mt-4 px-3 py-2 w-full rounded-md text-base font-semibold bg-amber-600 text-white hover:bg-amber-700"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                  />
-                </svg>
-                Admin Panel
-              </Link>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5 bg-white rounded-full p-1">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                  </svg>
+                  Sign In (SVNIT)
+                </button>
+              )}
             </div>
           </div>
         )}

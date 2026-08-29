@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,6 +14,15 @@ const firebaseConfig = {
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+// Use localStorage instead of IndexedDB to avoid 'Database is closing/hidden' errors in browsers like Brave
+if (typeof window !== "undefined") {
+  setPersistence(auth, browserLocalPersistence).catch(console.error);
+}
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: "select_account"
+});
 
-export { app, db };
+export { app, db, auth, googleProvider, GoogleAuthProvider };
 export default app;

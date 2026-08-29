@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['192.168.31.236'],
   images: {
     remotePatterns: [
       // Cloudinary — used for all user-uploaded photos
