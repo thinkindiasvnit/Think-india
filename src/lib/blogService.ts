@@ -151,10 +151,10 @@ function docToBlog(id: string, data: Record<string, unknown>): Blog {
 /** Fetch all blogs regardless of status — for admin panel */
 export async function getAllBlogs(): Promise<Blog[]> {
   if (!isFirebaseConfigured()) {
-    return lsRead().sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    return lsRead().sort((a, b) => {
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   }
   try {
     const q = query(
@@ -167,13 +167,18 @@ export async function getAllBlogs(): Promise<Blog[]> {
     );
     // mirror to localStorage so reads never fail
     lsWrite(blogs);
-    return blogs;
+    
+    // Sort featured first, then by date (newest first)
+    return blogs.sort((a, b) => {
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   } catch (err) {
     console.error("getAllBlogs: Firestore read failed, using localStorage", err);
-    return lsRead().sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    return lsRead().sort((a, b) => {
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   }
 }
 
