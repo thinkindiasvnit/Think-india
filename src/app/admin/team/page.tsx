@@ -159,34 +159,35 @@ export default function AdminTeamPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      {/* ── Admin Sub-nav ── */}
-      <AdminNav />
+        {/* ── Admin Sub-nav ── */}
+        <AdminNav />
 
-      {/* ── Page Header ── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6 mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white">Team Members</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Add, update, and manage all team members for Think India SVNIT.
-          </p>
-        </div>
+        {/* ── Page Header ── */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-amber-300 pb-6 mb-8">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-950 font-heading">Team Management</h1>
+            <p className="text-sm font-semibold text-slate-800 mt-1">
+              Add, update, and manage core executive committee members for Think India SVNIT.
+            </p>
+          </div>
         {!isFormOpen && (
           <button
             onClick={() => setIsFormOpen(true)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-500/20 transition-all duration-200"
           >
-            ➕ Add Member
+            + Add Member
           </button>
         )}
       </div>
 
       {/* ── Form ── */}
       {isFormOpen && (
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl p-6 sm:p-8 mb-10">
-          <h2 className="text-xl font-bold text-zinc-950 dark:text-white mb-6">
-            {editId ? "✏️ Edit Team Member" : "📝 Add New Member"}
+        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-2xl p-6 sm:p-8 mb-10 bg-white/95">
+          <h2 className="text-xl font-black text-slate-950 font-heading mb-6">
+            {editId ? "Edit Team Member" : "Add New Member"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -382,18 +383,18 @@ export default function AdminTeamPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-amber-600" />
-            <span className="mt-4 text-sm text-zinc-500">Loading members…</span>
+            <span className="mt-4 text-sm font-bold text-slate-800">Loading members…</span>
           </div>
         ) : filteredMembers.length === 0 ? (
-          <div className="text-center py-16 text-zinc-500">
-            <p className="text-lg">No members found.</p>
+          <div className="text-center py-16 text-slate-700">
+            <p className="text-lg font-bold text-slate-950 font-heading">No members found.</p>
             <p className="text-sm mt-1">Click &quot;Add Member&quot; to add the first one.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto rounded-3xl border border-amber-300 bg-white shadow-xl">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-zinc-50 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 text-xs font-black uppercase text-zinc-500 tracking-wider">
+                <tr className="bg-amber-100/70 border-b border-amber-300 text-xs font-black uppercase text-amber-950 tracking-wider font-heading">
                   <th className="py-4 px-6">Member</th>
                   <th className="py-4 px-6">Designation</th>
                   <th className="py-4 px-6">Position</th>
@@ -402,13 +403,13 @@ export default function AdminTeamPage() {
                   <th className="py-4 px-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-sm text-zinc-800 dark:text-zinc-200">
+              <tbody className="divide-y divide-amber-200 text-sm text-slate-900 font-semibold">
                 {filteredMembers.map((m) => (
-                  <tr key={m.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                  <tr key={m.id} className="hover:bg-amber-50/60 transition-colors">
                     {/* Member */}
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs">
+                        <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
                           {m.photoURL ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={m.photoURL} alt={m.name} className="w-full h-full object-cover" />
@@ -416,15 +417,15 @@ export default function AdminTeamPage() {
                             m.name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase()
                           )}
                         </div>
-                        <span className="font-bold text-zinc-950 dark:text-white">{m.name}</span>
+                        <span className="font-extrabold text-slate-950 font-heading">{m.name}</span>
                       </div>
                     </td>
                     {/* Designation */}
                     <td className="py-4 px-6">
-                      <span className={`inline-block px-2.5 py-0.5 text-xs font-bold uppercase rounded ${
+                      <span className={`inline-block px-2.5 py-0.5 text-xs font-black uppercase rounded shadow-sm ${
                         m.designation === "Core"
-                          ? "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
-                          : "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
+                          ? "bg-amber-600 text-white"
+                          : "bg-blue-600 text-white"
                       }`}>
                         {m.designation}
                       </span>
@@ -464,6 +465,7 @@ export default function AdminTeamPage() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

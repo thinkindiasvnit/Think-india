@@ -224,40 +224,41 @@ export default function AdminBlogPage() {
 
   /* ── render ─────────────────────────────────────────────────── */
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <AdminNav />
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdminNav />
 
-      {/* header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-white">
-            Blog Posts
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            Create, edit, and manage blog posts.
-          </p>
-        </div>
+        {/* header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 border-b border-amber-300 pb-6">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-950 font-heading">
+              Blog Posts Management
+            </h1>
+            <p className="mt-1 text-sm font-semibold text-slate-800">
+              Create, edit, and manage articles for Think India SVNIT.
+            </p>
+          </div>
         {!isFormOpen && (
           <button
             onClick={openCreate}
             className="px-5 py-2.5 rounded-xl text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 shadow-lg shadow-amber-500/20 transition-all"
           >
-            ➕ Add Blog Post
+            + Add Blog Post
           </button>
         )}
       </div>
 
       {/* ── form ──────────────────────────────────────────────── */}
       {isFormOpen && (
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl p-8 mb-10">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">
+        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-2xl p-8 mb-10 bg-white/95">
+          <h2 className="text-xl font-black text-slate-950 font-heading mb-6">
             {editId ? "Edit Blog Post" : "New Blog Post"}
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* title */}
             <div className="lg:col-span-2">
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
                 Title *
               </label>
               <input
@@ -265,13 +266,13 @@ export default function AdminBlogPage() {
                 value={form.title}
                 onChange={(e) => set("title", e.target.value)}
                 placeholder="Blog post title"
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
               />
             </div>
 
             {/* summary */}
             <div className="lg:col-span-2">
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
                 Summary
               </label>
               <input
@@ -279,13 +280,13 @@ export default function AdminBlogPage() {
                 value={form.summary}
                 onChange={(e) => set("summary", e.target.value)}
                 placeholder="Brief summary shown on cards"
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-zinc-900 dark:text-zinc-100"
+                className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
               />
             </div>
 
             {/* content */}
             <div className="lg:col-span-2">
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
                 Content *
               </label>
               <textarea
@@ -293,7 +294,7 @@ export default function AdminBlogPage() {
                 onChange={(e) => set("content", e.target.value)}
                 rows={12}
                 placeholder="Full blog content…"
-                className="w-full px-4 py-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-zinc-900 dark:text-zinc-100 leading-relaxed"
+                className="w-full px-4 py-3 rounded-xl border border-amber-300 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 leading-relaxed shadow-sm"
               />
             </div>
 
@@ -498,38 +499,38 @@ export default function AdminBlogPage() {
           <p className="text-zinc-500">No blog posts yet.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+        <div className="overflow-x-auto rounded-3xl border border-amber-300 bg-white shadow-xl">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-zinc-100 dark:bg-zinc-800/50 text-left">
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+              <tr className="bg-amber-100/70 text-left border-b border-amber-300 text-xs font-black uppercase text-amber-950 tracking-wider">
+                <th className="px-4 py-3 font-heading">
                   Blog
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Category
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Status
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Author
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Date
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Stats
                 </th>
-                <th className="px-4 py-3 font-bold text-zinc-600 dark:text-zinc-400">
+                <th className="px-4 py-3 font-heading">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <tbody className="divide-y divide-amber-200 text-slate-900 font-semibold">
               {filteredBlogs.map((b) => (
                 <tr
                   key={b.id}
-                  className="bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                  className="bg-white hover:bg-amber-50/60 transition-colors"
                 >
                   {/* blog info */}
                   <td className="px-4 py-3">
@@ -541,15 +542,15 @@ export default function AdminBlogPage() {
                           className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center font-bold flex-shrink-0">
+                        <div className="w-10 h-10 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center font-black flex-shrink-0">
                           {b.title.charAt(0)}
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="font-bold text-zinc-900 dark:text-white truncate max-w-[220px]">
+                        <p className="font-extrabold text-slate-950 font-heading truncate max-w-[220px]">
                           {b.title}
                         </p>
-                        <p className="text-xs text-zinc-400 truncate max-w-[220px]">
+                        <p className="text-xs text-amber-800 font-mono font-bold truncate max-w-[220px]">
                           /{b.slug}
                         </p>
                       </div>
@@ -618,6 +619,7 @@ export default function AdminBlogPage() {
           </table>
         </div>
       )}
+    </div>
     </div>
   );
 }
