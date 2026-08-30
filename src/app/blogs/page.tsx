@@ -47,7 +47,7 @@ function AnimatedBlogRow({ blog, index }: { blog: Blog; index: number }) {
     >
       {/* Image Container */}
       <div
-        className={`relative w-full lg:w-[55%] aspect-video lg:aspect-auto lg:min-h-[500px] overflow-hidden bg-zinc-100 dark:bg-zinc-900 transition-all duration-[800ms] ease-out delay-100 ${
+        className={`relative w-full lg:w-1/2 aspect-video lg:aspect-auto lg:min-h-[500px] overflow-hidden bg-zinc-100 dark:bg-zinc-900 transition-all duration-[800ms] ease-out delay-100 ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
@@ -73,7 +73,7 @@ function AnimatedBlogRow({ blog, index }: { blog: Blog; index: number }) {
 
       {/* Content Container */}
       <div
-        className={`w-full lg:w-[45%] flex flex-col justify-center px-4 sm:px-6 lg:px-16 xl:px-24 py-12 lg:py-0 transition-all duration-[800ms] ease-out delay-300 ${
+        className={`w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-16 xl:px-24 py-12 lg:py-0 transition-all duration-[800ms] ease-out delay-300 ${
           isVisible
             ? "translate-y-0 translate-x-0 opacity-100"
             : isEven
@@ -81,12 +81,11 @@ function AnimatedBlogRow({ blog, index }: { blog: Blog; index: number }) {
             : "translate-y-8 lg:translate-y-0 translate-x-0 lg:translate-x-8 opacity-0"
         }`}
       >
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex flex-col items-center gap-2 mb-6">
           <span className="text-[11px] font-black uppercase tracking-[0.2em] text-amber-600 dark:text-amber-500">
             {CATEGORY_LABELS[blog.category] || blog.category}
           </span>
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
             {fmtDate(blog.publishedAt || blog.createdAt)}
           </span>
         </div>
@@ -95,29 +94,13 @@ function AnimatedBlogRow({ blog, index }: { blog: Blog; index: number }) {
           {blog.title}
         </h2>
 
-        <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 line-clamp-4 leading-relaxed mb-10 font-medium">
+        <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 line-clamp-4 leading-relaxed mb-10 font-medium max-w-xl mx-auto">
           {blog.summary}
         </p>
 
-        <div className="mt-auto pt-6 border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-4">
-          {blog.authorPhotoURL ? (
-            <img
-              src={blog.authorPhotoURL}
-              alt={blog.authorName}
-              className="w-10 h-10 rounded-full object-cover shadow-sm grayscale group-hover:grayscale-0 transition-all duration-500"
-            />
-          ) : (
-             <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 flex items-center justify-center font-bold">
-               {blog.authorName?.charAt(0) || "A"}
-             </div>
-          )}
-          <div>
-            <div className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
-              {blog.authorName || "Anonymous"}
-            </div>
-            <div className="text-xs font-medium text-zinc-500 mt-0.5">
-              {blog.readTimeMinutes} min read
-            </div>
+        <div className="mt-auto flex flex-col items-center gap-2 pt-2">
+          <div className="text-xs font-bold text-zinc-900 dark:text-white uppercase tracking-wider">
+            {blog.authorName || "Anonymous"}
           </div>
         </div>
       </div>
