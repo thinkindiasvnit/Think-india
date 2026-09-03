@@ -185,7 +185,6 @@ export async function getAllBlogs(): Promise<Blog[]> {
 export async function getPublishedBlogs(): Promise<Blog[]> {
   const all = await getAllBlogs();
   return all
-    .filter((b) => b.status === "published")
     .sort((a, b) => {
       // featured blogs first
       if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
@@ -335,8 +334,18 @@ export async function incrementViews(id: string): Promise<void> {
   }
 }
 
-/** Upload an image to Cloudinary */
+/** Upload an image to Cloudinary (or fallback to base64 if not configured) */
 export async function uploadImage(file: File): Promise<string> {
+  if (!CLOUD_NAME || !UPLOAD_PRESET) {
+    // Fallback to base64 encoding if Cloudinary is not configured
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
   const form = new FormData();
   form.append("file", file);
   form.append("upload_preset", UPLOAD_PRESET);

@@ -1,12 +1,112 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   getPublishedBlogs,
   Blog,
   CATEGORY_LABELS,
 } from "../../lib/blogService";
+
+function AnimatedBlogRow({ blog, index }: { blog: Blog; index: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isEven = index % 2 === 0;
+
+  function fmtDate(iso: string | null): string {
+    if (!iso) return "";
+    return new Date(iso).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  return (
+    <Link
+      ref={ref}
+      href={`/blogs/${blog.slug}`}
+      className={`group flex flex-col ${
+        isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+      } w-full overflow-hidden mb-24 lg:mb-32`}
+    >
+      {/* Image Container */}
+      <div
+        className={`relative w-full lg:w-1/2 aspect-video lg:aspect-auto lg:min-h-[500px] overflow-hidden bg-amber-100/50 transition-all duration-[800ms] ease-out delay-100 ${
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        }`}
+      >
+        {blog.coverImageURL ? (
+          <img
+            src={blog.coverImageURL}
+            alt={blog.title}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600 transition-transform duration-[1500ms] group-hover:scale-105">
+            <span className="text-white/80 text-7xl font-black font-heading">
+              {blog.title.charAt(0)}
+            </span>
+          </div>
+        )}
+        {blog.isFeatured && (
+          <span className="absolute top-6 left-6 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-600 text-white shadow-lg font-heading">
+            Featured
+          </span>
+        )}
+      </div>
+
+      {/* Content Container */}
+      <div
+        className={`w-full lg:w-1/2 flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-16 xl:px-24 py-12 lg:py-0 transition-all duration-[800ms] ease-out delay-300 ${
+          isVisible
+            ? "translate-y-0 translate-x-0 opacity-100"
+            : isEven
+            ? "translate-y-8 lg:translate-y-0 translate-x-0 lg:-translate-x-8 opacity-0"
+            : "translate-y-8 lg:translate-y-0 translate-x-0 lg:translate-x-8 opacity-0"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-2 mb-6">
+          <span className="text-[11px] font-black uppercase tracking-widest text-amber-700">
+            {CATEGORY_LABELS[blog.category] || blog.category}
+          </span>
+          <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+            {fmtDate(blog.publishedAt || blog.createdAt)}
+          </span>
+        </div>
+
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-950 leading-[1.15] tracking-tight mb-6 group-hover:text-amber-700 transition-colors font-heading">
+          {blog.title}
+        </h2>
+
+        <p className="text-base sm:text-lg text-zinc-700 line-clamp-4 leading-relaxed mb-10 font-medium max-w-xl mx-auto">
+          {blog.summary}
+        </p>
+
+        <div className="mt-auto flex flex-col items-center gap-2 pt-2">
+          <div className="text-xs font-bold text-zinc-900 uppercase tracking-wider">
+            {blog.authorName || "Anonymous"}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -46,213 +146,99 @@ export default function BlogPage() {
     return true;
   });
 
-  function fmtDate(iso: string | null): string {
-    if (!iso) return "";
-    return new Date(iso).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  }
-
   /* ── loading ── */
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 gap-4">
+      <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light flex flex-col items-center justify-center py-32 gap-4">
         <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-zinc-500">Loading blogs…</p>
+        <p className="text-sm text-zinc-700 font-bold">Loading stories…</p>
       </div>
     );
   }
 
   /* ── page ── */
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-zinc-900 flex flex-col flex-1 font-sans selection:bg-amber-600 selection:text-white">
       {/* header */}
-      <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-xl py-12 px-6 text-center bg-white/95 backdrop-blur-md">
-          <span className="text-xs font-black tracking-widest text-amber-700 uppercase font-heading">
-            Think India SVNIT Chapter
-          </span>
-          <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight text-slate-950 font-heading">
-            Blog & Articles
-          </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-slate-800 font-semibold leading-relaxed">
-            Insights, stories, and research updates from the Think India community.
-          </p>
-        </div>
+      <section className="py-24 px-4 sm:px-6 lg:px-8 text-center border-b border-amber-200/60 bg-white/40 backdrop-blur-sm">
+        <span className="text-xs font-black tracking-widest text-amber-700 uppercase font-heading">
+          Think India SVNIT
+        </span>
+        <h1 className="mt-4 text-5xl sm:text-7xl font-black tracking-tight text-zinc-950 font-heading">
+          Editorial
+        </h1>
+        <p className="mt-6 max-w-2xl mx-auto text-lg text-zinc-800 leading-relaxed font-medium">
+          Insights, stories, and updates from the Think India community, curated for our readers.
+        </p>
       </section>
 
       {/* filters */}
-      <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 pb-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          {/* search */}
-          <input
-            type="text"
-            placeholder="Search blogs…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full sm:max-w-xs px-4 py-2.5 rounded-2xl border border-amber-300 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 placeholder:text-slate-400 shadow-sm"
-          />
-
+      <section className="max-w-[90rem] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+        <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between border-b border-amber-200/60 pb-8">
           {/* category pills */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilterCategory(cat)}
-                className={`px-4 py-2 rounded-2xl text-xs font-extrabold transition-all duration-200 ${
+                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${
                   filterCategory === cat
-                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/30"
-                    : "bg-white border border-amber-300 text-slate-900 hover:bg-amber-100/60 shadow-sm"
+                    ? "bg-amber-600 text-white border-amber-600 shadow-md shadow-amber-600/20"
+                    : "bg-white text-zinc-800 border-amber-200 hover:bg-amber-50 hover:border-amber-300"
                 }`}
               >
                 {cat === "all"
-                  ? "All Categories"
-                  : CATEGORY_LABELS[cat] || cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  ? "All Stories"
+                  : CATEGORY_LABELS[cat] || cat}
               </button>
             ))}
+          </div>
+
+          {/* search */}
+          <div className="relative w-full sm:max-w-sm">
+            <input
+              type="text"
+              placeholder="Search stories…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-full border border-amber-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 text-zinc-950 placeholder:text-zinc-400 font-medium transition-all shadow-sm"
+            />
+            <svg
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
           </div>
         </div>
       </section>
 
-      {/* grid */}
-      <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-20 pt-4">
+      {/* blogs list */}
+      <section className="max-w-[90rem] mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         {filtered.length === 0 ? (
-          <div className="card-orange-glass-light bg-white/95 border border-amber-300 rounded-3xl p-12 text-center shadow-md">
-            <svg
-              className="mx-auto h-12 w-12 text-amber-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-              />
-            </svg>
-            <h3 className="mt-4 text-lg font-black text-slate-950 font-heading">
-              No blogs found
+          <div className="py-32 text-center">
+            <h3 className="text-2xl font-black text-zinc-950 font-heading tracking-tight">
+              No stories found
             </h3>
-            <p className="mt-1 text-sm font-semibold text-slate-700">
-              Check back later for new posts.
+            <p className="mt-2 text-zinc-700 font-medium">
+              Try adjusting your search or category filters.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map((blog) => (
-              <Link
-                key={blog.id}
-                href={`/blogs/${blog.slug}`}
-                className="group card-orange-glass-light bg-white/95 rounded-3xl border border-amber-300 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  {/* cover */}
-                  <div className="relative aspect-[16/9] overflow-hidden bg-amber-100">
-                    {blog.coverImageURL ? (
-                      <img
-                        src={blog.coverImageURL}
-                        alt={blog.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600">
-                        <span className="text-white/90 text-5xl font-black font-heading">
-                          {blog.title.charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                    {/* category badge */}
-                    <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-600 text-white shadow-sm font-heading">
-                      {CATEGORY_LABELS[blog.category] || blog.category}
-                    </span>
-                    {/* featured badge */}
-                    {blog.isFeatured && (
-                      <span className="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-700 text-white shadow-sm font-heading">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  {/* body */}
-                  <div className="p-6">
-                    {/* meta row */}
-                    <div className="flex items-center gap-2.5 text-xs font-bold text-slate-700 mb-3">
-                      {blog.authorPhotoURL ? (
-                        <img
-                          src={blog.authorPhotoURL}
-                          alt={blog.authorName}
-                          className="w-6 h-6 rounded-full object-cover border border-amber-300"
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-amber-200 text-amber-950 flex items-center justify-center text-[10px] font-black">
-                          {blog.authorName?.charAt(0) || "A"}
-                        </div>
-                      )}
-                      <span className="font-extrabold text-slate-950">
-                        {blog.authorName || "Anonymous"}
-                      </span>
-                      <span>·</span>
-                      <span>{fmtDate(blog.publishedAt)}</span>
-                      <span>·</span>
-                      <span>{blog.readTimeMinutes} min read</span>
-                    </div>
-
-                    {/* title */}
-                    <h2 className="text-lg font-black text-slate-950 font-heading line-clamp-2 group-hover:text-amber-700 transition-colors">
-                      {blog.title}
-                    </h2>
-
-                    {/* summary */}
-                    <p className="mt-2 text-sm text-slate-800 line-clamp-3 leading-relaxed font-medium">
-                      {blog.summary}
-                    </p>
-
-                    {/* tags */}
-                    {blog.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-1.5">
-                        {blog.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2.5 py-0.5 rounded-lg bg-amber-100/70 border border-amber-300/80 text-[10px] font-bold text-amber-950"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="px-6 pb-6 pt-2 border-t border-amber-200/60 mt-4 flex items-center text-xs font-black text-amber-700 group-hover:gap-2 transition-all">
-                  Read Article
-                  <svg
-                    className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </div>
-              </Link>
+          <div className="flex flex-col">
+            {filtered.map((blog, index) => (
+              <AnimatedBlogRow key={blog.id} blog={blog} index={index} />
             ))}
           </div>
         )}
 
         {/* result count */}
         {filtered.length > 0 && (
-          <p className="mt-8 text-center text-xs font-bold text-slate-700">
-            Showing {filtered.length} blog{filtered.length !== 1 ? "s" : ""}
-            {filterCategory !== "all" &&
-              ` in "${CATEGORY_LABELS[filterCategory] || filterCategory}"`}
+          <p className="mt-12 mb-20 text-center text-sm font-bold tracking-widest uppercase text-amber-800">
+            — Showing {filtered.length} {filtered.length === 1 ? "Story" : "Stories"} —
           </p>
         )}
       </section>

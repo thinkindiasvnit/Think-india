@@ -42,7 +42,7 @@ function blankForm(): FormState {
     authorId: "",
     authorName: "",
     authorPhotoURL: "",
-    status: "draft",
+    status: "published",
     isFeatured: false,
   };
 }
