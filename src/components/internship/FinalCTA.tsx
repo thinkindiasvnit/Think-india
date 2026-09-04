@@ -311,11 +311,11 @@ export function YearlyArchive() {
 
 // ─── Application Steps ────────────────────────────────────────────────────────
 const STEPS = [
-  { step: "01", title: "DISCOVER", desc: "Browse programs, institutes, and read intern diaries to find your perfect match.", icon: "🧭" },
-  { step: "02", title: "SELECT", desc: "Choose your program, preferred institute, and the timeline that works for you.", icon: "📌" },
-  { step: "03", title: "APPLY", desc: "Submit your SOP, academic credentials, and two references through our portal.", icon: "📝" },
-  { step: "04", title: "INTERVIEW", desc: "Shortlisted candidates interview with the host institute's faculty or HR panel.", icon: "🤝" },
-  { step: "05", title: "EXPERIENCE", desc: "Report, contribute, and become part of the Think India alumni network.", icon: "⭐" },
+  { step: "01", title: "DISCOVER", desc: "Browse programs, institutes, and read intern diaries to find your perfect match." },
+  { step: "02", title: "SELECT", desc: "Choose your program, preferred institute, and the timeline that works for you." },
+  { step: "03", title: "APPLY", desc: "Submit your SOP, academic credentials, and two references through our portal." },
+  { step: "04", title: "INTERVIEW", desc: "Shortlisted candidates interview with the host institute's faculty or HR panel." },
+  { step: "05", title: "EXPERIENCE", desc: "Report, contribute, and become part of the Think India alumni network." },
 ];
 
 export function ApplicationProcess() {
@@ -349,7 +349,6 @@ export function ApplicationProcess() {
 
               <div className="pt-2 flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">{s.icon}</span>
                   <h3 className={`font-heading text-xl font-black tracking-wide transition-colors ${i === activeStep ? "text-[#1A1A1A]" : "text-[#666666]"
                     }`}>
                     {s.title}
