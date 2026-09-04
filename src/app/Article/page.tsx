@@ -1,6 +1,46 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Globe, Instagram } from "lucide-react";
-import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
+import { ChevronLeft, ChevronRight, Globe } from "lucide-react";
+
+const Instagram = ({ style }: { style?: React.CSSProperties }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+// ─── Fallback Image ──────────────────────────────────────────────────────────
+
+const ERROR_IMG_SRC =
+  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODgiIGhlaWdodD0iODgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzLjciPjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNiIvPjxwYXRoIGQ9Im0xNiA1OCAxNi0xOCAzMiAzMiIvPjxjaXJjbGUgY3g9IjUzIiBjeT0iMzUiIHI9IjciLz48L3N2Zz4KCg==';
+
+function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElement>) {
+  const [didError, setDidError] = useState(false);
+
+  const handleError = () => {
+    setDidError(true);
+  };
+
+  const { src, alt, style, className, ...rest } = props;
+
+  return didError ? (
+    <div
+      className={`inline-block bg-gray-100 text-center align-middle ${className ?? ''}`}
+      style={style}
+    >
+      <div className="flex items-center justify-center w-full h-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
+      </div>
+    </div>
+  ) : (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
+  );
+}
+
 
 // ─── CSS Animations ──────────────────────────────────────────────────────────
 // Per-keyframe timing functions give the acceleration physics of real paper:
@@ -249,8 +289,8 @@ const PAGES: PageData[] = [
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
-const ThinkIndiaLogo = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 50 62" className={className} fill="none">
+const ThinkIndiaLogo = ({ className = "", style }: { className?: string, style?: React.CSSProperties }) => (
+  <svg viewBox="0 0 50 62" className={className} style={style} fill="none">
     <line x1="7"  y1="9"  x2="4"  y2="5"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     <line x1="15" y1="5"  x2="14" y2="1"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     <line x1="25" y1="3"  x2="25" y2="0"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -278,7 +318,7 @@ const Masthead = () => (
     </div>
     <div style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", alignItems: "center", gap: "8px" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2px" }}>
-        <ThinkIndiaLogo className="text-[#1a1209]" style={{ width: 36, height: 44 } as React.CSSProperties} />
+        <ThinkIndiaLogo className="text-[#1a1209]" style={{ width: 36, height: 44 }} />
         <span style={{ fontFamily: "'Oswald',sans-serif", fontSize: "7px", letterSpacing: "0.1em", color: "#1a1209", textAlign: "center", lineHeight: 1.3 }}>
           THINK INDIA<br />SVNIT
         </span>
