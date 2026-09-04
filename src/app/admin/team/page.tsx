@@ -42,6 +42,7 @@ const blankForm = () => ({
   name: "",
   designation: "Core" as Designation,
   position: "",
+  description: "",
   photoURL: "",
   userId: "" as string | null,
   teamOrder: 1,
@@ -58,6 +59,7 @@ export default function AdminTeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(blankForm());
   const [photoUploading, setPhotoUploading] = useState(false);
@@ -98,6 +100,7 @@ export default function AdminTeamPage() {
       name: m.name,
       designation: m.designation,
       position: m.position,
+      description: m.description,
       photoURL: m.photoURL,
       userId: m.userId ?? "",
       teamOrder: m.teamOrder,
@@ -136,6 +139,7 @@ export default function AdminTeamPage() {
       name: form.name.trim(),
       designation: form.designation,
       position: form.position.trim(),
+      description: form.description.trim(),
       photoURL: form.photoURL.trim(),
       userId: form.userId?.trim() || null,
       teamOrder: Number(form.teamOrder) || 1,
@@ -225,6 +229,19 @@ export default function AdminTeamPage() {
                 />
                 <p className="mt-1 text-xs text-zinc-400">Displayed on the member card</p>
               </div>
+            </div>
+
+            {/* Description / Bio */}
+            <div>
+              <label className={labelCls}>Description / Bio</label>
+              <textarea
+                value={form.description}
+                onChange={(e) => setField("description", e.target.value)}
+                placeholder="Write a short bio or description..."
+                rows={3}
+                className={inputCls}
+              />
+              <p className="mt-1 text-xs text-zinc-400">Optional summary or quote for the member card</p>
             </div>
 
             {/* Photo */}

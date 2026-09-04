@@ -31,6 +31,7 @@ export interface TeamMember {
   /** Specific role title — e.g. "Technical Head", "President" */
   position: string;
   /** Display order within their designation group (1, 2, 3…) */
+  description: string;
   teamOrder: number;
   /** Display order of the designation section on the page */
   overallOrder: number;
@@ -76,7 +77,8 @@ const mapDoc = (id: string, data: Record<string, any>): TeamMember => ({
   name: data.name ?? "",
   photoURL: data.photoURL ?? "",
   designation: (data.designation as Designation) ?? "Core",
-  position: data.position ?? data.teamName ?? "",  // graceful fallback for old data
+  position: data.description ?? data.position ?? data.teamName ?? "",
+  description: data.description ?? "",  // graceful fallback for old data
   teamOrder: data.teamOrder ?? 0,
   overallOrder: data.overallOrder ?? 0,
   sessionYear: data.sessionYear ?? "",
