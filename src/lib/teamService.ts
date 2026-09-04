@@ -29,6 +29,7 @@ export interface TeamMember {
   /** Broad category — used to group members on the page */
   designation: Designation;
   /** Specific role title — e.g. "Technical Head", "President" */
+  description?: string;
   position: string;
   /** Display order within their designation group (1, 2, 3…) */
   teamOrder: number;
