@@ -1,0 +1,368 @@
+{
+  "programs": [
+    {
+      "id": "anubhooti",
+      "name": "ANUBHOOTI",
+      "tagline": "Research Immersion Program",
+      "description": "A deep-dive research internship connecting students with premier research institutes across India. Work directly with faculty mentors on live projects.",
+      "duration": "4-8 weeks",
+      "mode": "Offline",
+      "category": "Research",
+      "badge": "Flagship"
+    },
+    {
+      "id": "vidhi",
+      "name": "VIDHI",
+      "tagline": "Policy & Law Internship",
+      "description": "Gain hands-on exposure to legal research, policy drafting, and governance frameworks under the mentorship of legal professionals.",
+      "duration": "4-6 weeks",
+      "mode": "Hybrid",
+      "category": "Policy",
+      "badge": "Popular"
+    },
+    {
+      "id": "niti",
+      "name": "NITI",
+      "tagline": "Public Policy Track",
+      "description": "Engage with think tanks and policy research organisations. Work on real governance challenges and present your findings to senior officers.",
+      "duration": "4-6 weeks",
+      "mode": "Offline",
+      "category": "Policy",
+      "badge": "New"
+    },
+    {
+      "id": "sansadiya",
+      "name": "SANSADIYA",
+      "tagline": "Parliamentary Internship",
+      "description": "Work alongside Members of Parliament, understand legislative processes, and contribute to constituency-level research and development.",
+      "duration": "4-6 weeks",
+      "mode": "Offline",
+      "category": "Governance",
+      "badge": "Prestigious"
+    },
+    {
+      "id": "samvad",
+      "name": "SAMVAD",
+      "tagline": "Dialogue & Leadership",
+      "description": "A structured dialogue and mentorship program connecting student leaders with industry veterans and government officials.",
+      "duration": "2-4 weeks",
+      "mode": "Online",
+      "category": "Leadership",
+      "badge": ""
+    },
+    {
+      "id": "shuruat",
+      "name": "SHURUAT",
+      "tagline": "Entrepreneurship Bootcamp",
+      "description": "From idea validation to MVP ÔÇö an intensive entrepreneurship internship partnered with leading startup ecosystems and incubators.",
+      "duration": "6 weeks",
+      "mode": "Hybrid",
+      "category": "Entrepreneurship",
+      "badge": "New"
+    },
+    {
+      "id": "deeksha",
+      "name": "DEEKSHA",
+      "tagline": "Social Impact Fellowship",
+      "description": "On-ground social impact work across rural and semi-urban India. Work on development challenges alongside NGOs and government bodies.",
+      "duration": "4-8 weeks",
+      "mode": "Offline",
+      "category": "Social Impact",
+      "badge": "High Impact"
+    }
+  ],
+  "institutes": [
+    {
+      "id": "iit-delhi",
+      "name": "IIT Delhi",
+      "shortName": "IITD",
+      "location": "New Delhi",
+      "logo": "/logos/iit-delhi.png",
+      "cover": "/covers/iit-delhi.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "NITI"
+      ],
+      "description": "One of India's premier technical institutes offering cutting-edge research internship opportunities in engineering, technology, and policy.",
+      "slots": 12,
+      "category": "IIT"
+    },
+    {
+      "id": "iiser-bhopal",
+      "name": "IISER Bhopal",
+      "shortName": "IISERB",
+      "location": "Bhopal, MP",
+      "logo": "/logos/iiser-bhopal.png",
+      "cover": "/covers/iiser-bhopal.jpg",
+      "programs": [
+        "ANUBHOOTI"
+      ],
+      "description": "A research-intensive institution with world-class facilities in sciences and interdisciplinary studies.",
+      "slots": 8,
+      "category": "IISER"
+    },
+    {
+      "id": "iim-mumbai",
+      "name": "IIM Mumbai",
+      "shortName": "IIMM",
+      "location": "Mumbai, MH",
+      "logo": "/logos/iim-mumbai.png",
+      "cover": "/covers/iim-mumbai.jpg",
+      "programs": [
+        "VIDHI",
+        "SAMVAD",
+        "SHURUAT"
+      ],
+      "description": "The newest IIM with a dynamic management curriculum. Internships focus on business, policy, and entrepreneurship.",
+      "slots": 10,
+      "category": "IIM"
+    },
+    {
+      "id": "iit-kanpur",
+      "name": "IIT Kanpur",
+      "shortName": "IITK",
+      "location": "Kanpur, UP",
+      "logo": "/logos/iit-kanpur.png",
+      "cover": "/covers/iit-kanpur.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "SHURUAT"
+      ],
+      "description": "Known for its pioneering research in aerospace, computing, and material sciences.",
+      "slots": 10,
+      "category": "IIT"
+    },
+    {
+      "id": "iit-ropar",
+      "name": "IIT Ropar",
+      "shortName": "IITRPR",
+      "location": "Rupnagar, PB",
+      "logo": "/logos/iit-ropar.png",
+      "cover": "/covers/iit-ropar.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "DEEKSHA"
+      ],
+      "description": "A young IIT with strong focus on sustainable technology and rural innovation research.",
+      "slots": 6,
+      "category": "IIT"
+    },
+    {
+      "id": "mnnit-allahabad",
+      "name": "MNNIT Allahabad",
+      "shortName": "MNNIT",
+      "location": "Allahabad, UP",
+      "logo": "/logos/mnnit-allahabad.png",
+      "cover": "/covers/mnnit-allahabad.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "NITI"
+      ],
+      "description": "Motilal Nehru National Institute of Technology ÔÇö one of the oldest and most respected NITs.",
+      "slots": 8,
+      "category": "NIT"
+    },
+    {
+      "id": "ict-mumbai",
+      "name": "ICT Mumbai",
+      "shortName": "ICT",
+      "location": "Mumbai, MH",
+      "logo": "/logos/ict-mumbai.png",
+      "cover": "/covers/ict-mumbai.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "SHURUAT"
+      ],
+      "description": "Institute of Chemical Technology ÔÇö Asia's top chemical engineering institution with industry-grade lab access.",
+      "slots": 6,
+      "category": "Institute"
+    },
+    {
+      "id": "iit-kharagpur",
+      "name": "IIT Kharagpur",
+      "shortName": "IITKgp",
+      "location": "Kharagpur, WB",
+      "logo": "/logos/iit-kharagpur.png",
+      "cover": "/covers/iit-kharagpur.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "VIDHI",
+        "SANSADIYA"
+      ],
+      "description": "India's first IIT and the largest by campus. Wide-ranging internship options across 19 academic departments.",
+      "slots": 15,
+      "category": "IIT"
+    },
+    {
+      "id": "iit-roorkee",
+      "name": "IIT Roorkee",
+      "shortName": "IITR",
+      "location": "Roorkee, UK",
+      "logo": "/logos/iit-roorkee.png",
+      "cover": "/covers/iit-roorkee.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "DEEKSHA"
+      ],
+      "description": "One of India's oldest technical universities with exceptional civil, earthquake, and water resource research.",
+      "slots": 10,
+      "category": "IIT"
+    },
+    {
+      "id": "iit-bombay",
+      "name": "IIT Bombay",
+      "shortName": "IITB",
+      "location": "Mumbai, MH",
+      "logo": "/logos/iit-bombay.png",
+      "cover": "/covers/iit-bombay.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "SHURUAT",
+        "SAMVAD"
+      ],
+      "description": "Ranked among Asia's top universities. Internships available in cutting-edge research labs and social innovation cells.",
+      "slots": 15,
+      "category": "IIT"
+    },
+    {
+      "id": "premier-nits",
+      "name": "Other Premier NITs",
+      "shortName": "NITs",
+      "location": "Pan-India",
+      "logo": "/logos/nit-logo.png",
+      "cover": "/covers/nit-cover.jpg",
+      "programs": [
+        "ANUBHOOTI",
+        "DEEKSHA",
+        "SAMVAD"
+      ],
+      "description": "A network of National Institutes of Technology spanning across India, offering diverse internship experiences.",
+      "slots": 20,
+      "category": "NIT"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "Aryan Mehta",
+      "role": "Research Intern",
+      "institute": "IIT Delhi",
+      "program": "ANUBHOOTI",
+      "year": "2024-25",
+      "batch": "B.Tech, CSE",
+      "photo": "/students/student-1.jpg",
+      "quote": "ANUBHOOTI didn't just give me a research experience ÔÇö it gave me a research identity. I worked on a machine learning model for crop disease detection and presented it to the institute faculty board. The mentorship was unparalleled.",
+      "highlight": "Published co-authored research paper"
+    },
+    {
+      "id": "t2",
+      "name": "Priya Sharma",
+      "role": "Policy Intern",
+      "institute": "Parliament of India",
+      "program": "SANSADIYA",
+      "year": "2024-25",
+      "batch": "M.A., Political Science",
+      "photo": "/students/student-2.jpg",
+      "quote": "Walking the corridors of Parliament as an intern was surreal. Through SANSADIYA, I worked on constituency reports and helped draft policy briefs that were actually read by elected representatives.",
+      "highlight": "Policy brief presented to MP"
+    },
+    {
+      "id": "t3",
+      "name": "Rohan Verma",
+      "role": "Social Fellow",
+      "institute": "Rural Karnataka",
+      "program": "DEEKSHA",
+      "year": "2023-24",
+      "batch": "B.Com, Finance",
+      "photo": "/students/student-3.jpg",
+      "quote": "DEEKSHA took me out of my comfort zone ÔÇö and into a village in Karnataka where I helped set up a micro-lending network. Six weeks that changed my worldview more than six semesters in a classroom.",
+      "highlight": "Impacted 200+ village households"
+    },
+    {
+      "id": "t4",
+      "name": "Sneha Iyer",
+      "role": "Legal Research Intern",
+      "institute": "Ministry of Law",
+      "program": "VIDHI",
+      "year": "2023-24",
+      "batch": "B.A. LLB, 4th Year",
+      "photo": "/students/student-4.jpg",
+      "quote": "Through VIDHI, I worked on a comparative analysis of e-courts adoption across five states. The research directly fed into a ministry consultation paper.",
+      "highlight": "Research cited in ministry report"
+    },
+    {
+      "id": "t5",
+      "name": "Karan Singh",
+      "role": "Entrepreneurship Intern",
+      "institute": "IIT Bombay Incubator",
+      "program": "SHURUAT",
+      "year": "2022-23",
+      "batch": "MBA, Semester 2",
+      "photo": "/students/student-5.jpg",
+      "quote": "SHURUAT was a fire drill for real startup life. I validated a SaaS idea, built an MVP in 3 weeks, and pitched to five real investors ÔÇö all within the program. Two of them asked for follow-up meetings.",
+      "highlight": "MVP built and investor interest secured"
+    }
+  ],
+  "yearlyArchive": [
+    {
+      "year": "2025-26",
+      "interns": 340,
+      "institutes": 45,
+      "programs": 7,
+      "highlight": "Largest cohort in Think India history"
+    },
+    {
+      "year": "2024-25",
+      "interns": 280,
+      "institutes": 38,
+      "programs": 6,
+      "highlight": "Expanded to IIMs and law schools"
+    },
+    {
+      "year": "2023-24",
+      "interns": 195,
+      "institutes": 28,
+      "programs": 5,
+      "highlight": "First DEEKSHA & SHURUAT cohorts"
+    },
+    {
+      "year": "2022-23",
+      "interns": 120,
+      "institutes": 18,
+      "programs": 3,
+      "highlight": "Founding year: ANUBHOOTI launched"
+    }
+  ],
+  "applicationSteps": [
+    {
+      "step": "01",
+      "title": "DISCOVER",
+      "description": "Browse programs, institutes, and read intern diaries. Find the experience that aligns with your ambitions.",
+      "icon": "compass"
+    },
+    {
+      "step": "02",
+      "title": "SELECT",
+      "description": "Choose your program, preferred institute, and timeline. Bookmark opportunities for easy tracking.",
+      "icon": "bookmark"
+    },
+    {
+      "step": "03",
+      "title": "APPLY",
+      "description": "Submit your application with a statement of purpose, academic credentials, and two references.",
+      "icon": "file-text"
+    },
+    {
+      "step": "04",
+      "title": "INTERVIEW",
+      "description": "Shortlisted candidates appear for a structured interview with the host institute faculty or HR panel.",
+      "icon": "users"
+    },
+    {
+      "step": "05",
+      "title": "EXPERIENCE",
+      "description": "Report to your institute, begin your internship, and become part of the Think India alumni network.",
+      "icon": "star"
+    }
+  ]
+}

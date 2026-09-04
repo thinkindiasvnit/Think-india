@@ -7,7 +7,11 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  Timestamp
+  Timestamp,
+  query,
+  where,
+  orderBy,
+  increment,
 } from "firebase/firestore";
 
 export interface SpeakerDetail {
@@ -427,47 +431,149 @@ export const deleteEvent = async (id: string): Promise<void> => {
   saveLocalEvents(filteredEvents);
 };
 
-// 6. Internal Registration Helpers
+// ─── Internal Registrations ───────────────────────────────────────────────────
+
+const REGISTRATIONS_COLLECTION = "event_registrations";
 const REGISTRATIONS_STORAGE_KEY = "think_india_event_registrations";
 
+/**
+ * Get registrations for a specific event (or all registrations if no eventId).
+ * Primary: Firestore `event_registrations` collection.
+ * Fallback: localStorage.
+ */
 export const getEventRegistrations = async (eventId?: string): Promise<EventRegistration[]> => {
+  if (isFirebaseConfigured()) {
+    try {
+      let q;
+      if (eventId) {
+        // Try to match both eventId field and the slug-based eventId
+        q = query(
+          collection(db, REGISTRATIONS_COLLECTION),
+          where("eventId", "==", eventId),
+          orderBy("registeredAt", "desc")
+        );
+      } else {
+        q = query(
+          collection(db, REGISTRATIONS_COLLECTION),
+          orderBy("registeredAt", "desc")
+        );
+      }
+
+      const snap = await getDocs(q);
+      const registrations: EventRegistration[] = snap.docs.map((d) => {
+        const data = d.data();
+        const registeredAt =
+          data.registeredAt instanceof Timestamp
+            ? data.registeredAt.toDate().toISOString()
+            : data.registeredAt;
+        return { ...data, id: d.id, registeredAt } as EventRegistration;
+      });
+
+      // Mirror to localStorage so fallback reads stay fresh
+      if (typeof window !== "undefined") {
+        const all: EventRegistration[] = JSON.parse(
+          localStorage.getItem(REGISTRATIONS_STORAGE_KEY) || "[]"
+        );
+        // Merge: keep anything not in this Firestore result
+        const firestoreIds = new Set(registrations.map((r) => r.id));
+        const localOnly = all.filter((r) => !firestoreIds.has(r.id));
+        localStorage.setItem(
+          REGISTRATIONS_STORAGE_KEY,
+          JSON.stringify([...registrations, ...localOnly])
+        );
+      }
+
+      return registrations;
+    } catch (error) {
+      console.warn("Firestore registrations fetch failed, falling back to localStorage:", error);
+    }
+  }
+
+  // LocalStorage fallback
   if (typeof window === "undefined") return [];
   const stored = localStorage.getItem(REGISTRATIONS_STORAGE_KEY);
-  const registrations: EventRegistration[] = stored ? JSON.parse(stored) : [];
-  if (eventId) {
-    return registrations.filter((r) => r.eventId === eventId);
-  }
-  return registrations;
+  const all: EventRegistration[] = stored ? JSON.parse(stored) : [];
+  if (eventId) return all.filter((r) => r.eventId === eventId);
+  return all;
 };
 
+/**
+ * Submit an event registration.
+ * Primary: Firestore `event_registrations` collection.
+ * Fallback: localStorage.
+ * Also increments the event's `registrationsCount` in Firestore.
+ */
 export const submitEventRegistration = async (
   regData: Omit<EventRegistration, "id" | "registeredAt">
 ): Promise<EventRegistration> => {
+  const registeredAt = new Date().toISOString();
+
+  if (isFirebaseConfigured()) {
+    try {
+      const payload = { ...regData, registeredAt };
+      const docRef = await addDoc(collection(db, REGISTRATIONS_COLLECTION), payload);
+      const newReg: EventRegistration = { ...payload, id: docRef.id };
+
+      // Increment registrationsCount on the parent event in Firestore
+      try {
+        if (
+          regData.eventId &&
+          !regData.eventId.startsWith("local_") &&
+          !regData.eventId.startsWith("sample-")
+        ) {
+          const eventRef = doc(db, "events", regData.eventId);
+          await updateDoc(eventRef, { registrationsCount: increment(1) });
+        }
+      } catch (e) {
+        console.warn("Failed to increment registrationsCount in Firestore:", e);
+      }
+
+      // Mirror to localStorage
+      if (typeof window !== "undefined") {
+        const all: EventRegistration[] = JSON.parse(
+          localStorage.getItem(REGISTRATIONS_STORAGE_KEY) || "[]"
+        );
+        all.unshift(newReg);
+        localStorage.setItem(REGISTRATIONS_STORAGE_KEY, JSON.stringify(all));
+      }
+
+      return newReg;
+    } catch (error) {
+      console.warn("Firestore registration write failed, falling back to localStorage:", error);
+    }
+  }
+
+  // LocalStorage fallback
   const newReg: EventRegistration = {
     ...regData,
     id: `reg_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
-    registeredAt: new Date().toISOString(),
+    registeredAt,
   };
 
   if (typeof window !== "undefined") {
-    const existing = await getEventRegistrations();
-    existing.unshift(newReg);
-    localStorage.setItem(REGISTRATIONS_STORAGE_KEY, JSON.stringify(existing));
+    const all: EventRegistration[] = JSON.parse(
+      localStorage.getItem(REGISTRATIONS_STORAGE_KEY) || "[]"
+    );
+    all.unshift(newReg);
+    localStorage.setItem(REGISTRATIONS_STORAGE_KEY, JSON.stringify(all));
 
-    // Increment registration count for local event
+    // Increment local event count
     try {
       const events = getLocalEvents();
-      const eventIndex = events.findIndex((e) => e.id === regData.eventId || e.slug === regData.eventId);
-      if (eventIndex !== -1) {
-        events[eventIndex].registrationsCount = (events[eventIndex].registrationsCount || 0) + 1;
+      const idx = events.findIndex(
+        (e) => e.id === regData.eventId || e.slug === regData.eventId
+      );
+      if (idx !== -1) {
+        events[idx].registrationsCount = (events[idx].registrationsCount || 0) + 1;
         saveLocalEvents(events);
       }
     } catch (e) {
-      console.warn("Failed to update event registration count:", e);
+      console.warn("Failed to update event registration count in localStorage:", e);
     }
   }
 
   return newReg;
 };
+
 
 
