@@ -1,108 +1,179 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import gsap from "gsap";
 
 export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Elegant entrance animation for the Hero section
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".hero-element",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2 }
+      );
+
+      // Simple intersection observer for the other sections (no ScrollTrigger plugin needed)
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              gsap.to(entry.target, {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out"
+              });
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      const revealElements = document.querySelectorAll(".reveal-section");
+      revealElements.forEach((el) => {
+        gsap.set(el, { y: 60, opacity: 0 }); // Initial state
+        observer.observe(el);
+      });
+
+      return () => observer.disconnect();
+    });
+
+    return () => ctx.revert(); // Cleanup GSAP on unmount
+  }, []);
+
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-amber-200/60">
-        <div className="max-w-4xl mx-auto relative z-10">
-          <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-2xl p-8 sm:p-14 text-center bg-white/95 backdrop-blur-md">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-amber-600/30 p-2">
-              <Image
-                src="/logo.png"
-                alt="Think India Logo"
-                width={56}
-                height={56}
-                className="object-contain drop-shadow-sm"
-              />
-            </div>
-            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-950 text-xs font-black uppercase tracking-widest mb-4 shadow-sm font-heading">
-              Think India SVNIT Chapter
+    <div className="flex flex-col min-h-screen bg-transparent relative z-10 w-full overflow-hidden">
+      
+      {/* Premium Minimal Hero Section */}
+      <section 
+        ref={heroRef}
+        className="relative min-h-[90vh] flex flex-col justify-end pb-24 px-6 sm:px-12 lg:px-24 bg-transparent"
+      >
+        <div className="max-w-7xl w-full mx-auto relative z-10 flex flex-col items-start">
+          <div className="hero-element mb-6 inline-flex items-center gap-4">
+            <div className="w-12 h-[1px] bg-amber-600"></div>
+            <span className="text-amber-800 font-bold tracking-[0.3em] uppercase text-xs">Think India SVNIT</span>
+          </div>
+          
+          <h1 className="hero-element text-5xl sm:text-7xl lg:text-[7rem] font-black tracking-tighter text-zinc-900 leading-[0.95] font-heading max-w-5xl">
+            EMPOWERING<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">
+              YOUTH.
             </span>
-            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-950 font-heading leading-tight">
-              Empowering Youth, <br />
-              <span className="text-amber-700">Inspiring Innovation</span>
-            </h1>
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-slate-800 font-medium max-w-2xl mx-auto">
+          </h1>
+          
+          <div className="hero-element mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between w-full border-t border-zinc-900/10 pt-8 gap-8">
+            <p className="text-lg text-zinc-700 font-medium max-w-xl leading-relaxed">
               A forum to bind the youth of India with nationalistic spirit and channelize creative energies towards building a stronger nation through education, innovation, and leadership.
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/events"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-black bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-600/30 transition-all duration-200"
-              >
-                Explore Events & Conclaves
-              </Link>
-              <Link
-                href="/admin"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-sm font-extrabold border border-amber-300 bg-white text-slate-900 hover:bg-amber-100/60 shadow-sm transition-all duration-200"
-              >
-                Admin Dashboard
-              </Link>
-            </div>
+            <Link
+              href="/about"
+              className="group flex items-center justify-center w-20 h-20 rounded-full bg-zinc-900 text-white hover:bg-amber-600 transition-colors duration-500 shrink-0 shadow-xl"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Info Cards Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="card-orange-glass-light bg-white/95 p-8 rounded-3xl border border-amber-300 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center mb-6 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-slate-950 mb-3 font-heading">Events & Programs</h3>
-              <p className="text-sm text-slate-800 leading-relaxed font-medium">
+      {/* Asymmetrical Premium Section Blocks */}
+      <section ref={sectionsRef} className="py-24 px-6 sm:px-12 lg:px-24 bg-white/80 backdrop-blur-sm border-t border-zinc-200">
+        <div className="max-w-7xl mx-auto flex flex-col gap-32">
+          
+          {/* Block 1: Events */}
+          <div className="reveal-section flex flex-col md:flex-row items-center gap-12 lg:gap-24">
+            <div className="w-full md:w-5/12 flex flex-col items-start">
+              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">01 / Events</span>
+              <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
+                Technical & Social Initiatives
+              </h2>
+              <p className="text-zinc-600 text-lg leading-relaxed mb-8">
                 Participate in national hackathons, technical workshops, seminars, and social contribution activities organized on campus.
               </p>
+              <Link href="/events" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
+                Explore Events
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
-            <Link href="/events" className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-amber-700 hover:text-amber-800 hover:underline">
-              Browse Events →
-            </Link>
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://picsum.photos/seed/eventtech/800/600" alt="Events" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+            </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="card-orange-glass-light bg-white/95 p-8 rounded-3xl border border-amber-300 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center mb-6 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v1.069m7.5 0c.969.06 1.933.155 2.885.284m-13.27 0C6.302 6.474 7.266 6.379 8.235 6.319" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-slate-950 mb-3 font-heading">Blogs & Insights</h3>
-              <p className="text-sm text-slate-800 leading-relaxed font-medium">
-                Read articles, youth opinions, and research highlights published by members of the Think India network.
+          {/* Block 2: Blogs (Reversed) */}
+          <div className="reveal-section flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-24">
+            <div className="w-full md:w-5/12 flex flex-col items-start">
+              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">02 / Insights</span>
+              <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
+                Youth Opinions & Research
+              </h2>
+              <p className="text-zinc-600 text-lg leading-relaxed mb-8">
+                Read articles, youth opinions, and research highlights published by members of the Think India network across various domains.
               </p>
+              <Link href="/blogs" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
+                Read Articles
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
-            <Link href="/blogs" className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-amber-700 hover:text-amber-800 hover:underline">
-              Read Blogs →
-            </Link>
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+               <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://picsum.photos/seed/writingblog/800/600" alt="Blogs" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+            </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="card-orange-glass-light bg-white/95 p-8 rounded-3xl border border-amber-300 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center mb-6 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-slate-950 mb-3 font-heading">Core Team</h3>
-              <p className="text-sm text-slate-800 leading-relaxed font-medium">
-                Connect with SVNIT student leaders, mentors, and alumni coordinators working to drive positive change.
+          {/* Block 3: Gallery */}
+          <div className="reveal-section flex flex-col md:flex-row items-center gap-12 lg:gap-24">
+            <div className="w-full md:w-5/12 flex flex-col items-start">
+              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">03 / Gallery</span>
+              <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
+                Memories & Milestones
+              </h2>
+              <p className="text-zinc-600 text-lg leading-relaxed mb-8">
+                A visual journey through our past events, workshops, and community gatherings. Relive the moments that shape our nationalistic spirit.
               </p>
+              <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
+                View Gallery
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
-            <Link href="/team" className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-amber-700 hover:text-amber-800 hover:underline">
-              Meet Our Team →
-            </Link>
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="https://picsum.photos/seed/galleryphotos/800/600" alt="Gallery" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+            </div>
           </div>
+
         </div>
       </section>
+      
+      {/* Minimal Footer CTA */}
+      <section className="py-24 px-6 text-center bg-transparent border-t border-zinc-200 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent pointer-events-none"></div>
+        <div className="reveal-section max-w-3xl mx-auto relative z-10">
+          <h2 className="text-4xl sm:text-6xl font-black font-heading text-zinc-900 mb-8">Ready to make an impact?</h2>
+          <Link href="/contact" className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-amber-600 text-white font-bold tracking-widest uppercase hover:bg-amber-700 transition-colors shadow-lg shadow-amber-600/20">
+            Join The Chapter
+          </Link>
+        </div>
+      </section>
+
     </div>
   );
 }
