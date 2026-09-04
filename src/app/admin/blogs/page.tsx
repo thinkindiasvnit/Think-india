@@ -42,7 +42,7 @@ function blankForm(): FormState {
     authorId: "",
     authorName: "",
     authorPhotoURL: "",
-    status: "draft",
+    status: "published",
     isFeatured: false,
   };
 }
@@ -243,7 +243,7 @@ export default function AdminBlogPage() {
             onClick={openCreate}
             className="px-5 py-2.5 rounded-xl text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 shadow-lg shadow-amber-500/20 transition-all"
           >
-            ➕ Add Blog Post
+            + Add Blog Post
           </button>
         )}
       </div>

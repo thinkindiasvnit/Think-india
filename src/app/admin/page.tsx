@@ -359,7 +359,7 @@ export default function AdminPage() {
               onClick={handleResetSampleEvents}
               className="px-4 py-2.5 rounded-xl font-extrabold bg-white border border-amber-300 text-xs text-amber-950 hover:bg-amber-100/60 shadow-sm transition-colors"
             >
-              🌱 Reset Sample Events
+              Reset Sample Events
             </button>
             {!isFormOpen && (
               <button
@@ -699,7 +699,7 @@ export default function AdminPage() {
                 <label className="inline-flex items-center cursor-pointer gap-2">
                   <input type="checkbox" checked={isAnnouncement} onChange={e => setIsAnnouncement(e.target.checked)}
                     className="w-5 h-5 accent-amber-600" />
-                  <span className="text-sm font-extrabold text-amber-800 font-heading">📢 Publish Top Announcement Banner</span>
+                  <span className="text-sm font-extrabold text-amber-800 font-heading">Publish Top Announcement Banner</span>
                 </label>
               </div>
             </div>
@@ -748,7 +748,7 @@ export default function AdminPage() {
               onClick={handleResetSampleEvents}
               className="mt-4 px-4 py-2 rounded-xl bg-amber-600 text-white font-bold text-sm shadow-md"
             >
-              🌱 Seed Sample Events
+              Seed Sample Events
             </button>
           </div>
         ) : (

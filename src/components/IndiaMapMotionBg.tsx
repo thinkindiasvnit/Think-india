@@ -88,9 +88,9 @@ export default function IndiaMapMotionBg() {
             <circle r="7" fill="#FF671F" className="animate-ping opacity-85" />
             <circle r="9" fill="#FF671F" opacity="0.95" />
             <circle r="18" stroke="#FF671F" strokeWidth="2" strokeDasharray="3 3" className="animate-spin duration-[7000ms]" />
-            <rect x="24" y="-12" width="125" height="24" rx="6" fill="#FFFFFF" stroke="#FF671F" strokeWidth="1.5" className="shadow-sm" />
+            <rect x="24" y="-12" width="110" height="24" rx="6" fill="#FFFFFF" stroke="#FF671F" strokeWidth="1.5" className="shadow-sm" />
             <text x="32" y="4" fill="#9A3412" fontSize="11" fontWeight="900" fontFamily="sans-serif">
-              📍 SVNIT SURAT
+              SVNIT SURAT
             </text>
           </g>
 
