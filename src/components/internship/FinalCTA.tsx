@@ -3,85 +3,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getInternshipDiaries, InternshipDiary } from "../../../src/lib/internshipDiaryService";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const internshipDiaries = [
-  {
-    id: 1,
-    name: "Yug Shankhala",
-    college: "SVNIT Surat",
-    institute: "IIT Roorkee",
-    description: "2nd Year, Civil Engineering",
-    review: "I got to explore a bunch of new software and concepts, which helped me deepen my structural concepts. Also, it was fun exploring the campus, which made the experience more valuable."
-  },
-  {
-    id: 2,
-    name: "Samarth Mandage",
-    college: "SVNIT Surat",
-    institute: "IIT Bombay",
-    description: "2nd Year, Chemical Engineering",
-    review: "Had a fantastic experience. Getting to know different topics and doing something different from learning was fine experience. Plus the professor was so supportive. Credits to Think India"
-  },
-  {
-    id: 3,
-    name: "Arpita",
-    college: "SVNIT Surat",
-    institute: "IIT Kharagpur",
-    description: "2nd Year, Civil Engineering",
-    review: "helped me strengthen my understanding of artificial intelligence and computer vision. Working on real-world research problems gave me practical exposure beyond classroom concepts and improved my problem-solving skills."
-
-  },
-  {
-    id: 4,
-    name: "Sneha Kumari",
-    college: "SVNIT Surat",
-    institute: "IIT Bombay",
-    description: "2nd Year, Computer Science & Engineering",
-    review: "I got to work on a project that was related to my field of interest. The professor was also very supportive and guided me throughout the project. Overall it was a great learning experience."
-  },
-  {
-    id: 5,
-    name: "Shreya Khandelwal",
-    college: "SVNIT Surat",
-    institute: "IIT Bombay",
-    description: "2nd Year, Civil Engineering",
-    review: "It was a great learning experience. The professor was very supportive and guided me throughout the project. Overall it was a great learning experience."
-  },
-  {
-    id: 6,
-    name: "Krishna Tahiliani",
-    college: "SVNIT Surat",
-    institute: "MNNIT Allahabad",
-    description: "2nd Year, Computer Science & Engineering",
-    review: "The project was about image processing and I got to work on a real-world problem. The professor was very supportive and guided me throughout the project. Overall it was a great learning experience."
-  },
-  {
-    id: 7,
-    name: "Saurabh Patel",
-    college: "SVNIT Surat",
-    institute: "IIT Delhi",
-    description: "2nd Year, Chemical Engineering",
-    review: "The project was about image processing and I got to work on a real-world problem. The professor was very supportive and guided me throughout the project. Overall it was a great learning experience."
-  },
-  {
-    id: 8,
-    name: "Parth Kamalia",
-    college: "SVNIT Surat",
-    institute: "IIT Kharagpur",
-    description: "2nd Year, Civil Engineering",
-    review: "The project was about image processing and I got to work on a real-world problem. The professor was very supportive and guided me throughout the project. Overall it was a great learning experience."
-  }
-];
-
 export function InternshipDiaries() {
+  const [diaries, setDiaries] = useState<InternshipDiary[]>([]);
+  const [loading, setLoading] = useState(true);
   const [active, setActive] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const rotationTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const total = internshipDiaries.length;
+  const total = diaries.length;
+
+  useEffect(() => {
+    const fetchDiaries = async () => {
+      const data = await getInternshipDiaries();
+      setDiaries(data);
+      setLoading(false);
+    };
+    fetchDiaries();
+  }, []);
 
   const handleNext = () => {
     if (isAnimating) return;
@@ -144,8 +88,17 @@ export function InternshipDiaries() {
 
         {/* Viewport for cards */}
         <div className="diary-anim relative w-full h-[500px] sm:h-[400px] overflow-hidden mb-12">
-          {internshipDiaries.map((student, index) => {
-            const isActive = index === active;
+          {loading ? (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : diaries.length === 0 ? (
+            <div className="absolute inset-0 flex items-center justify-center text-zinc-500">
+              No diaries found.
+            </div>
+          ) : (
+            diaries.map((student, index) => {
+              const isActive = index === active;
             return (
               <div
                 key={student.id}
@@ -188,7 +141,7 @@ export function InternshipDiaries() {
                 </div>
               </div>
             );
-          })}
+          }))}
         </div>
 
         {/* Controls - Strictly separated from cards */}
