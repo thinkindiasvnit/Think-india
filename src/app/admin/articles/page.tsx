@@ -15,7 +15,13 @@ export default function AdminArticlesPage() {
   const [form, setForm] = useState<EditValues | null>(null);
 
   async function load() { setLoading(true); try { setArticles(await getAllArticles()); } finally { setLoading(false); } }
-  useEffect(() => { void load(); }, []);
+  useEffect(() => {
+    let active = true;
+    getAllArticles()
+      .then((data) => { if (active) setArticles(data); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, []);
 
   function startEdit(article: Article) {
     setEditing(article);

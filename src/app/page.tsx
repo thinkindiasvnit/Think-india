@@ -120,10 +120,10 @@ export default function Home() {
                 Youth Opinions & Research
               </h2>
               <p className="text-zinc-600 text-lg leading-relaxed mb-8">
-                Read articles, youth opinions, and research highlights published by members of the Think India network across various domains.
+                Read blogs, youth opinions, and research highlights published by members of the Think India network across various domains.
               </p>
               <Link href="/blogs" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
-                Read Articles
+                Read Blogs
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                 </svg>

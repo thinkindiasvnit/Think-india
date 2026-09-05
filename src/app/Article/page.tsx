@@ -564,8 +564,12 @@ export default function App() {
     const isPreview = new URLSearchParams(window.location.search).get("preview") === "1";
     const preview = isPreview ? getArticlePreview() : null;
     if (preview) {
-      setPages([...PAGES, articleToPage(preview, 0)]);
-      setCurrentPage(PAGES.length);
+      queueMicrotask(() => {
+        if (!cancelled) {
+          setPages([...PAGES, articleToPage(preview, 0)]);
+          setCurrentPage(PAGES.length);
+        }
+      });
       return () => { cancelled = true; };
     }
     getPublishedArticles()

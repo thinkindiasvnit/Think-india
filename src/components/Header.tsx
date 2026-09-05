@@ -85,6 +85,15 @@ export default function Header() {
           </span>
         </Link>
 
+        {!loading && user && (
+          <button
+            onClick={() => { void logOut(); setIsOpen(false); }}
+            className="pointer-events-auto absolute right-40 sm:right-48 px-4 py-3 rounded-full border border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-all duration-300 font-bold tracking-widest text-xs uppercase"
+          >
+            Log out
+          </button>
+        )}
+
         {/* Floating Menu Button Pill */}
         <button
           onClick={() => setIsOpen(!isOpen)}

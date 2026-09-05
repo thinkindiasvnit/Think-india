@@ -7,6 +7,7 @@ import { useAuth } from "../../components/AuthProvider";
 
 function readableError(error: unknown) {
   if (error instanceof Error && error.message.includes("@svnit.ac.in")) return error.message;
+  if (error instanceof Error && error.message.includes("Too many failed attempts")) return error.message;
   const code = (error as { code?: string }).code;
   if (code === "auth/invalid-credential") return "Incorrect email or password.";
   if (code === "auth/email-already-in-use") return "An account already exists for this email.";
