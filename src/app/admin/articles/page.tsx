@@ -41,7 +41,7 @@ export default function AdminArticlesPage() {
   const admin = useRequireAdminAuth();
   const [activeTab, setActiveTab] = useState<"articles" | "editions">("articles");
   const [articles, setArticles] = useState<Article[]>([]);
-  const [editions, setEditions] = useState<NewspaperEdition[]>(DEFAULT_EDITIONS);
+  const [editions, setEditions] = useState<NewspaperEdition[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Article | null>(null);
   const [form, setForm] = useState<EditValues | null>(null);

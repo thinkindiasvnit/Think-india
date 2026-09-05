@@ -204,101 +204,6 @@ type PageData = {
 
 // ─── Content ─────────────────────────────────────────────────────────────────
 
-const PAGES: PageData[] = [
-  {
-    id: 1,
-    label: "COVER STORY",
-    headline: "Small Steps, Big Impact:\nBuilding a Better Tomorrow",
-    deck: "Think India SVNIT drives change through ideas, initiatives, and collective action.",
-    dropCapLetter: "I",
-    dropCapRest:
-      "n a world brimming with challenges, change begins with a single thought and grows through collective purpose. Think India SVNIT continues to empower young minds to turn that thought into action.",
-    paragraphs: [
-      "From campus clean-ups to education initiatives, from awareness drives to policy discussions, our mission remains clear — to build a society that is informed, inclusive, and inspired.",
-      "Our recent events and campaigns have seen overwhelming participation from students, faculty, and community members. Each step, no matter how small, brings us closer to a future where empathy drives progress and every individual feels responsible for the world we share.",
-      "This is not just a journey of service, but a journey of self-discovery — finding our Ikigai in creating impact that lasts.",
-    ],
-    pullQuote: { text: "Be the change you wish to see in the world.", attribution: "– Mahatma Gandhi" },
-    photo: "https://images.unsplash.com/photo-1708578200684-3aa944b73237?w=800&h=600&fit=crop&auto=format",
-    photoAlt: "Students gathered for an outdoor campus discussion",
-    imageCaption: "Members of Think India SVNIT during a discussion session at the campus amphitheatre.",
-    columns: [
-      { title: "INITIATIVES THAT MATTER", body: "Our ongoing projects focus on quality education, environmental sustainability, rural development, and youth engagement. Each initiative is designed to create measurable impact and inspire long-term change." },
-      { title: "THE POWER OF TOGETHER", body: "We believe that meaningful change happens when individuals come together with a shared vision. Our volunteers, partners, and well-wishers are the backbone of every program we run." },
-      { title: "LOOKING AHEAD", body: "With more ideas in the pipeline and a growing community of changemakers, we are excited for the journey ahead. Because when purpose meets passion, there is no limit to what we can achieve together." },
-    ],
-  },
-  {
-    id: 2,
-    label: "PHILOSOPHY",
-    headline: "Ikigai: Discovering the\nReason to Rise Each Morning",
-    deck: "The ancient Japanese concept guides our mission — find where passion, skill, purpose, and need converge.",
-    dropCapLetter: "T",
-    dropCapRest:
-      "he word Ikigai (生き甲斐) comes from the Japanese tradition — iki meaning 'life' and kai meaning 'effect, worth, benefit.' Together they describe the feeling that your existence has enduring value.",
-    paragraphs: [
-      "At Think India SVNIT, we have adopted this philosophy as the cornerstone of our identity. We believe that every student has within them a spark — a unique intersection of passion, skill, purpose, and need — that when ignited, can illuminate an entire community.",
-      "Ikigai is not found in isolation. It emerges at the crossroads of four questions: What do you love? What are you good at? What does the world need? And what can you be supported for? When these four circles converge, you find your reason for being.",
-      "For our members, this manifests in different ways. For some it is teaching underprivileged children. For others, drafting policy papers on climate adaptation. For many, it is simply showing up — consistently, passionately, for others.",
-    ],
-    pullQuote: { text: "The purpose of life is a life of purpose.", attribution: "– Robert Byrne" },
-    photo: "https://images.unsplash.com/photo-1509029032154-54ba8b3216d4?w=800&h=600&fit=crop&auto=format",
-    photoAlt: "A young man looking reflectively out of a window",
-    imageCaption: "Reflection and purpose — the two pillars of finding your Ikigai.",
-    columns: [
-      { title: "WHAT IS YOUR IKIGAI?", body: "Take a moment to reflect: What makes you leap out of bed in the morning? What is the one thing you would do even if you were never paid? The answer might just be the beginning of your ikigai." },
-      { title: "THE FOUR CIRCLES", body: "Passion: What you love. Mission: What the world needs. Vocation: What you can be paid for. Profession: What you are good at. Your Ikigai lives at the intersection of all four." },
-      { title: "JOIN THE JOURNEY", body: "Whether you are a first-year or a final-year, Think India SVNIT welcomes you. Attend our open sessions, volunteer for a cause, or simply start a conversation. Every step counts." },
-    ],
-  },
-  {
-    id: 3,
-    label: "OPINION",
-    headline: "Youth, Policy & the Responsibility\nWe Cannot Escape",
-    deck: "In a democracy, silence is never neutral. The youth of India must engage — loudly, thoughtfully, with conviction.",
-    dropCapLetter: "T",
-    dropCapRest:
-      "here is a particular brand of cynicism that afflicts educated youth in India — a belief that policy is someone else's business, that politics is dirty, and that idealism is naïve. Think India SVNIT was founded precisely to challenge this belief.",
-    paragraphs: [
-      "The founding story of Think India is not one of grand politics, but of students who realised that their silence was itself a political act. By choosing not to engage, they were choosing the status quo. And the status quo, for millions of Indians, is not acceptable.",
-      "At SVNIT, we are surrounded by some of the brightest minds in the country — engineers, scientists, technologists who will shape industry, policy, and society. What we choose to care about, matters enormously.",
-      "The challenges India faces — from climate change and digital inequality to rural poverty and urban migration — are complex, technical, and urgent. They require exactly the kind of minds being trained in institutions like ours.",
-    ],
-    pullQuote: { text: "The youth of a nation are the trustees of posterity.", attribution: "– Benjamin Disraeli" },
-    photo: "https://images.unsplash.com/photo-1775338736191-36a6817890cc?w=800&h=600&fit=crop&auto=format",
-    photoAlt: "A young woman speaking confidently at a microphone to an audience",
-    imageCaption: "A student addresses the Policy Conclave at Think India SVNIT's inaugural inter-college forum.",
-    columns: [
-      { title: "OUR DEBATES", body: "From energy policy to digital governance, our weekly debate sessions tackle real policy questions with rigour and respect. All perspectives are welcome; all arguments must be evidenced and reasoned." },
-      { title: "RESEARCH & WRITING", body: "We publish policy briefs, opinion pieces, and research notes authored by our members. This newsletter is just the beginning. We aim to amplify student voices at the national level." },
-      { title: "BE THE AUTHOR", body: "Have an opinion? A policy idea? A story to tell? Write for IKIGAI. We accept submissions from all students and faculty at SVNIT. Reach us at thinkindia@svnit.ac.in" },
-    ],
-  },
-  {
-    id: 4,
-    label: "COMMUNITY",
-    headline: "Events, Voices & the Road Ahead:\nA Season in Review",
-    deck: "From orientation drives to flagship debates — a look at what we built together this semester.",
-    dropCapLetter: "T",
-    dropCapRest:
-      "his semester at Think India SVNIT has been one of our most active yet. We welcomed over 80 new members in our orientation drive, conducted three major awareness campaigns, and hosted our first inter-college policy conclave.",
-    paragraphs: [
-      "The Policy Conclave saw participation from seven institutions across Gujarat, with students presenting research on topics from electric vehicle adoption policy to the right to digital privacy. The quality of discourse was a testament to what young minds can achieve when given a platform.",
-      "Our campus clean-up initiative — co-organised with the NSS unit at SVNIT — saw 200 volunteers over two weekends, collecting over 400 kg of waste from the campus and surrounding areas. It sparked conversations about institutional responsibility and student agency.",
-      "The semester closed with our flagship event: The Ikigai Talks — a TED-style speaker series where alumni and community leaders shared their journeys of purpose. Four speakers, four stories — each a reminder that impact begins with intention.",
-    ],
-    pullQuote: { text: "Alone we can do so little; together we can do so much.", attribution: "– Helen Keller" },
-    photo: "https://images.unsplash.com/photo-1758599668178-d9716bbda9d5?w=800&h=600&fit=crop&auto=format",
-    photoAlt: "Smiling volunteer at a community clean-up drive",
-    imageCaption: "Think India SVNIT volunteers during the campus and neighbourhood clean-up campaign.",
-    columns: [
-      { title: "POLICY HACKATHON", body: "Our first-ever 24-hour Policy Hackathon arrives this October. Teams of 4 will develop solutions for real civic challenges. Registrations open September 1st. All SVNIT students are welcome." },
-      { title: "WORKSHOP SERIES", body: "A 6-week workshop series on policy writing, public speaking, and community organizing starts next month. Free for all SVNIT students. Limited seats — register early at our membership portal." },
-      { title: "CONNECT WITH US", body: "Follow us @thinkindia_svnit for live updates and announcements. Visit www.thinkindiasvnit.in for archives, membership portal, and past editions of IKIGAI." },
-    ],
-  },
-];
-
 function articleToPage(article: Article, index: number): PageData {
   const paragraphs = article.content.split(/\n\s*\n|\r?\n/).map((item) => item.trim()).filter(Boolean);
   const opening = paragraphs.shift() || article.content;
@@ -311,7 +216,10 @@ function articleToPage(article: Article, index: number): PageData {
     dropCapLetter: firstCharacter,
     dropCapRest: opening.trim().slice(1),
     paragraphs,
-    pullQuote: { text: article.tags.length ? article.tags.map((tag) => `#${tag}`).join("  ") : "A contribution from the Think India SVNIT community.", attribution: `â€“ ${article.authorName}` },
+    pullQuote: {
+      text: article.tags.length ? article.tags.map((tag) => `#${tag}`).join("  ") : "A contribution from the Think India SVNIT community.",
+      attribution: `- ${article.authorName}`,
+    },
     photo: article.coverImageURL || "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=600&fit=crop&auto=format",
     photoAlt: article.title,
     imageCaption: `Article submitted by ${article.authorName}.`,
@@ -552,19 +460,36 @@ const NavButton = ({
 
 const FLIP_DUR = "1.05s";
 
+const fallbackEdition: NewspaperEdition = {
+  id: "edition-1",
+  title: "Think India Newspaper",
+  editionName: "CAMPUS EDITION",
+  volume: "VOL. 1",
+  date: "THINK INDIA SVNIT",
+  price: "FREE",
+  tagline: "IDEAS THAT INSPIRE. ACTION THAT TRANSFORMS.",
+  description: "Official newspaper & article platform for Think India SVNIT.",
+  coverStoryHeadline: "Think India SVNIT Articles",
+  coverStoryDeck: "Discover member dispatches, policy research, and student perspectives.",
+  coverPhoto: "",
+  status: "published",
+  createdAt: new Date().toISOString(),
+  pages: [],
+};
+
 export default function App() {
-  const [editions, setEditions] = useState<NewspaperEdition[]>(DEFAULT_EDITIONS);
-  const [selectedEditionId, setSelectedEditionId] = useState<string>("edition-1");
+  const [editions, setEditions] = useState<NewspaperEdition[]>([]);
+  const [selectedEditionId, setSelectedEditionId] = useState<string>("");
   const [publishedArticles, setPublishedArticles] = useState<Article[]>([]);
   const [newsstandOpen, setNewsstandOpen] = useState(true);
-  const [pages, setPages] = useState<PageData[]>(DEFAULT_EDITIONS[0].pages);
+  const [pages, setPages] = useState<PageData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pendingPage,  setPendingPage]  = useState<number | null>(null);
   const [isFlipping,   setIsFlipping]   = useState(false);
   const [direction,    setDirection]    = useState<"forward" | "backward">("forward");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const activeEdition = editions.find((e) => e.id === selectedEditionId) || editions[0] || DEFAULT_EDITIONS[0];
+  const activeEdition = editions.find((e) => e.id === selectedEditionId) || editions[0] || fallbackEdition;
 
   useEffect(() => {
     const el = document.createElement("style");
@@ -601,7 +526,12 @@ export default function App() {
     let cancelled = false;
     getNewspaperEditions()
       .then((loaded) => {
-        if (!cancelled && loaded && loaded.length > 0) setEditions(loaded);
+        if (!cancelled && loaded) {
+          setEditions(loaded);
+          if (loaded.length > 0 && !selectedEditionId) {
+            setSelectedEditionId(loaded[0].id);
+          }
+        }
       })
       .catch((err) => console.error("Error loading editions", err));
 
@@ -612,7 +542,7 @@ export default function App() {
       .catch((error) => console.error("Unable to load published articles", error));
 
     return () => { cancelled = true; };
-  }, []);
+  }, [selectedEditionId]);
 
   // Compute pages whenever activeEdition, publishedArticles, or preview changes
   useEffect(() => {
@@ -621,10 +551,10 @@ export default function App() {
 
     const basePages: PageData[] = activeEdition.pages && activeEdition.pages.length > 0
       ? activeEdition.pages
-      : DEFAULT_EDITIONS[0].pages;
+      : [];
 
     const matchingArticles = publishedArticles.filter(
-      (a) => a.editionId === activeEdition.id || (!a.editionId && activeEdition.id === "edition-1")
+      (a) => !activeEdition.id || a.editionId === activeEdition.id || !a.editionId
     );
 
     const articlePages = matchingArticles.map(articleToPage);
@@ -798,54 +728,100 @@ export default function App() {
 
       {/* 3-D stage */}
       <div style={{ position: "absolute", top: "10%", bottom: 0, left: 0, right: 0, perspective: "3500px", perspectiveOrigin: "50% 50%" }}>
-
-        {/* Bottom layer: page being revealed */}
-        <div style={{ position: "absolute", inset: 0 }}>
-          {pages.length > 0 && (
-            <PageContent page={pages[pendingPage ?? currentPage] || pages[0]} edition={activeEdition} />
-          )}
-        </div>
-
-        {/* Shadow on revealed page */}
-        {isFlipping && pendingPage !== null && (
-          <div style={{
-            position: "absolute", inset: 0, pointerEvents: "none", zIndex: 3,
-            animation: `${direction === "forward" ? "shadowForward" : "shadowBackward"} ${FLIP_DUR} linear forwards`,
-          }} />
-        )}
-
-        {/* Spine crease */}
-        {isFlipping && pendingPage !== null && (
-          <div style={{
-            position: "absolute", top: 0, bottom: 0, width: "3px",
-            background: "linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.15), transparent)",
-            pointerEvents: "none", zIndex: 4,
-            animation: `${direction === "forward" ? "creaseForward" : "creaseBackward"} ${FLIP_DUR} linear forwards`,
-          }} />
-        )}
-
-        {/* Top layer: the page that flips away */}
-        {isFlipping && pages.length > 0 && (
-          <div
-            className={`page-flip-${direction}`}
-            style={({ "--flip-dur": FLIP_DUR, position: "absolute", inset: 0, zIndex: 2 } as React.CSSProperties)}
-          >
-            <PageContent page={pages[currentPage] || pages[0]} edition={activeEdition} />
-
-            {/* Glare on turning page */}
+        {pages.length === 0 ? (
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", zIndex: 10 }}>
             <div style={{
-              position: "absolute", inset: 0, pointerEvents: "none", zIndex: 10,
-              animation: `${direction === "forward" ? "glareForward" : "glareBackward"} ${FLIP_DUR} linear forwards`,
-            }} />
-
-            {/* Paper-edge thickness strip */}
-            <div style={{
-              position: "absolute", top: 0, bottom: 0, width: "3px",
-              [direction === "forward" ? "left" : "right"]: 0,
-              background: "linear-gradient(to right, rgba(70,45,18,0.55), rgba(200,175,130,0.4), transparent)",
-              zIndex: 11, pointerEvents: "none",
-            }} />
+              maxWidth: "540px",
+              width: "100%",
+              backgroundColor: "#e8dcd0",
+              border: "2px solid #1a1209",
+              borderRadius: "16px",
+              padding: "32px 24px",
+              textAlign: "center",
+              boxShadow: "0 15px 35px rgba(0,0,0,0.15)",
+              fontFamily: "'EB Garamond',Georgia,serif",
+            }}>
+              <Masthead edition={activeEdition} />
+              <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #1a1209" }}>
+                <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "1.4rem", fontWeight: 700, color: "#1a1209", marginBottom: "8px" }}>
+                  No Published Articles Yet
+                </h3>
+                <p style={{ fontSize: "13.5px", color: "#5a4a35", lineHeight: 1.6, marginBottom: "20px" }}>
+                  There are currently no published articles in this newspaper edition. Be the first to share your thoughts, research, or policy perspectives with Think India SVNIT!
+                </p>
+                <Link
+                  href="/submit-article"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "10px 22px",
+                    background: "#b45309",
+                    color: "#ffffff",
+                    borderRadius: "9999px",
+                    fontSize: "11px",
+                    fontFamily: "'Oswald',sans-serif",
+                    letterSpacing: "0.14em",
+                    textDecoration: "none",
+                    fontWeight: 600,
+                    boxShadow: "0 4px 12px rgba(180,83,9,0.3)",
+                  }}
+                >
+                  <PenSquare size={14} />
+                  <span>SUBMIT AN ARTICLE</span>
+                </Link>
+              </div>
+            </div>
           </div>
+        ) : (
+          <>
+            {/* Bottom layer: page being revealed */}
+            <div style={{ position: "absolute", inset: 0 }}>
+              <PageContent page={pages[pendingPage ?? currentPage] || pages[0]} edition={activeEdition} />
+            </div>
+
+            {/* Shadow on revealed page */}
+            {isFlipping && pendingPage !== null && (
+              <div style={{
+                position: "absolute", inset: 0, pointerEvents: "none", zIndex: 3,
+                animation: `${direction === "forward" ? "shadowForward" : "shadowBackward"} ${FLIP_DUR} linear forwards`,
+              }} />
+            )}
+
+            {/* Spine crease */}
+            {isFlipping && pendingPage !== null && (
+              <div style={{
+                position: "absolute", top: 0, bottom: 0, width: "3px",
+                background: "linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.15), transparent)",
+                pointerEvents: "none", zIndex: 4,
+                animation: `${direction === "forward" ? "creaseForward" : "creaseBackward"} ${FLIP_DUR} linear forwards`,
+              }} />
+            )}
+
+            {/* Top layer: the page that flips away */}
+            {isFlipping && (
+              <div
+                className={`page-flip-${direction}`}
+                style={({ "--flip-dur": FLIP_DUR, position: "absolute", inset: 0, zIndex: 2 } as React.CSSProperties)}
+              >
+                <PageContent page={pages[currentPage] || pages[0]} edition={activeEdition} />
+
+                {/* Glare on turning page */}
+                <div style={{
+                  position: "absolute", inset: 0, pointerEvents: "none", zIndex: 10,
+                  animation: `${direction === "forward" ? "glareForward" : "glareBackward"} ${FLIP_DUR} linear forwards`,
+                }} />
+
+                {/* Paper-edge thickness strip */}
+                <div style={{
+                  position: "absolute", top: 0, bottom: 0, width: "3px",
+                  [direction === "forward" ? "left" : "right"]: 0,
+                  background: "linear-gradient(to right, rgba(70,45,18,0.55), rgba(200,175,130,0.4), transparent)",
+                  zIndex: 11, pointerEvents: "none",
+                }} />
+              </div>
+            )}
+          </>
         )}
       </div>
 

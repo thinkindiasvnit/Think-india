@@ -8,7 +8,6 @@ import {
   Article,
   ARTICLE_CATEGORIES,
   ARTICLE_CATEGORY_LABELS,
-  DEFAULT_EDITIONS,
   getNewspaperEditions,
   getUserArticles,
   NewspaperEdition,
@@ -34,8 +33,8 @@ export default function SubmitArticlePage() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<"submit" | "my-articles">("submit");
-  const [editions, setEditions] = useState<NewspaperEdition[]>(DEFAULT_EDITIONS);
-  const [selectedEditionId, setSelectedEditionId] = useState<string>("edition-1");
+  const [editions, setEditions] = useState<NewspaperEdition[]>([]);
+  const [selectedEditionId, setSelectedEditionId] = useState<string>("");
 
   // Write Form state
   const [title, setTitle] = useState("");
