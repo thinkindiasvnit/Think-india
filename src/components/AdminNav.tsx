@@ -9,6 +9,7 @@ const tabs = [
   { href: "/admin/articles", label: "Articles" },
   { href: "/admin/team", label: "Team" },
   { href: "/admin/gallery", label: "Gallery" },
+  { href: "/admin/internship-diaries", label: "Internship" },
   { href: "/admin/queries", label: "Queries" },
 ];
 
@@ -24,11 +25,10 @@ export default function AdminNav() {
           <Link
             key={tab.href}
             href={tab.href}
-            className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all duration-200 ${
-              isActive
+            className={`px-4 py-2 rounded-xl text-sm font-extrabold transition-all duration-200 ${isActive
                 ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30"
                 : "bg-white border border-amber-300/80 text-slate-900 hover:bg-amber-100/60 hover:text-amber-950 shadow-sm"
-            }`}
+              }`}
           >
             {tab.label}
           </Link>
