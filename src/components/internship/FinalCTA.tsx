@@ -12,11 +12,19 @@ if (typeof window !== "undefined") {
 export function InternshipDiaries() {
   const [diaries, setDiaries] = useState<InternshipDiary[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedYear, setSelectedYear] = useState<string>("2026");
   const [active, setActive] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const rotationTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const total = diaries.length;
+  
+  const availableYears = Array.from(new Set(diaries.map(d => d.year || "2026"))).sort((a, b) => b.localeCompare(a));
+  const filteredDiaries = diaries.filter(d => (d.year || "2026") === selectedYear);
+  const total = filteredDiaries.length;
+
+  useEffect(() => {
+    setActive(0);
+  }, [selectedYear]);
 
   useEffect(() => {
     const fetchDiaries = async () => {
@@ -28,13 +36,13 @@ export function InternshipDiaries() {
   }, []);
 
   const handleNext = () => {
-    if (isAnimating) return;
+    if (isAnimating || total === 0) return;
     setIsAnimating(true);
     setActive((prev) => (prev + 1) % total);
   };
 
   const handlePrev = () => {
-    if (isAnimating) return;
+    if (isAnimating || total === 0) return;
     setIsAnimating(true);
     setActive((prev) => (prev - 1 + total) % total);
   };
@@ -86,18 +94,37 @@ export function InternshipDiaries() {
           </h2>
         </div>
 
+        {/* Year Filter */}
+        {!loading && availableYears.length > 0 && (
+          <div className="diary-anim flex justify-center gap-3 mb-10 flex-wrap">
+            {availableYears.map((year) => (
+              <button
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider transition-all duration-300 ${
+                  selectedYear === year
+                    ? "bg-[#E28941] text-white shadow-lg shadow-amber-600/30"
+                    : "bg-white border border-amber-300 text-slate-900 hover:bg-amber-50"
+                }`}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Viewport for cards */}
         <div className="diary-anim relative w-full h-[500px] sm:h-[400px] overflow-hidden mb-12">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
             </div>
-          ) : diaries.length === 0 ? (
-            <div className="absolute inset-0 flex items-center justify-center text-zinc-500">
-              No diaries found.
+          ) : filteredDiaries.length === 0 ? (
+            <div className="absolute inset-0 flex items-center justify-center text-zinc-500 font-medium bg-white rounded-3xl border border-amber-100">
+              No diaries found for {selectedYear}.
             </div>
           ) : (
-            diaries.map((student, index) => {
+            filteredDiaries.map((student, index) => {
               const isActive = index === active;
             return (
               <div

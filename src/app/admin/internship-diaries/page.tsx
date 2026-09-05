@@ -17,6 +17,7 @@ interface FormState {
   institute: string;
   description: string;
   review: string;
+  year: string;
 }
 
 function blankForm(): FormState {
@@ -26,6 +27,7 @@ function blankForm(): FormState {
     institute: "",
     description: "",
     review: "",
+    year: "2026",
   };
 }
 
@@ -68,6 +70,7 @@ export default function AdminInternshipDiariesPage() {
       institute: d.institute,
       description: d.description,
       review: d.review,
+      year: d.year || "2026",
     });
     setEditId(d.id!);
     setIsFormOpen(true);
@@ -91,6 +94,7 @@ export default function AdminInternshipDiariesPage() {
       institute: form.institute,
       description: form.description,
       review: form.review,
+      year: form.year,
     };
 
     try {
@@ -193,6 +197,20 @@ export default function AdminInternshipDiariesPage() {
                 />
               </div>
 
+              {/* year */}
+              <div>
+                <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
+                  Year
+                </label>
+                <input
+                  type="text"
+                  value={form.year}
+                  onChange={(e) => set("year", e.target.value)}
+                  placeholder="e.g. 2026"
+                  className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
+                />
+              </div>
+
               {/* description */}
               <div>
                 <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
@@ -257,6 +275,7 @@ export default function AdminInternshipDiariesPage() {
                   <th className="px-4 py-3 font-heading">Name</th>
                   <th className="px-4 py-3 font-heading">College</th>
                   <th className="px-4 py-3 font-heading">Institute</th>
+                  <th className="px-4 py-3 font-heading">Year</th>
                   <th className="px-4 py-3 font-heading w-1/3">Review Snippet</th>
                   <th className="px-4 py-3 font-heading text-right">Actions</th>
                 </tr>
@@ -270,6 +289,7 @@ export default function AdminInternshipDiariesPage() {
                     </td>
                     <td className="px-4 py-3 text-xs text-zinc-600">{d.college}</td>
                     <td className="px-4 py-3 text-xs font-bold text-amber-700">{d.institute}</td>
+                    <td className="px-4 py-3 text-xs font-bold text-amber-700">{d.year || "2026"}</td>
                     <td className="px-4 py-3 text-xs text-zinc-500 italic max-w-xs truncate">
                       "{d.review}"
                     </td>

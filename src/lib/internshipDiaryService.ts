@@ -21,6 +21,7 @@ export interface InternshipDiary {
   institute: string;
   description: string;
   review: string;
+  year?: string;
   createdAt?: string; // ISO string
   updatedAt?: string; // ISO string
 }
@@ -54,6 +55,7 @@ const mapDoc = (id: string, data: Record<string, any>): InternshipDiary => ({
   institute: data.institute ?? "",
   description: data.description ?? "",
   review: data.review ?? "",
+  year: data.year ?? "2026",
   createdAt: toISO(data.createdAt),
   updatedAt: toISO(data.updatedAt),
 });
@@ -74,6 +76,7 @@ const getLocalDiaries = (): InternshipDiary[] => {
           institute: "IIT Roorkee",
           description: "2nd Year, Civil Engineering",
           review: "I got to explore a bunch of new software and concepts, which helped me deepen my structural concepts. Also, it was fun exploring the campus, which made the experience more valuable.",
+          year: "2026",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -84,6 +87,7 @@ const getLocalDiaries = (): InternshipDiary[] => {
           institute: "IIT Bombay",
           description: "2nd Year, Chemical Engineering",
           review: "Had a fantastic experience. Getting to know different topics and doing something different from learning was fine experience. Plus the professor was so supportive. Credits to Think India",
+          year: "2026",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -94,6 +98,7 @@ const getLocalDiaries = (): InternshipDiary[] => {
           institute: "IIT Kharagpur",
           description: "2nd Year, Civil Engineering",
           review: "helped me strengthen my understanding of artificial intelligence and computer vision. Working on real-world research problems gave me practical exposure beyond classroom concepts and improved my problem-solving skills.",
+          year: "2026",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -104,6 +109,7 @@ const getLocalDiaries = (): InternshipDiary[] => {
           institute: "IIT Bombay",
           description: "2nd Year, Computer Science & Engineering",
           review: "I got to work on a project that was related to my field of interest. The professor was also very supportive and guided me throughout the project. Overall it was a great learning experience.",
+          year: "2026",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         }
