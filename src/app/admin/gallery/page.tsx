@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import AdminNav from "../../../components/AdminNav";
+import { useRequireAdminAuth } from "../../../components/useRequireAdminAuth";
+import { logoutAdmin } from "../../../lib/adminAuth";
 import {
   getAllAlbums,
   createAlbum,
@@ -59,6 +62,9 @@ const blankForm = () => ({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function AdminGalleryPage() {
+  const router = useRouter();
+  const admin = useRequireAdminAuth();
+
   // ── Albums state ──
   const [albums, setAlbums] = useState<Album[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -78,6 +84,8 @@ export default function AdminGalleryPage() {
   const [coverUploading, setCoverUploading] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
   const photosInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogout = () => { logoutAdmin(); router.replace("/admin/login"); };
 
   useEffect(() => { loadAlbums(); }, []);
 
@@ -215,8 +223,9 @@ export default function AdminGalleryPage() {
     } catch (err) { console.error(err); alert("Failed to save album."); }
   }
 
+  if (!admin) return null;
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans pt-32 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AdminNav />
 

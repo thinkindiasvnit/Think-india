@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import AdminNav from "../../../components/AdminNav";
+import { useRequireAdminAuth } from "../../../components/useRequireAdminAuth";
+import { logoutAdmin } from "../../../lib/adminAuth";
 import {
   getAllTeamMembers,
   createTeamMember,
@@ -56,6 +59,9 @@ type FormState = ReturnType<typeof blankForm>;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function AdminTeamPage() {
+  const router = useRouter();
+  const admin = useRequireAdminAuth();
+
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -64,6 +70,8 @@ export default function AdminTeamPage() {
   const [photoUploading, setPhotoUploading] = useState(false);
   const [filterYear, setFilterYear] = useState<string>("all");
   const photoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogout = () => { logoutAdmin(); router.replace("/admin/login"); };
 
   useEffect(() => { loadMembers(); }, []);
 
@@ -161,8 +169,9 @@ export default function AdminTeamPage() {
     }
   };
 
+  if (!admin) return null;
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10 selection:bg-amber-600 selection:text-white">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans pt-32 pb-10 selection:bg-amber-600 selection:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Admin Sub-nav ── */}

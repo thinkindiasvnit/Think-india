@@ -179,12 +179,12 @@ export async function getAllBlogs(): Promise<Blog[]> {
 
 /**
  * Fetch only published blogs — for public pages.
- * Reuses getAllBlogs + client-side filter to avoid needing a Firestore
- * composite index on (status + publishedAt).
+ * Filters by status === "published" first, then sorts by featured + publishedAt.
  */
 export async function getPublishedBlogs(): Promise<Blog[]> {
   const all = await getAllBlogs();
   return all
+    .filter((b) => b.status === "published")
     .sort((a, b) => {
       // featured blogs first
       if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;

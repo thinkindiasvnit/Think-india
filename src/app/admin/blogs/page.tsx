@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import AdminNav from "../../../components/AdminNav";
+import { useRequireAdminAuth } from "../../../components/useRequireAdminAuth";
+import { logoutAdmin } from "../../../lib/adminAuth";
 import {
   getAllBlogs,
   createBlog,
@@ -49,6 +52,9 @@ function blankForm(): FormState {
 
 /* ── page ────────────────────────────────────────────────────────── */
 export default function AdminBlogPage() {
+  const router = useRouter();
+  const admin = useRequireAdminAuth();
+
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -62,6 +68,8 @@ export default function AdminBlogPage() {
   const authorPhotoInputRef = useRef<HTMLInputElement>(null);
 
   const [filterStatus, setFilterStatus] = useState<string>("all");
+
+  const handleLogout = () => { logoutAdmin(); router.replace("/admin/login"); };
 
   /* ── load ────────────────────────────────────────────────────── */
   async function loadBlogs() {
@@ -223,8 +231,9 @@ export default function AdminBlogPage() {
   }
 
   /* ── render ─────────────────────────────────────────────────── */
+  if (!admin) return null;
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans pt-32 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AdminNav />
 

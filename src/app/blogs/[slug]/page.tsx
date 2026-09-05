@@ -45,9 +45,9 @@ export default function BlogDetailPage({
   /* ── loading ───────────────────────────────────────────────── */
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 gap-4">
+      <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light flex flex-col items-center justify-center py-32 gap-4">
         <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-zinc-500">Loading blog…</p>
+        <p className="text-sm text-zinc-700 font-bold">Loading blog…</p>
       </div>
     );
   }
@@ -55,20 +55,22 @@ export default function BlogDetailPage({
   /* ── not found ─────────────────────────────────────────────── */
   if (!blog) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-32 text-center">
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-12">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">
-            Blog Not Found
-          </h2>
-          <p className="mt-2 text-sm text-zinc-500">
-            The blog post you&apos;re looking for doesn&apos;t exist or has been removed.
-          </p>
-          <Link
-            href="/blogs"
-            className="mt-6 inline-block px-6 py-2.5 rounded-full text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 transition-colors"
-          >
-            ← Back to Blog
-          </Link>
+      <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light flex flex-col selection:bg-amber-600 selection:text-white">
+        <div className="max-w-3xl mx-auto px-4 py-32 text-center w-full">
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-amber-200/60 p-12 shadow-sm">
+            <h2 className="text-2xl font-black text-zinc-950 font-heading">
+              Blog Not Found
+            </h2>
+            <p className="mt-2 text-sm text-zinc-700 font-medium">
+              The blog post you&apos;re looking for doesn&apos;t exist or has been removed.
+            </p>
+            <Link
+              href="/blogs"
+              className="mt-6 inline-block px-6 py-2.5 rounded-full text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 transition-colors shadow-md shadow-amber-600/20"
+            >
+              ← Back to Blog
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -76,18 +78,18 @@ export default function BlogDetailPage({
 
   /* ── detail ────────────────────────────────────────────────── */
   return (
-    <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-zinc-900 flex flex-col flex-1 font-sans selection:bg-amber-600 selection:text-white">
       {/* back link */}
       <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8">
         <Link
           href="/blogs"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 hover:text-amber-600 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-zinc-600 hover:text-amber-700 transition-colors uppercase tracking-wider"
         >
           <svg
             className="w-4 h-4"
             fill="none"
             viewBox="0 0 24 24"
-            strokeWidth={2}
+            strokeWidth={2.5}
             stroke="currentColor"
           >
             <path
@@ -103,73 +105,75 @@ export default function BlogDetailPage({
       {/* cover banner */}
       {blog.coverImageURL && (
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-6">
-          <div className="relative h-[300px] sm:h-[400px] rounded-3xl overflow-hidden">
+          <div className="relative h-[300px] sm:h-[400px] rounded-3xl overflow-hidden shadow-lg shadow-amber-900/5 ring-1 ring-amber-200/50">
             <img
               src={blog.coverImageURL}
               alt={blog.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <span className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-600 text-white">
-              {CATEGORY_LABELS[blog.category] || blog.category}
-            </span>
+            {blog.category !== "other" && (
+              <span className="absolute top-6 left-6 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-600 text-white shadow-md">
+                {CATEGORY_LABELS[blog.category] || blog.category}
+              </span>
+            )}
           </div>
         </div>
       )}
 
       {/* content area */}
-      <article className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+      <article className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
         {/* category*/}
-        {!blog.coverImageURL && (
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-950/40 text-amber-600 mb-4">
+        {!blog.coverImageURL && blog.category !== "other" && (
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-200/60 text-amber-800 mb-6 border border-amber-300/50">
             {CATEGORY_LABELS[blog.category] || blog.category}
           </span>
         )}
 
         {/* title */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-zinc-950 leading-[1.15] font-heading">
           {blog.title}
         </h1>
 
         {/* summary */}
-        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        <p className="mt-6 text-xl text-zinc-700 leading-relaxed font-medium">
           {blog.summary}
         </p>
 
         {/* meta row */}
-        <div className="mt-6 flex flex-wrap items-center gap-4 pb-8 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="mt-8 flex flex-wrap items-center gap-5 pb-8 border-b border-amber-200/60">
           {/* author */}
           <div className="flex items-center gap-3">
             {blog.authorPhotoURL ? (
               <img
                 src={blog.authorPhotoURL}
                 alt={blog.authorName}
-                className="w-10 h-10 rounded-full object-cover ring-2 ring-amber-500/30"
+                className="w-11 h-11 rounded-full object-cover ring-2 ring-amber-500/30 shadow-sm"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center font-bold">
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-black shadow-sm">
                 {blog.authorName?.charAt(0) || "A"}
               </div>
             )}
             <div>
-              <p className="text-sm font-bold text-zinc-900 dark:text-white">
+              <p className="text-sm font-bold text-zinc-950 tracking-wide uppercase">
                 {blog.authorName || "Anonymous"}
               </p>
-              <p className="text-xs text-zinc-500">
+              <p className="text-xs font-bold text-zinc-500 tracking-wider uppercase mt-0.5">
                 {fmtDate(blog.publishedAt)}
               </p>
             </div>
           </div>
 
-          <div className="h-6 w-px bg-zinc-300 dark:bg-zinc-700 hidden sm:block" />
+          <div className="h-8 w-px bg-amber-200/60 hidden sm:block" />
 
           {/* read time */}
-          <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+          <div className="flex items-center gap-2 text-xs font-bold text-zinc-600 tracking-wider uppercase">
             <svg
-              className="w-4 h-4"
+              className="w-4 h-4 text-amber-600"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
             >
               <path
@@ -181,15 +185,15 @@ export default function BlogDetailPage({
             {blog.readTimeMinutes} min read
           </div>
 
-          <div className="h-6 w-px bg-zinc-300 dark:bg-zinc-700 hidden sm:block" />
+          <div className="h-8 w-px bg-amber-200/60 hidden sm:block" />
 
           {/* views */}
-          <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+          <div className="flex items-center gap-2 text-xs font-bold text-zinc-600 tracking-wider uppercase">
             <svg
-              className="w-4 h-4"
+              className="w-4 h-4 text-amber-600"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
             >
               <path
@@ -209,11 +213,11 @@ export default function BlogDetailPage({
 
         {/* tags */}
         {blog.tags.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="mt-8 flex flex-wrap gap-2.5">
             {blog.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-600 dark:text-zinc-400"
+                className="px-4 py-1.5 rounded-full bg-white border border-amber-200/60 text-xs font-bold text-zinc-700 tracking-wide shadow-sm"
               >
                 #{tag}
               </span>
@@ -222,7 +226,7 @@ export default function BlogDetailPage({
         )}
 
         {/* content */}
-        <div className="mt-8 prose prose-zinc dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 text-base sm:text-lg leading-relaxed whitespace-pre-wrap">
+        <div className="mt-10 prose prose-zinc max-w-none text-zinc-800 text-base sm:text-lg leading-relaxed whitespace-pre-wrap font-medium">
           {blog.content}
         </div>
       </article>
