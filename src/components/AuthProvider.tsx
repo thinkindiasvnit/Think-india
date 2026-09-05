@@ -23,7 +23,7 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-const ALLOWED_DOMAIN = "svnit.ac.in";
+const ALLOWED_DOMAIN_REGEX = /^[a-z]{3,4}\.svnit\.ac\.in$/;
 const MAX_LOGIN_ATTEMPTS = 3;
 const SESSION_DURATION_MS = 3 * 60 * 60 * 1000;
 const SESSION_EXPIRY_KEY = "ti_user_session_expires_at";
@@ -33,8 +33,9 @@ type LoginAttempt = { count: number; lockedUntil: number | null };
 
 function normalizedSvnitEmail(email: string): string {
   const normalized = email.trim().toLowerCase();
-  if (!normalized.endsWith(`@${ALLOWED_DOMAIN}`)) {
-    throw new Error(`Please use your @${ALLOWED_DOMAIN} email address.`);
+  const domain = normalized.split("@")[1];
+  if (!domain || !ALLOWED_DOMAIN_REGEX.test(domain)) {
+    throw new Error("Please use your @____.svnit.ac.in email address with a 3-4 letter department code (e.g. @coed.svnit.ac.in).");
   }
   return normalized;
 }

@@ -6,7 +6,7 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useAuth } from "../../components/AuthProvider";
 
 function readableError(error: unknown) {
-  if (error instanceof Error && error.message.includes("@svnit.ac.in")) return error.message;
+  if (error instanceof Error && (error.message.includes(".svnit.ac.in") || error.message.includes("@"))) return error.message;
   if (error instanceof Error && error.message.includes("Too many failed attempts")) return error.message;
   const code = (error as { code?: string }).code;
   if (code === "auth/invalid-credential") return "Incorrect email or password.";
@@ -57,7 +57,7 @@ function LoginForm() {
           <p className="mt-2 text-sm text-zinc-600">Sign in to submit an article for editorial review.</p>
         </div>
         {mode === "signup" && <input required minLength={2} value={name} onChange={(e) => setName(e.target.value)} placeholder="Your full name" className="w-full rounded-xl border border-zinc-300 px-4 py-3" />}
-        <input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@svnit.ac.in" className="w-full rounded-xl border border-zinc-300 px-4 py-3" />
+        <input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full rounded-xl border border-zinc-300 px-4 py-3" />
         <input required minLength={6} type="password" autoComplete={mode === "signin" ? "current-password" : "new-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full rounded-xl border border-zinc-300 px-4 py-3" />
         {error && <p className="rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700">{error}</p>}
         <button disabled={submitting} className="w-full rounded-xl bg-amber-600 px-4 py-3 font-bold text-white disabled:opacity-60">{submitting ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}</button>
