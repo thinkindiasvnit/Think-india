@@ -526,32 +526,6 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* ── 2. INFINITE DIGNITARIES & PARTNERS MARQUEE ── */}
-      <section className="py-10 border-y border-amber-300/60 bg-amber-50/40 backdrop-blur-sm overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-4 mb-4 text-center">
-          <span className="text-[11px] font-black uppercase tracking-[0.3em] text-amber-800 font-heading">
-            Keynotes, Guest Dignitaries & Academic Partners
-          </span>
-        </div>
-        
-        <div className="relative w-full overflow-hidden flex items-center h-12">
-          {/* Edge gradient masks */}
-          <div className="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-orange-50 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-orange-50 to-transparent z-10 pointer-events-none" />
-          
-          <div className="flex w-max animate-conclave-marquee items-center gap-8">
-            {[...dignitaries, ...dignitaries, ...dignitaries].map((item, idx) => (
-              <React.Fragment key={`${item}-${idx}`}>
-                <span className="text-sm sm:text-base font-extrabold uppercase tracking-wider text-zinc-800 whitespace-nowrap opacity-90">
-                  {item}
-                </span>
-                <span className="text-amber-600 font-black text-xs opacity-60">◆</span>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── 3. ROADMAP / APPLICATION PATH ── */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-200/60">
         <div className="max-w-4xl mx-auto">
