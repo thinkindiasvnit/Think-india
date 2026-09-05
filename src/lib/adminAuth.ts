@@ -71,13 +71,27 @@ export async function loginAdmin(
     throw new Error(`Access restricted to @${ALLOWED_DOMAIN} email addresses only.`);
   }
 
-  const q = query(
-    collection(db, ADMIN_COLLECTION),
-    where("email", "==", normalizedEmail),
-    where("password", "==", password)
-  );
+  let snap;
+  try {
+    const q = query(
+      collection(db, ADMIN_COLLECTION),
+      where("email", "==", normalizedEmail),
+      where("password", "==", password)
+    );
 
-  const snap = await getDocs(q);
+    snap = await getDocs(q);
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    if (
+      errorMsg.includes("Missing or insufficient permissions") ||
+      (typeof err === "object" && err !== null && "code" in err && (err as { code: string }).code === "permission-denied")
+    ) {
+      throw new Error(
+        "Missing or insufficient permissions. Please ensure Firestore Security Rules in your Firebase Console allow read access to the 'admin' collection."
+      );
+    }
+    throw err;
+  }
 
   if (snap.empty) {
     throw new Error("Invalid email or password.");

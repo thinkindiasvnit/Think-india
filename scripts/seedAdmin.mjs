@@ -36,35 +36,41 @@ const firebaseConfig = {
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ── Admin user to seed ────────────────────────────────────────────────────────
-const ADMIN_USER = {
-  name:     "Ayushman Singh",
-  email:    "ayushman@svnit.ac.in",
-  password: "Ayushman@123",
-};
+// ── Admin users to seed ───────────────────────────────────────────────────────
+const ADMIN_USERS = [
+  {
+    name:     "Think India SVNIT",
+    email:    "admin@svnit.ac.in",
+    password: "admin123",
+  },
+  {
+    name:     "Ayushman Singh",
+    email:    "ayushman@svnit.ac.in",
+    password: "Ayushman@123",
+  },
+];
 
 // ── Seed ─────────────────────────────────────────────────────────────────────
 async function seedAdmin() {
-  console.log("🔍 Checking if admin user already exists…");
+  for (const user of ADMIN_USERS) {
+    console.log(`🔍 Checking if admin user "${user.email}" already exists…`);
 
-  const q = query(
-    collection(db, "admin"),
-    where("email", "==", ADMIN_USER.email)
-  );
-  const existing = await getDocs(q);
+    const q = query(
+      collection(db, "admin"),
+      where("email", "==", user.email)
+    );
+    const existing = await getDocs(q);
 
-  if (!existing.empty) {
-    console.log(`✅ Admin user "${ADMIN_USER.email}" already exists — skipping.`);
-    process.exit(0);
+    if (!existing.empty) {
+      console.log(`✅ Admin user "${user.email}" already exists — skipping.`);
+      continue;
+    }
+
+    console.log(`➕ Creating admin user: ${user.name} <${user.email}>`);
+    const ref = await addDoc(collection(db, "admin"), user);
+    console.log(`✅ Admin user created! Document ID: ${ref.id}`);
   }
 
-  console.log(`➕ Creating admin user: ${ADMIN_USER.name} <${ADMIN_USER.email}>`);
-  const ref = await addDoc(collection(db, "admin"), ADMIN_USER);
-  console.log(`✅ Admin user created! Document ID: ${ref.id}`);
-  console.log("");
-  console.log("  Name    :", ADMIN_USER.name);
-  console.log("  Email   :", ADMIN_USER.email);
-  console.log("  Password:", ADMIN_USER.password);
   console.log("");
   console.log("👉 Login at: http://localhost:3000/admin/login");
   process.exit(0);

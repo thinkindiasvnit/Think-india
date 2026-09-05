@@ -158,7 +158,7 @@ export default function AdminArticlesPage() {
 
   function previewInReader(article: Article) {
     saveArticlePreview(article);
-    window.open(`/Article?preview=1&edition=${article.editionId || "edition-1"}`, "_blank", "noopener");
+    window.open(`/article?preview=1&edition=${article.editionId || "edition-1"}`, "_blank", "noopener");
   }
 
   async function handleCreateEdition(e: React.FormEvent) {
@@ -633,7 +633,7 @@ export default function AdminArticlesPage() {
                       <span>Delete</span>
                     </button>
                     <a
-                      href={`/Article?edition=${edition.id}`}
+                      href={`/article?edition=${edition.id}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 rounded-lg bg-[#1a1209] px-3.5 py-1.5 text-xs font-bold text-[#f4ede2] hover:bg-amber-950"
