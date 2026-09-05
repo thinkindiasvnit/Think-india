@@ -12,9 +12,22 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let app: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let db: any = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let auth: any = null;
+
+if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined") {
+  try {
+    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+  } catch (error) {
+    console.warn("Failed to initialize Firebase:", error);
+  }
+}
 
 export { app, auth, db };
 export default app;
