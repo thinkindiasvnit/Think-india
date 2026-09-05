@@ -1,0 +1,10 @@
+{
+  "description": "Creates a customized About Us page for organizations by integrating existing website details with tailored design to enhance brand presentation.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
