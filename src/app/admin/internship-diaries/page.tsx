@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import AdminNav from "../../../components/AdminNav";
 import {
   getInternshipDiaries,
@@ -10,6 +10,25 @@ import {
   InternshipDiary,
 } from "../../../lib/internshipDiaryService";
 
+// ─── Cloudinary uploader ───────────────────────────────────────────────────────
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "";
+
+async function uploadToCloudinary(file: File): Promise<string> {
+  if (!CLOUD_NAME || !UPLOAD_PRESET)
+    throw new Error("Cloudinary env vars missing.");
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("upload_preset", UPLOAD_PRESET);
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+    { method: "POST", body: fd }
+  );
+  if (!res.ok) throw new Error("Cloudinary upload failed: " + res.statusText);
+  const data = await res.json();
+  return data.secure_url as string;
+}
+
 /* ── form state ──────────────────────────────────────────────────── */
 interface FormState {
   name: string;
@@ -17,6 +36,7 @@ interface FormState {
   institute: string;
   description: string;
   review: string;
+  photoURL: string;
   year: string;
 }
 
@@ -27,6 +47,7 @@ function blankForm(): FormState {
     institute: "",
     description: "",
     review: "",
+    photoURL: "",
     year: "2026",
   };
 }
@@ -38,6 +59,8 @@ export default function AdminInternshipDiariesPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(blankForm());
+  const [photoUploading, setPhotoUploading] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   /* ── load ────────────────────────────────────────────────────── */
   async function loadDiaries() {
@@ -70,6 +93,7 @@ export default function AdminInternshipDiariesPage() {
       institute: d.institute,
       description: d.description,
       review: d.review,
+      photoURL: d.photoURL ?? "",
       year: d.year || "2026",
     });
     setEditId(d.id!);
@@ -83,6 +107,19 @@ export default function AdminInternshipDiariesPage() {
     setForm(blankForm());
   }
 
+  const handlePhotoUpload = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setPhotoUploading(true);
+    try {
+      const url = await uploadToCloudinary(files[0]);
+      set("photoURL", url);
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
   /* ── submit ─────────────────────────────────────────────────── */
   async function handleSubmit() {
     if (!form.name.trim()) return alert("Name is required.");
@@ -94,6 +131,7 @@ export default function AdminInternshipDiariesPage() {
       institute: form.institute,
       description: form.description,
       review: form.review,
+      photoURL: form.photoURL,
       year: form.year,
     };
 
@@ -223,6 +261,37 @@ export default function AdminInternshipDiariesPage() {
                   placeholder="e.g. 2nd Year, Civil Engineering"
                   className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
                 />
+              </div>
+
+              {/* photo URL */}
+              <div>
+                <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
+                  Photo URL
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={form.photoURL}
+                    onChange={(e) => set("photoURL", e.target.value)}
+                    placeholder="https://..."
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={photoInputRef}
+                    onChange={(e) => handlePhotoUpload(e.target.files)}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current?.click()}
+                    disabled={photoUploading}
+                    className="px-4 py-2.5 rounded-xl text-sm font-bold bg-zinc-200 text-slate-800 hover:bg-zinc-300 transition-colors disabled:opacity-50"
+                  >
+                    {photoUploading ? "..." : "Upload"}
+                  </button>
+                </div>
               </div>
 
               {/* review */}

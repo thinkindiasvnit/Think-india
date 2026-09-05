@@ -129,39 +129,45 @@ export function InternshipDiaries() {
             return (
               <div
                 key={student.id}
-                className={`absolute inset-0 w-full h-full p-8 sm:p-12 bg-white rounded-3xl shadow-lg border border-amber-100 flex flex-col justify-between transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive
+                className={`absolute inset-0 w-full h-full p-6 sm:p-10 bg-white rounded-3xl shadow-lg border border-amber-100 flex flex-col sm:flex-row gap-6 sm:gap-10 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive
                   ? "opacity-100 translate-x-0 pointer-events-auto z-10"
                   : "opacity-0 translate-x-12 pointer-events-none z-0"
                   }`}
               >
-                <div>
-                  <h3 className="font-heading text-3xl font-black text-[#1A1A1A] mb-2 leading-tight">
+                {/* Left Column (approx 25-30%) */}
+                <div className="flex flex-col sm:w-1/3 md:w-1/4 sm:min-w-[200px] border-b sm:border-b-0 sm:border-r border-amber-100 pb-6 sm:pb-0 sm:pr-8 items-center sm:items-start text-center sm:text-left h-auto sm:h-full justify-center">
+                  {student.photoURL ? (
+                    <img src={student.photoURL} alt={student.name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-[#FEF0E0] mb-4 shadow-sm" />
+                  ) : (
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FEF0E0] flex items-center justify-center border-4 border-white shadow-sm mb-4">
+                      <span className="text-[#E28941] font-black text-4xl font-heading">{student.name.charAt(0)}</span>
+                    </div>
+                  )}
+                  
+                  <h3 className="font-heading text-2xl font-black text-[#1A1A1A] mb-1 leading-tight">
                     {student.name}
                   </h3>
-                  <p className="text-sm font-bold tracking-widest text-[#666666] uppercase mb-6">
+                  <p className="text-xs font-bold tracking-widest text-[#E28941] uppercase mb-3">
                     {student.college}
                   </p>
-
-                  <div className="inline-flex items-center px-4 py-2 bg-[#FEF0E0] rounded-full border border-amber-200 mb-8">
-                    <span className="text-xs font-bold text-[#E28941] uppercase tracking-wider">
-                      Interned at {student.institute}
-                    </span>
-                  </div>
-
-                  <p className="text-[10px] font-bold tracking-widest text-[#E28941] uppercase mb-2">
-                    Description
-                  </p>
-                  <p className="text-base font-medium text-[#1A1A1A] mb-6">
+                  <p className="text-sm font-medium text-[#666666]">
                     {student.description}
                   </p>
                 </div>
 
-                <div>
-                  <p className="text-[10px] font-bold tracking-widest text-[#E28941] uppercase mb-2">
-                    Review
-                  </p>
+                {/* Right Column (approx 70-75%) */}
+                <div className="flex flex-col sm:w-2/3 md:w-3/4 justify-center h-full overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="inline-flex items-center px-4 py-2 bg-[#FEF0E0] rounded-full border border-amber-200 mb-6 self-start">
+                    <span className="text-xs font-bold text-[#E28941] uppercase tracking-wider">
+                      Interned at @{student.institute}
+                    </span>
+                  </div>
+                  
                   <div className="relative">
-                    <p className="relative z-10 text-lg text-[#333333] leading-relaxed italic font-medium">
+                    <svg className="absolute -top-4 -left-4 w-10 h-10 text-amber-100/60 z-0" fill="currentColor" viewBox="0 0 32 32">
+                      <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm18 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
+                    </svg>
+                    <p className="relative z-10 text-lg sm:text-xl md:text-2xl text-[#333333] leading-relaxed italic font-medium">
                       "{student.review}"
                     </p>
                   </div>

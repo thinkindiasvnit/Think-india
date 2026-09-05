@@ -2,52 +2,59 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // =========================================================================
+    // SECURITY NOTE ON CUSTOM AUTHENTICATION:
+    // This project uses a custom Admin Auth system (sessionStorage) rather than 
+    // Firebase Authentication. Because the database cannot verify a "sessionStorage" 
+    // token, it cannot securely distinguish between a real admin and a regular visitor.
+    // 
+    // To ensure your admin dashboard continues to work, we must leave `write: if true` 
+    // on most collections. 
+    // 
+    // For true database-level security in production, you should migrate the admin 
+    // login to Firebase Authentication so you can use `if request.auth != null;`.
+    // =========================================================================
 
     // ── Admin Collection ──
-    // Read access is required for client-side login verification.
-    // Writes are restricted to Firebase Console or Admin SDK scripts.
+    // We MUST lock this down. The client-side login script needs to read this 
+    // to verify passwords, but absolutely no one should be able to create or 
+    // modify admin accounts from the web. Add new admins only via Firebase Console.
     match /admin/{adminId} {
       allow read: if true;
       allow write: if false;
     }
 
-    // ── Events & Registrations ──
-    // Public can read events and submit registrations.
-    // Admin management panels can create, update, and delete.
-    match /events/{eventId} {
-      allow read, write: if true;
-    }
-    match /event_registrations/{regId} {
-      allow read, write: if true;
-    }
-
-    // ── Blogs & Interactions ──
-    // Public can read published blogs and add comments/bookmarks.
-    // Admin can create, edit, and delete blogs.
-    match /blogs/{blogId} {
-      allow read, write: if true;
-    }
-    match /blog_comments/{commentId} {
-      allow read, write: if true;
-    }
-    match /blog_bookmarks/{bookmarkId} {
-      allow read, write: if true;
-    }
-    match /blog_subscribers/{subscriberId} {
-      allow read, write: if true;
-    }
-
-    // ── Team Members ──
-    match /team_members/{memberId} {
-      allow read, write: if true;
-    }
-
-    // ── Gallery Albums & Subcollections ──
+    // ── Website Content ──
+    match /events/{eventId} { allow read, write: if true; }
+    match /blogs/{blogId} { allow read, write: if true; }
+    match /team_members/{memberId} { allow read, write: if true; }
+    match /internships/{internshipId} { allow read, write: if true; }
+    match /internship_diaries/{diaryId} { allow read, write: if true; }
+    match /articles/{articleId} { allow read, write: if true; }
+    match /article_editions/{editionId} { allow read, write: if true; }
+    
+    // ── Gallery & Photos ──
     match /gallery_albums/{albumId} {
       allow read, write: if true;
       match /photos/{photoId} {
         allow read, write: if true;
       }
+    }
+
+    // ── User Submissions (Forms, Comments, Registrations) ──
+    match /queries/{queryId} { allow read, write: if true; }
+    match /event_registrations/{regId} { allow read, write: if true; }
+    match /blog_comments/{commentId} { allow read, write: if true; }
+    match /blog_bookmarks/{bookmarkId} { allow read, write: if true; }
+    match /blog_subscribers/{subscriberId} { allow read, write: if true; }
+
+    // ── Default Deny ──
+    // Security Best Practice: Explicitly block access to any collection 
+    // that is not defined above. This prevents attackers from creating 
+    // hidden databases/collections in your Firebase project.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
