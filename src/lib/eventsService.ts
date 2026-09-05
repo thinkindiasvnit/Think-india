@@ -106,6 +106,67 @@ export const computeTimeStatus = (endDateTimeStr: string): "active" | "past" => 
   return endDate < now ? "past" : "active";
 };
 
+// Dignitaries & Partners Marquee Configuration
+export const DEFAULT_DIGNITARIES: string[] = [
+  "Dr. K. Sivan (Ex-Chairman, ISRO)",
+  "NITI Aayog Policy Cell",
+  "IIT Bombay",
+  "Supreme Court of India",
+  "SVNIT Surat",
+  "Prof. R. Sharma (Director, SVNIT)",
+  "Bhashini Project (MeitY)",
+  "IIM Ahmedabad",
+  "Dr. S. K. Joshi (Former Cabinet Secretary)",
+  "IIT Roorkee",
+  "National Law University",
+  "OpenNyAI Initiative",
+];
+
+const DIGNITARIES_KEY = "think_india_dignitaries";
+
+export const getDignitaries = async (): Promise<string[]> => {
+  if (isFirebaseConfigured()) {
+    try {
+      const docRef = doc(db, "settings", "events_dignitaries");
+      const snap = await getDoc(docRef);
+      if (snap.exists() && Array.isArray(snap.data().items) && snap.data().items.length > 0) {
+        return snap.data().items;
+      }
+    } catch (e) {
+      console.warn("Firestore fetch dignitaries failed, using local/defaults:", e);
+    }
+  }
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem(DIGNITARIES_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+  }
+  return DEFAULT_DIGNITARIES;
+};
+
+export const saveDignitaries = async (items: string[]): Promise<void> => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(DIGNITARIES_KEY, JSON.stringify(items));
+  }
+  if (isFirebaseConfigured()) {
+    try {
+      const docRef = doc(db, "settings", "events_dignitaries");
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        await updateDoc(docRef, { items, updatedAt: new Date().toISOString() });
+      } else {
+        await addDoc(collection(db, "settings"), { id: "events_dignitaries", items, updatedAt: new Date().toISOString() });
+      }
+    } catch (e) {
+      console.warn("Firestore save dignitaries failed:", e);
+    }
+  }
+};
+
 // Empty array for mock data - directory starts clean
 export const SAMPLE_EVENTS: Event[] = [];
 
