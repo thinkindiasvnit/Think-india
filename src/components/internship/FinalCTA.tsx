@@ -135,12 +135,23 @@ export function InternshipDiaries() {
                   }`}
               >
                 <div>
-                  <h3 className="font-heading text-3xl font-black text-[#1A1A1A] mb-2 leading-tight">
-                    {student.name}
-                  </h3>
-                  <p className="text-sm font-bold tracking-widest text-[#666666] uppercase mb-6">
-                    {student.college}
-                  </p>
+                  <div className="flex items-center gap-5 mb-6">
+                    {student.imageUrl ? (
+                      <img src={student.imageUrl} alt={student.name} className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border border-amber-200 shadow-sm shrink-0" />
+                    ) : (
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-600 font-black font-heading text-2xl shrink-0">
+                        {student.name.charAt(0)}
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="font-heading text-3xl font-black text-[#1A1A1A] mb-1 leading-tight">
+                        {student.name}
+                      </h3>
+                      <p className="text-sm font-bold tracking-widest text-[#666666] uppercase">
+                        {student.college}
+                      </p>
+                    </div>
+                  </div>
 
                   <div className="inline-flex items-center px-4 py-2 bg-[#FEF0E0] rounded-full border border-amber-200 mb-8">
                     <span className="text-xs font-bold text-[#E28941] uppercase tracking-wider">

@@ -18,6 +18,7 @@ interface FormState {
   description: string;
   review: string;
   year: string;
+  imageUrl: string;
 }
 
 function blankForm(): FormState {
@@ -28,6 +29,7 @@ function blankForm(): FormState {
     description: "",
     review: "",
     year: "2026",
+    imageUrl: "",
   };
 }
 
@@ -71,6 +73,7 @@ export default function AdminInternshipDiariesPage() {
       description: d.description,
       review: d.review,
       year: d.year || "2026",
+      imageUrl: d.imageUrl || "",
     });
     setEditId(d.id!);
     setIsFormOpen(true);
@@ -95,6 +98,7 @@ export default function AdminInternshipDiariesPage() {
       description: form.description,
       review: form.review,
       year: form.year,
+      imageUrl: form.imageUrl,
     };
 
     try {
@@ -167,6 +171,25 @@ export default function AdminInternshipDiariesPage() {
                   placeholder="e.g. Yug Shankhala"
                   className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
                 />
+              </div>
+
+              {/* image */}
+              <div>
+                <label className="block text-xs font-black text-slate-950 uppercase tracking-wider mb-1.5 font-heading">
+                  Profile Image URL (Cloudinary)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={form.imageUrl}
+                    onChange={(e) => set("imageUrl", e.target.value)}
+                    placeholder="https://res.cloudinary.com/..."
+                    className="w-full px-4 py-2.5 rounded-xl border border-amber-300 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-950 shadow-sm"
+                  />
+                  {form.imageUrl && (
+                    <img src={form.imageUrl} alt="preview" className="w-10 h-10 rounded-full object-cover border border-amber-200" />
+                  )}
+                </div>
               </div>
 
               {/* college */}
@@ -283,9 +306,18 @@ export default function AdminInternshipDiariesPage() {
               <tbody className="divide-y divide-amber-200 text-slate-900 font-semibold">
                 {diaries.map((d) => (
                   <tr key={d.id} className="bg-white hover:bg-amber-50/60 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="font-extrabold text-slate-950">{d.name}</div>
-                      <div className="text-xs text-zinc-500">{d.description}</div>
+                    <td className="px-4 py-3 flex items-center gap-3">
+                      {d.imageUrl ? (
+                        <img src={d.imageUrl} alt={d.name} className="w-8 h-8 rounded-full object-cover border border-amber-200 shrink-0" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-amber-100 border border-amber-200 shrink-0 flex items-center justify-center text-amber-600 font-bold text-xs">
+                          {d.name.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <div className="font-extrabold text-slate-950">{d.name}</div>
+                        <div className="text-xs text-zinc-500">{d.description}</div>
+                      </div>
                     </td>
                     <td className="px-4 py-3 text-xs text-zinc-600">{d.college}</td>
                     <td className="px-4 py-3 text-xs font-bold text-amber-700">{d.institute}</td>
