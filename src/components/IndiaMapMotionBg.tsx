@@ -67,20 +67,6 @@ export default function IndiaMapMotionBg() {
             className="animate-pulse duration-[4000ms]"
           />
 
-          {/* Internal Topographic Laser Mesh Rays */}
-          <path
-            d="
-              M 230,80 L 270,840 
-              M 100,430 L 270,450 L 650,330 
-              M 160,505 L 300,285 L 540,470 
-              M 195,585 L 310,720 L 540,470
-            "
-            stroke="#EA580C"
-            strokeWidth="1.2"
-            strokeDasharray="6 6"
-            opacity="0.4"
-          />
-
           {/* 3D Motion Graphic Radar Nodes & Pulse Beacons (Aligned to Exact Geography) */}
 
           {/* SVNIT Surat Node (Gujarat Chapter) */}
@@ -91,42 +77,6 @@ export default function IndiaMapMotionBg() {
             <rect x="24" y="-12" width="110" height="24" rx="6" fill="#FFFFFF" stroke="#FF671F" strokeWidth="1.5" className="shadow-sm" />
             <text x="32" y="4" fill="#9A3412" fontSize="11" fontWeight="900" fontFamily="sans-serif">
               SVNIT SURAT
-            </text>
-          </g>
-
-          {/* New Delhi Node */}
-          <g transform="translate(300, 285)">
-            <circle r="5" fill="#EA580C" className="animate-ping opacity-75" />
-            <circle r="7" fill="#EA580C" opacity="0.9" />
-            <text x="12" y="4" fill="#9A3412" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-              NEW DELHI
-            </text>
-          </g>
-
-          {/* Bengaluru Node */}
-          <g transform="translate(310, 720)">
-            <circle r="5" fill="#EA580C" className="animate-ping opacity-75" />
-            <circle r="7" fill="#EA580C" opacity="0.9" />
-            <text x="12" y="4" fill="#9A3412" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-              BENGALURU
-            </text>
-          </g>
-
-          {/* Kolkata Node */}
-          <g transform="translate(540, 470)">
-            <circle r="5" fill="#EA580C" className="animate-ping opacity-75" />
-            <circle r="7" fill="#EA580C" opacity="0.9" />
-            <text x="12" y="4" fill="#9A3412" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-              KOLKATA
-            </text>
-          </g>
-
-          {/* Mumbai Node */}
-          <g transform="translate(195, 585)">
-            <circle r="5" fill="#EA580C" className="animate-ping opacity-75" />
-            <circle r="7" fill="#EA580C" opacity="0.9" />
-            <text x="12" y="4" fill="#9A3412" fontSize="10" fontWeight="800" fontFamily="sans-serif">
-              MUMBAI
             </text>
           </g>
 
