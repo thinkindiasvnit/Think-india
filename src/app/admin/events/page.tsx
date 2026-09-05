@@ -95,6 +95,7 @@ export default function AdminEventsPage() {
   const [registrationType, setRegistrationType] = useState<Event["registrationType"]>("both");
   const [status, setStatus] = useState<Event["status"]>("upcoming");
   const [isFeatured, setIsFeatured] = useState(false);
+  const [isHeroSpotlight, setIsHeroSpotlight] = useState(false);
   const [isAnnouncement, setIsAnnouncement] = useState(false);
   const [announcementText, setAnnouncementText] = useState("");
   const [tagsText, setTagsText] = useState("");
@@ -248,6 +249,7 @@ export default function AdminEventsPage() {
     
     setStatus(ev.status ?? "upcoming");
     setIsFeatured(ev.isFeatured ?? false);
+    setIsHeroSpotlight(ev.isHeroSpotlight ?? false);
     setIsAnnouncement(ev.isAnnouncement ?? false);
     setAnnouncementText(ev.announcementText ?? "");
     setTagsText(ev.tags?.join(", ") ?? "");
@@ -348,7 +350,7 @@ export default function AdminEventsPage() {
       schedule: scheduleItems.filter(s => s.title),
       organizerIds,
       organizersDetails: organizersDetails.filter(o => o.name),
-      status, isFeatured, isAnnouncement, announcementText,
+      status, isFeatured: isHeroSpotlight ? true : isFeatured, isHeroSpotlight, isAnnouncement, announcementText,
       tags: tagsText.split(",").map(t => t.trim()).filter(Boolean),
       createdBy,
     };
@@ -739,6 +741,12 @@ export default function AdminEventsPage() {
                   <input type="checkbox" checked={isFeatured} onChange={e => setIsFeatured(e.target.checked)}
                     className="w-5 h-5 accent-amber-600" />
                   <span className="text-sm font-extrabold text-slate-950 font-heading">Feature on spotlight</span>
+                </label>
+
+                <label className="inline-flex items-center cursor-pointer gap-2">
+                  <input type="checkbox" checked={isHeroSpotlight} onChange={e => setIsHeroSpotlight(e.target.checked)}
+                    className="w-5 h-5 accent-amber-600" />
+                  <span className="text-sm font-extrabold text-amber-700 font-heading">Set as Homepage Hero Spotlight</span>
                 </label>
 
                 <label className="inline-flex items-center cursor-pointer gap-2">

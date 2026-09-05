@@ -166,6 +166,7 @@ export default function EventsPage() {
   // Featured Spotlight Event
   const featuredEvent = useMemo(() => {
     return (
+      events.find((e) => e.isHeroSpotlight) ||
       events.find((e) => e.isFeatured && e.timeStatus === "active") ||
       events.find((e) => e.isFeatured) ||
       events[0]

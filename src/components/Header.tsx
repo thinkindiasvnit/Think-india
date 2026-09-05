@@ -7,9 +7,11 @@ import gsap from "gsap";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const pathname = usePathname();
   const overlayRef = useRef<HTMLDivElement>(null);
-  
+  const lastScrollY = useRef(0);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
@@ -46,6 +48,29 @@ export default function Header() {
     }
   }, [isOpen]);
 
+  // Handle scroll detection: hide on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show near top of page
+      if (currentScrollY <= 50) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY.current + 6) {
+        // Scrolling DOWN -> hide header
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY.current - 6) {
+        // Scrolling UP -> show header
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Premium hover animation splitting text and staggering opacity/blur
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const chars = e.currentTarget.querySelectorAll('.char');
@@ -66,40 +91,42 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 p-6 sm:p-10 flex items-center justify-between pointer-events-none">
-        {/* Floating Logo Component */}
+      <header className={`sticky top-0 left-0 right-0 z-50 bg-orange-50/90 backdrop-blur-md border-b border-amber-200/80 px-6 sm:px-12 py-3.5 flex items-center justify-between shadow-sm transition-transform duration-300 ease-in-out ${
+        isOpen || isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}>
+        {/* Logo Component */}
         <Link 
           href="/" 
-          className="pointer-events-auto flex items-center gap-4 group"
+          className="flex items-center gap-3.5 group"
           onClick={() => setIsOpen(false)}
         >
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 shadow-sm">
+          <div className="w-11 h-11 rounded-full bg-white border border-amber-300 flex items-center justify-center p-1.5 shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-105">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12 object-contain drop-shadow-sm" />
+            <img src="/logo.png" alt="Think India Logo" className="w-full h-full object-contain" />
           </div>
-          <span className={`font-black tracking-[0.2em] text-base sm:text-lg hidden sm:block ${isOpen ? 'text-zinc-900' : 'text-zinc-900'} transition-colors duration-700 font-heading`}>
+          <span className="font-black tracking-[0.2em] text-base sm:text-lg text-zinc-950 font-heading">
             THINK INDIA
           </span>
         </Link>
 
-        {/* Floating Menu Button Pill */}
+        {/* Menu Button Pill */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`pointer-events-auto flex items-center gap-3 px-6 py-3 rounded-full border transition-all duration-500 font-bold tracking-widest text-xs uppercase shadow-sm ${
+          className={`flex items-center gap-2.5 px-6 py-2.5 rounded-full border transition-all duration-300 font-bold tracking-widest text-xs uppercase shadow-sm ${
             isOpen 
-              ? "bg-transparent border-zinc-900 text-zinc-900 hover:bg-zinc-900/5" 
-              : "bg-zinc-900 border-zinc-900 text-white hover:bg-zinc-800"
+              ? "bg-amber-200 border-amber-400 text-zinc-950" 
+              : "bg-zinc-950 border-zinc-950 text-white hover:bg-zinc-800"
           }`}
         >
           <span>MENU</span>
-          <span className="text-xl font-normal leading-none -mt-0.5">{isOpen ? "×" : "="}</span>
+          <span className="text-lg font-bold leading-none -mt-0.5">{isOpen ? "×" : "="}</span>
         </button>
       </header>
 
       {/* Full Screen Overlay Menu */}
       <div 
         ref={overlayRef}
-        className="fixed inset-0 bg-orange-50 z-40 flex flex-col pt-20 sm:pt-28 pb-4 sm:pb-8 px-8 sm:px-24 overflow-hidden"
+        className="fixed inset-0 bg-orange-50 z-40 flex flex-col pt-24 sm:pt-28 pb-4 sm:pb-8 px-8 sm:px-24 overflow-hidden"
         style={{ transform: "translateY(-100%)" }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-200/20 to-transparent pointer-events-none" />
