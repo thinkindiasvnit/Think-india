@@ -1,8 +1,18 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Globe } from "lucide-react";
-import { Article, ARTICLE_CATEGORY_LABELS, getArticlePreview, getPublishedArticles } from "../../lib/articleService";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Globe, Library, X, PenSquare, ArrowLeft, Clock } from "lucide-react";
+import {
+  Article,
+  ARTICLE_CATEGORY_LABELS,
+  DEFAULT_EDITIONS,
+  getArticlePreview,
+  getNewspaperEditions,
+  getPublishedArticles,
+  NewspaperEdition,
+  NewspaperPage,
+} from "../../lib/articleService";
 
 const Instagram = ({ style }: { style?: React.CSSProperties }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
@@ -332,14 +342,12 @@ const ThinkIndiaLogo = ({ className = "", style }: { className?: string, style?:
   </svg>
 );
 
-// ─── Masthead ─────────────────────────────────────────────────────────────────
-
-const Masthead = () => (
+const Masthead = ({ edition }: { edition: NewspaperEdition }) => (
   <div style={{ borderBottom: "2px solid #1a1209", paddingBottom: "8px", marginBottom: 0 }}>
     <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "6px" }}>
       <div style={{ flex: 1, height: 1, background: "#1a1209" }} />
       <span style={{ fontFamily: "'Oswald',sans-serif", fontSize: "9px", letterSpacing: "0.28em", color: "#1a1209" }}>
-        IDEAS THAT INSPIRE. ACTION THAT TRANSFORMS.
+        {edition.tagline}
       </span>
       <div style={{ flex: 1, height: 1, background: "#1a1209" }} />
     </div>
@@ -355,7 +363,7 @@ const Masthead = () => (
           IKIGAI
         </h1>
         <p style={{ fontFamily: "'Oswald',sans-serif", fontSize: "clamp(8px,1.1vw,11px)", letterSpacing: "0.22em", color: "#1a1209", marginTop: "2px" }}>
-          by THINK INDIA SVNIT
+          by THINK INDIA SVNIT · {edition.editionName}
         </p>
       </div>
       <div style={{ textAlign: "right", maxWidth: "86px" }}>
@@ -371,7 +379,7 @@ const Masthead = () => (
 
 // ─── Page Content ─────────────────────────────────────────────────────────────
 
-const PageContent = ({ page }: { page: PageData }) => (
+const PageContent = ({ page, edition }: { page: PageData; edition: NewspaperEdition }) => (
   <div
     style={{
       width: "100%", height: "100%", display: "flex", flexDirection: "column", overflow: "hidden",
@@ -384,15 +392,15 @@ const PageContent = ({ page }: { page: PageData }) => (
     }}
   >
     <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden", scrollbarWidth: "none", padding: "clamp(10px,1.8vw,18px) clamp(14px,2.2vw,22px) clamp(8px,1.4vw,12px)" }}>
-      <Masthead />
+      <Masthead edition={edition} />
 
       {/* Edition bar */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #1a1209", borderBottom: "1px solid #1a1209", padding: "2px 0", margin: "0 0 5px", fontFamily: "'Oswald',sans-serif", fontSize: "clamp(6.5px,0.9vw,8.5px)", letterSpacing: "0.12em", color: "#1a1209" }}>
-        <span>DATE: 18 AUG 2026</span>
-        <span>|</span><span>EDITION: 1</span>
-        <span>|</span><span>VOL. 1 · ISSUE 1</span>
+        <span>DATE: {edition.date.toUpperCase()}</span>
+        <span>|</span><span>{edition.editionName.toUpperCase()}</span>
+        <span>|</span><span>{edition.volume.toUpperCase()}</span>
         <span>|</span><span>SVNIT, SURAT</span>
-        <span>|</span><span>PRICE: FREE</span>
+        <span>|</span><span>PRICE: {edition.price.toUpperCase()}</span>
       </div>
 
       {/* Label */}
@@ -507,7 +515,7 @@ const NavButton = ({
       disabled={disabled}
       style={{
         position: "absolute",
-        top: "50%",
+        top: "calc(50% + 5%)",
         transform: "translateY(-50%)",
         [isPrev ? "left" : "right"]: "clamp(8px, 2vw, 20px)",
         zIndex: 40,
@@ -545,12 +553,18 @@ const NavButton = ({
 const FLIP_DUR = "1.05s";
 
 export default function App() {
-  const [pages, setPages] = useState<PageData[]>(PAGES);
+  const [editions, setEditions] = useState<NewspaperEdition[]>(DEFAULT_EDITIONS);
+  const [selectedEditionId, setSelectedEditionId] = useState<string>("edition-1");
+  const [publishedArticles, setPublishedArticles] = useState<Article[]>([]);
+  const [newsstandOpen, setNewsstandOpen] = useState(true);
+  const [pages, setPages] = useState<PageData[]>(DEFAULT_EDITIONS[0].pages);
   const [currentPage, setCurrentPage] = useState(0);
   const [pendingPage,  setPendingPage]  = useState<number | null>(null);
   const [isFlipping,   setIsFlipping]   = useState(false);
   const [direction,    setDirection]    = useState<"forward" | "backward">("forward");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const activeEdition = editions.find((e) => e.id === selectedEditionId) || editions[0] || DEFAULT_EDITIONS[0];
 
   useEffect(() => {
     const el = document.createElement("style");
@@ -559,26 +573,70 @@ export default function App() {
     return () => { document.head.removeChild(el); };
   }, []);
 
+  // Check URL params for direct edition or preview
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const urlEdition = params.get("edition");
+      const isPreview = params.get("preview") === "1";
+      const forceStand = params.get("stand") === "1";
+
+      if (urlEdition) {
+        setSelectedEditionId(urlEdition);
+      }
+
+      if (forceStand) {
+        setNewsstandOpen(true);
+      } else if (isPreview || (urlEdition && !forceStand)) {
+        setNewsstandOpen(false);
+      } else {
+        // Direct click to /Article opens the newsstand shelf
+        setNewsstandOpen(true);
+      }
+    }
+  }, []);
+
+  // Load editions and published articles
   useEffect(() => {
     let cancelled = false;
-    const isPreview = new URLSearchParams(window.location.search).get("preview") === "1";
-    const preview = isPreview ? getArticlePreview() : null;
-    if (preview) {
-      queueMicrotask(() => {
-        if (!cancelled) {
-          setPages([...PAGES, articleToPage(preview, 0)]);
-          setCurrentPage(PAGES.length);
-        }
-      });
-      return () => { cancelled = true; };
-    }
+    getNewspaperEditions()
+      .then((loaded) => {
+        if (!cancelled && loaded && loaded.length > 0) setEditions(loaded);
+      })
+      .catch((err) => console.error("Error loading editions", err));
+
     getPublishedArticles()
       .then((articles) => {
-        if (!cancelled) setPages([...PAGES, ...articles.map(articleToPage)]);
+        if (!cancelled) setPublishedArticles(articles);
       })
       .catch((error) => console.error("Unable to load published articles", error));
+
     return () => { cancelled = true; };
   }, []);
+
+  // Compute pages whenever activeEdition, publishedArticles, or preview changes
+  useEffect(() => {
+    const isPreview = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("preview") === "1";
+    const preview = isPreview ? getArticlePreview() : null;
+
+    const basePages: PageData[] = activeEdition.pages && activeEdition.pages.length > 0
+      ? activeEdition.pages
+      : DEFAULT_EDITIONS[0].pages;
+
+    const matchingArticles = publishedArticles.filter(
+      (a) => a.editionId === activeEdition.id || (!a.editionId && activeEdition.id === "edition-1")
+    );
+
+    const articlePages = matchingArticles.map(articleToPage);
+    const combinedPages = [...basePages, ...articlePages];
+
+    if (preview) {
+      combinedPages.push(articleToPage(preview, combinedPages.length));
+    }
+
+    setPages(combinedPages);
+    setCurrentPage(0);
+  }, [activeEdition, publishedArticles]);
 
   const flipTo = (target: number) => {
     if (isFlipping || target < 0 || target >= pages.length || target === currentPage) return;
@@ -595,14 +653,157 @@ export default function App() {
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
+  const selectEdition = (editionId: string) => {
+    setSelectedEditionId(editionId);
+    setCurrentPage(0);
+    setNewsstandOpen(false);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("edition", editionId);
+      window.history.pushState({}, "", url.toString());
+    }
+  };
+
   return (
     <div style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative", background: "#d0c4b4" }}>
+      {/* ── Floating Header: Navigation & Newsstand Opener ── */}
+      <div style={{
+        position: "absolute",
+        top: "14px",
+        left: "clamp(10px, 2.5vw, 24px)",
+        right: "clamp(10px, 2.5vw, 24px)",
+        zIndex: 45,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        pointerEvents: "none",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto" }}>
+          <Link
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              background: "rgba(26,18,9,0.86)",
+              color: "#e8dcd0",
+              borderRadius: "9999px",
+              border: "1px solid rgba(232,220,208,0.22)",
+              fontSize: "11px",
+              fontFamily: "'Oswald',sans-serif",
+              letterSpacing: "0.14em",
+              textDecoration: "none",
+              backdropFilter: "blur(6px)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            }}
+          >
+            <ArrowLeft size={13} />
+            PORTAL HOME
+          </Link>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "7px",
+              padding: "6px 12px",
+              background: "rgba(245,236,223,0.92)",
+              color: "#1a1209",
+              borderRadius: "9999px",
+              border: "1px solid #1a1209",
+              fontSize: "10.5px",
+              fontFamily: "'Oswald',sans-serif",
+              letterSpacing: "0.1em",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "#b45309" }} />
+            <span>{activeEdition.volume} · {activeEdition.editionName}</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto" }}>
+          <button
+            onClick={() => setNewsstandOpen(true)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "7px",
+              padding: "7px 16px",
+              background: "#1a1209",
+              color: "#f5ecdf",
+              borderRadius: "9999px",
+              border: "1px solid #8b7355",
+              fontSize: "11px",
+              fontFamily: "'Oswald',sans-serif",
+              letterSpacing: "0.15em",
+              cursor: "pointer",
+              boxShadow: "0 4px 14px rgba(26,18,9,0.3)",
+              transition: "transform 0.15s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <Library size={13} />
+            <span>THE NEWSSTAND ({editions.length} EDITIONS)</span>
+          </button>
+          <Link
+            href="/submit-article?tab=my-articles"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "7px 14px",
+              background: "rgba(245,236,223,0.92)",
+              color: "#1a1209",
+              borderRadius: "9999px",
+              border: "1px solid #1a1209",
+              fontSize: "11px",
+              fontFamily: "'Oswald',sans-serif",
+              letterSpacing: "0.12em",
+              textDecoration: "none",
+              fontWeight: 600,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+              transition: "transform 0.15s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <Clock size={13} />
+            <span>MY ARTICLES</span>
+          </Link>
+          <Link
+            href="/submit-article"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "7px 14px",
+              background: "#b45309",
+              color: "#ffffff",
+              borderRadius: "9999px",
+              fontSize: "11px",
+              fontFamily: "'Oswald',sans-serif",
+              letterSpacing: "0.12em",
+              textDecoration: "none",
+              fontWeight: 600,
+              boxShadow: "0 3px 10px rgba(180,83,9,0.3)",
+            }}
+          >
+            <PenSquare size={13} />
+            <span>SUBMIT ARTICLE</span>
+          </Link>
+        </div>
+      </div>
+
       {/* 3-D stage */}
-      <div style={{ position: "absolute", inset: 0, perspective: "3500px", perspectiveOrigin: "50% 50%" }}>
+      <div style={{ position: "absolute", top: "10%", bottom: 0, left: 0, right: 0, perspective: "3500px", perspectiveOrigin: "50% 50%" }}>
 
         {/* Bottom layer: page being revealed */}
         <div style={{ position: "absolute", inset: 0 }}>
-          <PageContent page={pages[pendingPage ?? currentPage]} />
+          {pages.length > 0 && (
+            <PageContent page={pages[pendingPage ?? currentPage] || pages[0]} edition={activeEdition} />
+          )}
         </div>
 
         {/* Shadow on revealed page */}
@@ -624,12 +825,12 @@ export default function App() {
         )}
 
         {/* Top layer: the page that flips away */}
-        {isFlipping && (
+        {isFlipping && pages.length > 0 && (
           <div
             className={`page-flip-${direction}`}
             style={({ "--flip-dur": FLIP_DUR, position: "absolute", inset: 0, zIndex: 2 } as React.CSSProperties)}
           >
-            <PageContent page={pages[currentPage]} />
+            <PageContent page={pages[currentPage] || pages[0]} edition={activeEdition} />
 
             {/* Glare on turning page */}
             <div style={{
@@ -660,7 +861,7 @@ export default function App() {
         background: "rgba(232,220,208,0.9)", backdropFilter: "blur(6px)",
         borderTop: "1px solid rgba(26,18,9,0.18)",
       }}>
-        {PAGES.map((_, i) => (
+        {pages.map((_, i) => (
           <button
             key={i}
             onClick={() => flipTo(i)}
@@ -681,6 +882,156 @@ export default function App() {
           {currentPage + 1} / {pages.length}
         </span>
       </div>
+
+      {/* ── Newsstand Modal / Newspaper Shelf ── */}
+      {newsstandOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 60,
+            background: "rgba(18, 12, 7, 0.84)",
+            backdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={() => setNewsstandOpen(false)}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "1100px",
+              maxHeight: "90vh",
+              background: "#e8dcd0",
+              backgroundImage:
+                "repeating-linear-gradient(transparent 0px, transparent 24px, rgba(80,60,35,0.04) 24px, rgba(80,60,35,0.04) 25px)",
+              borderRadius: "20px",
+              border: "3px solid #1a1209",
+              boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)",
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Newsstand Header */}
+            <div style={{ padding: "18px 24px", borderBottom: "2px solid #1a1209", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(232,220,208,0.85)" }}>
+              <div>
+                <span style={{ fontFamily: "'Oswald',sans-serif", fontSize: "10px", letterSpacing: "0.26em", color: "#8b5e3c", display: "block" }}>
+                  THE THINK INDIA ARCHIVES
+                </span>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "1.75rem", fontWeight: 900, color: "#1a1209", margin: 0 }}>
+                  The Newspaper Stand & Editions
+                </h2>
+                <p style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "13px", color: "#5a4a35", margin: "2px 0 0" }}>
+                  Select any edition below to open its broadsheet and read its front-page coverage.
+                </p>
+              </div>
+              <button
+                onClick={() => setNewsstandOpen(false)}
+                style={{
+                  background: "transparent",
+                  border: "1px solid #1a1209",
+                  borderRadius: "50%",
+                  width: 36,
+                  height: 36,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: "#1a1209",
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Rack Grid */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "24px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "22px" }}>
+              {editions.map((ed) => {
+                const isCurrent = ed.id === activeEdition.id;
+                return (
+                  <div
+                    key={ed.id}
+                    onClick={() => selectEdition(ed.id)}
+                    style={{
+                      background: "#f4ede2",
+                      border: isCurrent ? "2.5px solid #b45309" : "1.5px solid #1a1209",
+                      borderRadius: "12px",
+                      padding: "18px",
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "column",
+                      position: "relative",
+                      boxShadow: isCurrent ? "0 10px 25px rgba(180,83,9,0.2)" : "0 4px 12px rgba(0,0,0,0.06)",
+                      transform: isCurrent ? "translateY(-2px)" : "none",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.boxShadow = "0 14px 28px rgba(0,0,0,0.16)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = isCurrent ? "translateY(-2px)" : "none";
+                      e.currentTarget.style.boxShadow = isCurrent ? "0 10px 25px rgba(180,83,9,0.2)" : "0 4px 12px rgba(0,0,0,0.06)";
+                    }}
+                  >
+                    {/* Active Ribbon Badge */}
+                    {isCurrent && (
+                      <div style={{ position: "absolute", top: 12, right: 12, background: "#b45309", color: "#fff", fontSize: "9px", fontFamily: "'Oswald',sans-serif", letterSpacing: "0.15em", padding: "2px 8px", borderRadius: "9999px" }}>
+                        CURRENTLY OPEN
+                      </div>
+                    )}
+
+                    {/* Mini masthead */}
+                    <div style={{ borderBottom: "1px solid #1a1209", paddingBottom: "8px", marginBottom: "10px" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "8.5px", fontFamily: "'Oswald',sans-serif", letterSpacing: "0.14em", color: "#5a4a35" }}>
+                        <span>{ed.volume}</span>
+                        <span>{ed.date}</span>
+                      </div>
+                      <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "1.3rem", fontWeight: 900, color: "#1a1209", margin: "4px 0 2px" }}>
+                        {ed.title}
+                      </h3>
+                      <span style={{ fontSize: "9px", fontFamily: "'Oswald',sans-serif", letterSpacing: "0.12em", color: "#8b5e3c" }}>
+                        {ed.editionName}
+                      </span>
+                    </div>
+
+                    {/* Cover Thumbnail */}
+                    <div style={{ height: "135px", overflow: "hidden", border: "1px solid #1a1209", borderRadius: "4px", marginBottom: "10px" }}>
+                      <ImageWithFallback
+                        src={ed.coverPhoto}
+                        alt={ed.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Cover Headline & Deck */}
+                    <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontWeight: 700, fontSize: "12px", color: "#1a1209", margin: "0 0 6px", lineHeight: 1.35 }}>
+                      "{ed.coverStoryHeadline.replace("\n", " ")}"
+                    </p>
+                    <p style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "11px", color: "#5a4a35", lineHeight: 1.4, flex: 1, margin: 0 }}>
+                      {ed.description}
+                    </p>
+
+                    {/* Action Bar */}
+                    <div style={{ borderTop: "1px solid rgba(26,18,9,0.15)", marginTop: "12px", paddingTop: "10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontFamily: "'Oswald',sans-serif", fontSize: "9px", letterSpacing: "0.12em", color: "#5a4a35" }}>
+                        {ed.pages?.length || 4} BROADSHEET PAGES
+                      </span>
+                      <span style={{ fontFamily: "'Oswald',sans-serif", fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em", color: isCurrent ? "#b45309" : "#1a1209", display: "flex", alignItems: "center", gap: "4px" }}>
+                        {isCurrent ? "READING NOW →" : "READ EDITION →"}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
