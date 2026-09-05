@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Admin Collection ──
+    // Read access is required for client-side login verification.
+    // Writes are restricted to Firebase Console or Admin SDK scripts.
+    match /admin/{adminId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ── Events & Registrations ──
+    // Public can read events and submit registrations.
+    // Admin management panels can create, update, and delete.
+    match /events/{eventId} {
+      allow read, write: if true;
+    }
+    match /event_registrations/{regId} {
+      allow read, write: if true;
+    }
+
+    // ── Blogs & Interactions ──
+    // Public can read published blogs and add comments/bookmarks.
+    // Admin can create, edit, and delete blogs.
+    match /blogs/{blogId} {
+      allow read, write: if true;
+    }
+    match /blog_comments/{commentId} {
+      allow read, write: if true;
+    }
+    match /blog_bookmarks/{bookmarkId} {
+      allow read, write: if true;
+    }
+    match /blog_subscribers/{subscriberId} {
+      allow read, write: if true;
+    }
+
+    // ── Team Members ──
+    match /team_members/{memberId} {
+      allow read, write: if true;
+    }
+
+    // ── Gallery Albums & Subcollections ──
+    match /gallery_albums/{albumId} {
+      allow read, write: if true;
+      match /photos/{photoId} {
+        allow read, write: if true;
+      }
+    }
+  }
+}

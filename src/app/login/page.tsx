@@ -62,7 +62,7 @@ function LoginForm() {
         {error && <p className="rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700">{error}</p>}
         <button disabled={submitting} className="w-full rounded-xl bg-amber-600 px-4 py-3 font-bold text-white disabled:opacity-60">{submitting ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}</button>
         <p className="text-center text-sm text-zinc-600">{mode === "signin" ? "New here?" : "Already have an account?"} <button type="button" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(""); }} className="font-bold text-amber-700">{mode === "signin" ? "Create an account" : "Sign in"}</button></p>
-        <Link href="/Article" className="block text-center text-sm font-medium text-zinc-500 hover:text-zinc-900">← Back to articles</Link>
+        <Link href="/article" className="block text-center text-sm font-medium text-zinc-500 hover:text-zinc-900">← Back to articles</Link>
       </form>
     </section>
   );

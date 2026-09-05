@@ -17,7 +17,7 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
     { name: "Blogs", href: "/blogs" },
-    { name: "Articles", href: "/Article" },
+    { name: "Articles", href: "/article" },
     { name: "Gallery", href: "/gallery" },
     { name: "Internships", href: "/internships" },
     { name: "Team", href: "/team" },

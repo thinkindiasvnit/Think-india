@@ -168,7 +168,7 @@ export default function SubmitArticlePage() {
         {/* Navigation Breadcrumb & Newsstand Quick Link */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <Link
-            href="/Article"
+            href="/article"
             className="inline-flex items-center gap-2 rounded-full border border-[#1a1209]/20 bg-[#f4ede2] px-4 py-1.5 font-mono text-xs font-bold text-[#1a1209] transition-all hover:border-[#1a1209] hover:shadow-sm"
           >
             <Library size={13} />
@@ -543,7 +543,7 @@ export default function SubmitArticlePage() {
 
                           {article.status === "published" && (
                             <a
-                              href={`/Article?edition=${article.editionId || "edition-1"}`}
+                              href={`/article?edition=${article.editionId || "edition-1"}`}
                               target="_blank"
                               rel="noreferrer"
                               className="flex items-center gap-1.5 rounded-xl bg-[#1a1209] px-4 py-2 text-xs font-bold text-[#f5ecdf] hover:bg-amber-950"
@@ -611,7 +611,7 @@ export default function SubmitArticlePage() {
                 <div className="mt-8 flex justify-end gap-3 border-t border-[#1a1209] pt-4">
                   {readingArticle.status === "published" && (
                     <a
-                      href={`/Article?edition=${readingArticle.editionId || "edition-1"}`}
+                      href={`/article?edition=${readingArticle.editionId || "edition-1"}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 rounded-xl bg-[#1a1209] px-4 py-2 text-xs font-bold text-[#f4ede2]"
