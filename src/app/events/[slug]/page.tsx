@@ -146,7 +146,7 @@ export default function EventDetailPage() {
       <div className="min-h-screen bg-orange-50/50 flex items-center justify-center p-4">
         <div className="flex flex-col items-center gap-4 text-amber-900 font-bold">
           <div className="w-12 h-12 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
-          <span>Loading Conclave Details…</span>
+          <span>Loading Event Details…</span>
         </div>
       </div>
     );
@@ -178,84 +178,139 @@ export default function EventDetailPage() {
   return (
     <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-900 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
       
-      {/* ── 1. HERO COVER BANNER ── */}
-      <section ref={headerRef} className="relative overflow-hidden border-b border-amber-300/80 py-12 px-4 sm:px-6 lg:px-8 bg-amber-50/40">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <Link
-              href="/events"
-              className="gsap-detail-el inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-950 hover:text-amber-800 bg-white px-4 py-2 rounded-xl border border-amber-300 shadow-md transition-colors"
+      {/* ── 1. 100VH IMMERSIVE HERO SECTION ── */}
+      <section ref={headerRef} className="relative min-h-screen w-full flex flex-col justify-between overflow-hidden border-b border-amber-300/80 px-4 sm:px-6 lg:px-8 pt-6 pb-10">
+        
+        {/* Full-bleed background cover with artistic ambient light & textures */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {event.coverImageURL ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={event.coverImageURL}
+              alt={event.title}
+              className="w-full h-full object-cover opacity-20 filter blur-sm scale-105"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-amber-600/20 via-orange-500/10 to-transparent" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-orange-50/95 via-white/85 to-white/60" />
+          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-orange-400/20 rounded-full blur-3xl pointer-events-none" />
+        </div>
+
+        {/* Top Floating Glass Navigation */}
+        <div className="max-w-7xl mx-auto w-full relative z-10 flex items-center justify-between gap-4 pt-4">
+          <Link
+            href="/events"
+            className="gsap-detail-el inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-950 hover:text-amber-800 bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-amber-300 shadow-md hover:shadow-lg transition-all"
+          >
+            ← Back to Events
+          </Link>
+
+          <div className="gsap-detail-el flex items-center gap-2">
+            <button
+              onClick={toggleBookmark}
+              className={`p-2.5 sm:px-4 rounded-2xl border text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md ${
+                isBookmarked
+                  ? "bg-amber-600 text-white border-amber-600 shadow-amber-600/30"
+                  : "bg-white/90 backdrop-blur-md text-slate-900 border-amber-300 hover:bg-amber-50"
+              }`}
             >
-              ← Back to Events
-            </Link>
+              {isBookmarked ? <IconBookmarkFilled size={15} /> : <IconBookmark size={15} />}
+              <span className="hidden sm:inline">{isBookmarked ? "Saved" : "Save Event"}</span>
+            </button>
 
-            <div className="gsap-detail-el flex items-center gap-2">
-              <button
-                onClick={toggleBookmark}
-                className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-md ${
-                  isBookmarked
-                    ? "bg-amber-600 text-white border-amber-600"
-                    : "bg-white text-slate-900 border-amber-300 hover:bg-amber-50"
-                }`}
-              >
-                {isBookmarked ? <IconBookmarkFilled size={15} /> : <IconBookmark size={15} />}
-                <span>{isBookmarked ? "Saved" : "Save Event"}</span>
-              </button>
-
-              <button
-                onClick={copyShareLink}
-                className="p-2.5 rounded-xl bg-white border border-amber-300 text-slate-900 hover:bg-amber-50 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-md"
-              >
-                {copiedLink ? <IconCheck size={15} className="text-emerald-600" /> : <IconShare size={15} />}
-                <span>{copiedLink ? "Copied!" : "Share"}</span>
-              </button>
-            </div>
+            <button
+              onClick={copyShareLink}
+              className="p-2.5 sm:px-4 rounded-2xl bg-white/90 backdrop-blur-md border border-amber-300 text-slate-900 hover:bg-amber-50 text-xs font-black uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md"
+            >
+              {copiedLink ? <IconCheck size={15} className="text-emerald-600" /> : <IconShare size={15} />}
+              <span className="hidden sm:inline">{copiedLink ? "Copied!" : "Share"}</span>
+            </button>
           </div>
+        </div>
 
-          {/* Badges */}
-          <div className="gsap-detail-el flex flex-wrap items-center gap-2 mb-4">
-            <span className="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-amber-700 text-white shadow-md">
+        {/* Center Main Hero Display */}
+        <div className="max-w-7xl mx-auto w-full relative z-10 my-auto py-12 flex flex-col justify-center">
+          
+          {/* Metadata Badges */}
+          <div className="gsap-detail-el flex flex-wrap items-center gap-2.5 mb-6">
+            <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-600 text-white shadow-lg shadow-amber-600/30">
               {event.type}
             </span>
-            <span className="px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-white text-slate-900 border border-amber-300 shadow-md">
+            {event.genre && (
+              <span className="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-amber-100 text-amber-950 border border-amber-300 shadow-sm">
+                {event.genre}
+              </span>
+            )}
+            <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white text-slate-900 border border-amber-300 shadow-md">
               {event.mode} Mode
             </span>
-            <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-md ${
-              isActive ? "bg-emerald-700" : "bg-slate-700"
+            <span className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider text-white shadow-md flex items-center gap-1.5 ${
+              isActive ? "bg-emerald-600" : "bg-slate-800"
             }`}>
-              {isActive ? "Active Event" : "Past Archive"}
+              <span className={`w-2 h-2 rounded-full ${isActive ? "bg-white animate-ping" : "bg-zinc-400"}`} />
+              {isActive ? "Live Now" : "Event Archive"}
             </span>
           </div>
 
-          <h1 className="gsap-detail-el text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 font-heading leading-tight mb-4 max-w-4xl tracking-tight">
+          {/* Hero Headline */}
+          <h1 className="gsap-detail-el text-4xl sm:text-6xl lg:text-7xl font-black text-slate-950 font-heading leading-[1.08] mb-6 max-w-5xl tracking-tight">
             {event.title}
           </h1>
 
-          <p className="gsap-detail-el text-base sm:text-lg text-slate-800 max-w-3xl leading-relaxed mb-6 font-semibold">
+          {/* Hero Subtitle */}
+          <p className="gsap-detail-el text-lg sm:text-2xl text-slate-800 max-w-4xl leading-relaxed mb-8 font-medium">
             {event.shortDescription || event.description}
           </p>
 
-          <div className="gsap-detail-el flex flex-wrap items-center gap-6 text-xs text-slate-900 font-bold pt-4 border-t border-amber-300">
-            <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-xl border border-amber-300 shadow-sm">
-              <IconCalendar size={16} className="text-amber-700" />
+          {/* Glass Logistics & Actions Ribbon */}
+          <div className="gsap-detail-el flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-900 font-bold pt-6 border-t border-amber-300/80">
+            <div className="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-amber-300 shadow-sm">
+              <IconCalendar size={18} className="text-amber-700" />
               <span className="text-slate-950 font-extrabold">{formatDate(event.startDateTime)}</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-xl border border-amber-300 shadow-sm">
-              <IconMapPin size={16} className="text-amber-700" />
+
+            <div className="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-amber-300 shadow-sm">
+              <IconMapPin size={18} className="text-amber-700" />
               <span className="text-slate-950 font-extrabold">{event.venue || "SVNIT Surat Campus"}</span>
             </div>
+
             {event.fee && (
-              <div className="flex items-center gap-2 bg-amber-100 border border-amber-400 px-3 py-1.5 rounded-xl text-amber-950 font-black shadow-sm">
-                <IconTicket size={14} className="text-amber-700" />
+              <div className="flex items-center gap-2 bg-amber-100/90 border border-amber-400 px-4 py-2.5 rounded-2xl text-amber-950 font-black shadow-sm">
+                <IconTicket size={16} className="text-amber-700" />
                 <span>{event.fee}</span>
               </div>
             )}
+
+            {event.registrationLink && (
+              <a
+                href={event.registrationLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-amber-600/30 hover:scale-105 transition-all"
+              >
+                <span>Official Registration</span>
+                <IconExternalLink size={15} />
+              </a>
+            )}
           </div>
+        </div>
+
+        {/* Bottom Scroll Indicator */}
+        <div className="max-w-7xl mx-auto w-full relative z-10 flex justify-center pb-2">
+          <a
+            href="#event-details"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-amber-300 text-xs font-black uppercase tracking-widest text-amber-900 hover:bg-amber-100 transition-all animate-bounce shadow-sm"
+          >
+            <span>Scroll to Explore Agenda & Details</span>
+            <span>↓</span>
+          </a>
         </div>
       </section>
 
       {/* ── 2. MAIN LAYOUT: CONTENT + SIDEBAR ── */}
-      <section ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex-1">
+      <section id="event-details" ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full flex-1 scroll-mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* LEFT CONTENT COLUMN */}
@@ -264,7 +319,7 @@ export default function EventDetailPage() {
             {/* Overview Card */}
             <div className="gsap-detail-el card-orange-glass-light rounded-3xl p-6 sm:p-8 space-y-4">
               <h2 className="text-2xl font-black text-slate-950 font-heading">
-                About this Conclave
+                About this Event
               </h2>
               <div className="text-slate-800 text-sm sm:text-base leading-relaxed whitespace-pre-line font-medium space-y-3">
                 {event.description}

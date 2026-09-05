@@ -53,7 +53,7 @@ export default function Home() {
       {/* Premium Minimal Hero Section */}
       <section 
         ref={heroRef}
-        className="relative min-h-[90vh] flex flex-col justify-end pb-24 px-6 sm:px-12 lg:px-24 bg-transparent"
+        className="relative min-h-[calc(100vh-68px)] h-[calc(100vh-68px)] flex flex-col justify-between py-10 sm:py-14 px-6 sm:px-12 lg:px-24 bg-transparent"
       >
         <div className="max-w-7xl w-full mx-auto relative z-10 flex flex-col items-start">
           <div className="hero-element mb-6 inline-flex items-center gap-4">
@@ -85,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* Asymmetrical Premium Section Blocks */}
-      <section ref={sectionsRef} className="py-24 px-6 sm:px-12 lg:px-24 bg-white/80 backdrop-blur-sm border-t border-zinc-200">
+      <section ref={sectionsRef} className="py-24 px-6 sm:px-12 lg:px-24 bg-gradient-to-b from-amber-50/40 via-amber-100/30 to-orange-100/30 backdrop-blur-sm border-t border-amber-300/60">
         <div className="max-w-7xl mx-auto flex flex-col gap-32">
           
           {/* Block 1: Events */}
@@ -95,7 +95,7 @@ export default function Home() {
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
                 Technical & Social Initiatives
               </h2>
-              <p className="text-zinc-600 text-lg leading-relaxed mb-8">
+              <p className="text-zinc-700 text-lg leading-relaxed mb-8">
                 Participate in national hackathons, technical workshops, seminars, and social contribution activities organized on campus.
               </p>
               <Link href="/events" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
@@ -105,7 +105,7 @@ export default function Home() {
                 </svg>
               </Link>
             </div>
-            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://picsum.photos/seed/eventtech/800/600" alt="Events" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -129,7 +129,7 @@ export default function Home() {
                 </svg>
               </Link>
             </div>
-            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://picsum.photos/seed/writingblog/800/600" alt="Blogs" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -143,7 +143,7 @@ export default function Home() {
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
                 Memories & Milestones
               </h2>
-              <p className="text-zinc-600 text-lg leading-relaxed mb-8">
+              <p className="text-zinc-700 text-lg leading-relaxed mb-8">
                 A visual journey through our past events, workshops, and community gatherings. Relive the moments that shape our nationalistic spirit.
               </p>
               <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
@@ -153,7 +153,7 @@ export default function Home() {
                 </svg>
               </Link>
             </div>
-            <div className="w-full md:w-7/12 aspect-[4/3] bg-zinc-100 rounded-3xl overflow-hidden relative shadow-lg group">
+            <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="https://picsum.photos/seed/galleryphotos/800/600" alt="Gallery" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
@@ -164,7 +164,7 @@ export default function Home() {
       </section>
       
       {/* Minimal Footer CTA */}
-      <section className="py-24 px-6 text-center bg-transparent border-t border-zinc-200 relative overflow-hidden">
+      <section className="py-24 px-6 text-center bg-gradient-to-b from-orange-100/30 via-amber-100/40 to-amber-50/50 border-t border-amber-300/60 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-amber-500/10 to-transparent pointer-events-none"></div>
         <div className="reveal-section max-w-3xl mx-auto relative z-10">
           <h2 className="text-4xl sm:text-6xl font-black font-heading text-zinc-900 mb-8">Ready to make an impact?</h2>

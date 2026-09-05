@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { IconInstagram, IconLinkedin, IconYoutube, IconTwitterX, IconFacebook } from "./Icons";
 
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-amber-50 via-amber-100/40 to-orange-100/50 text-slate-900 border-t border-amber-300/80 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
           {/* Quick Links Column */}
           <div>
             <h3 className="text-slate-950 font-black text-sm tracking-wider uppercase mb-4 font-heading">Quick Links</h3>
@@ -23,21 +24,68 @@ export default function Footer() {
           {/* Follow Us & Social Column */}
           <div>
             <h3 className="text-slate-950 font-black text-sm tracking-wider uppercase mb-4 font-heading">Follow Us</h3>
-            <div className="flex gap-2 mb-4">
-              <a href="#" className="w-8 h-8 rounded-xl bg-white border border-amber-300 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-colors text-slate-900 font-bold text-xs shadow-sm" aria-label="Instagram">
-                Insta
+            <div className="flex items-center gap-3 mb-4">
+              {/* Instagram */}
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="Instagram"
+                title="Instagram"
+              >
+                <IconInstagram size={20} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-xl bg-white border border-amber-300 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-colors text-slate-900 font-bold text-xs shadow-sm" aria-label="LinkedIn">
-                In
+
+              {/* LinkedIn */}
+              <a 
+                href="https://linkedin.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-[#0A66C2] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="LinkedIn"
+                title="LinkedIn"
+              >
+                <IconLinkedin size={20} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-xl bg-white border border-amber-300 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-colors text-slate-900 font-bold text-xs shadow-sm" aria-label="YouTube">
-                YT
+
+              {/* YouTube */}
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-[#FF0000] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="YouTube"
+                title="YouTube"
+              >
+                <IconYoutube size={20} />
               </a>
-              <a href="#" className="w-8 h-8 rounded-xl bg-white border border-amber-300 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-colors text-slate-900 font-bold text-xs shadow-sm" aria-label="X">
-                X
+
+              {/* X (Twitter) */}
+              <a 
+                href="https://x.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="X (Twitter)"
+                title="X (Twitter)"
+              >
+                <IconTwitterX size={17} />
+              </a>
+
+              {/* Facebook */}
+              <a 
+                href="https://facebook.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-[#1877F2] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="Facebook"
+                title="Facebook"
+              >
+                <IconFacebook size={20} />
               </a>
             </div>
-            <p className="text-xs text-slate-700 font-medium">
+            <p className="text-xs text-slate-700 font-medium leading-relaxed">
               Stay connected with us on social media for regular updates and announcements.
             </p>
           </div>
@@ -65,17 +113,6 @@ export default function Footer() {
                 </svg>
                 <span>SVNIT Campus, Ichchhanath, Surat, Gujarat - 395007</span>
               </li>
-            </ul>
-          </div>
-
-          {/* Useful Links Column */}
-          <div>
-            <h3 className="text-slate-950 font-black text-sm tracking-wider uppercase mb-4 font-heading">Useful Links</h3>
-            <ul className="space-y-2 text-xs font-bold text-slate-800">
-              <li><a href="#" className="hover:text-amber-700 transition-colors">Join Us</a></li>
-              <li><a href="#" className="hover:text-amber-700 transition-colors">Volunteer</a></li>
-              <li><a href="#" className="hover:text-amber-700 transition-colors">FAQs</a></li>
-              <li><a href="#" className="hover:text-amber-700 transition-colors">Privacy Policy</a></li>
             </ul>
           </div>
         </div>

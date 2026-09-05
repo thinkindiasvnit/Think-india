@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import AdminNav from "../../../components/AdminNav";
 import { useRequireAdminAuth } from "../../../components/useRequireAdminAuth";
 import { logoutAdmin } from "../../../lib/adminAuth";
-import { getEvents, createEvent, updateEvent, deleteEvent, seedSampleEvents, getEventRegistrations, Event, EventRegistration, SpeakerDetail, ScheduleItem, OrganizerDetail } from "../../../lib/eventsService";
+import { getEvents, createEvent, updateEvent, deleteEvent, seedSampleEvents, getEventRegistrations, getDignitaries, saveDignitaries, DEFAULT_DIGNITARIES, Event, EventRegistration, SpeakerDetail, ScheduleItem, OrganizerDetail } from "../../../lib/eventsService";
 import {
   IconCalendar,
   IconMapPin,
@@ -95,6 +95,7 @@ export default function AdminEventsPage() {
   const [registrationType, setRegistrationType] = useState<Event["registrationType"]>("both");
   const [status, setStatus] = useState<Event["status"]>("upcoming");
   const [isFeatured, setIsFeatured] = useState(false);
+  const [isHeroSpotlight, setIsHeroSpotlight] = useState(false);
   const [isAnnouncement, setIsAnnouncement] = useState(false);
   const [announcementText, setAnnouncementText] = useState("");
   const [tagsText, setTagsText] = useState("");
@@ -109,7 +110,64 @@ export default function AdminEventsPage() {
   const coverInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { loadEvents(); }, []);
+  // Dignitaries Marquee State
+  const [dignitaries, setDignitaries] = useState<string[]>([]);
+  const [isDignitariesModalOpen, setIsDignitariesModalOpen] = useState(false);
+  const [newDignitaryText, setNewDignitaryText] = useState("");
+  const [savingDignitaries, setSavingDignitaries] = useState(false);
+
+  useEffect(() => {
+    loadEvents();
+    loadDignitaries();
+  }, []);
+
+  async function loadDignitaries() {
+    try {
+      const items = await getDignitaries();
+      setDignitaries(items);
+    } catch (e) {
+      console.error("Failed to load dignitaries:", e);
+    }
+  }
+
+  const handleAddDignitary = () => {
+    const trimmed = newDignitaryText.trim();
+    if (!trimmed) return;
+    if (dignitaries.includes(trimmed)) {
+      alert("This dignitary/institution already exists in the marquee.");
+      return;
+    }
+    setDignitaries(prev => [...prev, trimmed]);
+    setNewDignitaryText("");
+  };
+
+  const handleRemoveDignitary = (index: number) => {
+    setDignitaries(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleResetDignitaries = () => {
+    if (confirm("Reset marquee dignitaries to default national institutions & keynotes?")) {
+      setDignitaries(DEFAULT_DIGNITARIES);
+    }
+  };
+
+  const handleSaveDignitaries = async () => {
+    if (dignitaries.length === 0) {
+      alert("Marquee should contain at least 1 dignitary or partner institution.");
+      return;
+    }
+    setSavingDignitaries(true);
+    try {
+      await saveDignitaries(dignitaries);
+      alert("Dignitaries and Partners Marquee updated successfully!");
+      setIsDignitariesModalOpen(false);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save marquee items.");
+    } finally {
+      setSavingDignitaries(false);
+    }
+  };
 
   // Set createdBy from session
   useEffect(() => {
@@ -248,6 +306,7 @@ export default function AdminEventsPage() {
     
     setStatus(ev.status ?? "upcoming");
     setIsFeatured(ev.isFeatured ?? false);
+    setIsHeroSpotlight(ev.isHeroSpotlight ?? false);
     setIsAnnouncement(ev.isAnnouncement ?? false);
     setAnnouncementText(ev.announcementText ?? "");
     setTagsText(ev.tags?.join(", ") ?? "");
@@ -348,7 +407,7 @@ export default function AdminEventsPage() {
       schedule: scheduleItems.filter(s => s.title),
       organizerIds,
       organizersDetails: organizersDetails.filter(o => o.name),
-      status, isFeatured, isAnnouncement, announcementText,
+      status, isFeatured: isHeroSpotlight ? true : isFeatured, isHeroSpotlight, isAnnouncement, announcementText,
       tags: tagsText.split(",").map(t => t.trim()).filter(Boolean),
       createdBy,
     };
@@ -379,10 +438,16 @@ export default function AdminEventsPage() {
           <div>
             <h1 className="text-3xl sm:text-4xl font-black text-slate-950 font-heading">Admin Event Management</h1>
             <p className="text-sm font-semibold text-slate-800 mt-1">
-              Signed in as <span className="text-amber-700">{admin.name}</span> · Manage events, track registrations, and publish conclaves for Think India SVNIT.
+              Signed in as <span className="text-amber-700">{admin.name}</span> · Manage events, track registrations, and publish events for Think India SVNIT.
             </p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
+            <button
+              onClick={() => setIsDignitariesModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl font-extrabold bg-amber-100/80 border border-amber-300 text-xs text-amber-950 hover:bg-amber-200 shadow-sm transition-colors flex items-center gap-1.5"
+            >
+              <IconMic size={14} className="text-amber-800" /> Manage Marquee Dignitaries ({dignitaries.length})
+            </button>
             <button
               onClick={handleResetSampleEvents}
               className="px-4 py-2.5 rounded-xl font-extrabold bg-white border border-amber-300 text-xs text-amber-950 hover:bg-amber-100/60 shadow-sm transition-colors"
@@ -517,7 +582,7 @@ export default function AdminEventsPage() {
                   <option value="workshop">Workshop</option>
                   <option value="webinar">Webinar</option>
                   <option value="competition">Competition / Hackathon</option>
-                  <option value="talk">Talk / Conclave</option>
+                  <option value="talk">Talk / Keynote</option>
                   <option value="social">Social Drive</option>
                   <option value="other">Other</option>
                   <option value="__custom__">+ Add Custom Event Type...</option>
@@ -742,6 +807,12 @@ export default function AdminEventsPage() {
                 </label>
 
                 <label className="inline-flex items-center cursor-pointer gap-2">
+                  <input type="checkbox" checked={isHeroSpotlight} onChange={e => setIsHeroSpotlight(e.target.checked)}
+                    className="w-5 h-5 accent-amber-600" />
+                  <span className="text-sm font-extrabold text-amber-700 font-heading">Set as Homepage Hero Spotlight</span>
+                </label>
+
+                <label className="inline-flex items-center cursor-pointer gap-2">
                   <input type="checkbox" checked={isAnnouncement} onChange={e => setIsAnnouncement(e.target.checked)}
                     className="w-5 h-5 accent-amber-600" />
                   <span className="text-sm font-extrabold text-amber-800 font-heading">Publish Top Announcement Banner</span>
@@ -926,6 +997,122 @@ export default function AdminEventsPage() {
                   </div>
                 </>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dignitaries & Partners Marquee Modal */}
+      {isDignitariesModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="bg-white rounded-3xl border border-amber-300 shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-amber-200 bg-amber-50/50">
+              <div>
+                <h3 className="text-xl font-black text-slate-950 font-heading flex items-center gap-2">
+                  <IconMic size={20} className="text-amber-700" />
+                  Event Dignitaries & Marquee Manager
+                </h3>
+                <p className="text-xs font-semibold text-slate-700 mt-1">
+                  Manage keynote speakers, dignitaries, and partner institutions displayed on the Events page marquee banner.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsDignitariesModalOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-rose-100 text-rose-700 hover:bg-rose-200 transition-colors"
+              >
+                <IconX size={16} />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 space-y-6">
+              {/* Add New Item Input */}
+              <div className="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 space-y-3">
+                <label className="block text-xs font-black uppercase tracking-wider text-amber-950 font-heading">
+                  Add New Dignitary / Institution
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. Dr. A. P. J. Kalam Innovation Cell / ISRO / NITI Aayog"
+                    value={newDignitaryText}
+                    onChange={(e) => setNewDignitaryText(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddDignitary(); } }}
+                    className="flex-1 border border-amber-300 rounded-xl py-2 px-3 text-xs font-bold text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddDignitary}
+                    className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs transition-colors shadow-sm flex items-center gap-1"
+                  >
+                    <IconPlus size={14} /> Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Current Items List */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-slate-800">
+                    Active Marquee Items ({dignitaries.length})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleResetDignitaries}
+                    className="text-[11px] font-bold text-amber-800 hover:underline"
+                  >
+                    Reset to Default List
+                  </button>
+                </div>
+
+                {dignitaries.length === 0 ? (
+                  <p className="text-xs text-slate-500 italic p-4 text-center border border-dashed rounded-xl">
+                    No items in marquee. Add at least one dignitary or partner.
+                  </p>
+                ) : (
+                  <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                    {dignitaries.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-3 bg-white border border-amber-200 rounded-xl shadow-sm hover:border-amber-400 transition-colors"
+                      >
+                        <span className="text-xs font-bold text-slate-900 flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-[10px] font-black shrink-0">
+                            {idx + 1}
+                          </span>
+                          {item}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveDignitary(idx)}
+                          className="p-1 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                          title="Remove item"
+                        >
+                          <IconTrash size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-amber-200 bg-amber-50/40 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsDignitariesModalOpen(false)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-white border border-transparent hover:border-amber-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={savingDignitaries}
+                onClick={handleSaveDignitaries}
+                className="px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-amber-600 hover:bg-amber-700 text-white shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50"
+              >
+                <IconCheck size={14} />
+                {savingDignitaries ? "Saving..." : "Save Marquee Changes"}
+              </button>
             </div>
           </div>
         </div>

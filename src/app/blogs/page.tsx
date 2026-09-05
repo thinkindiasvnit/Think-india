@@ -130,7 +130,7 @@ export default function BlogPage() {
   /* derive unique categories from fetched blogs */
   const categories = [
     "all",
-    ...Array.from(new Set(blogs.map((b) => b.category).filter(Boolean))),
+    ...Array.from(new Set(blogs.map((b) => b.category).filter(Boolean))).filter(c => c !== "other"),
   ];
 
   const filtered = blogs.filter((b) => {
@@ -160,7 +160,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-zinc-900 flex flex-col flex-1 font-sans selection:bg-amber-600 selection:text-white">
       {/* header */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 text-center border-b border-amber-200/60 bg-white/40 backdrop-blur-sm">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 text-center border-b border-amber-200/60">
         <span className="text-xs font-black tracking-widest text-amber-700 uppercase font-heading">
           Think India SVNIT
         </span>
