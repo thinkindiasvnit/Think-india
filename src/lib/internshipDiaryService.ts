@@ -21,6 +21,7 @@ export interface InternshipDiary {
   institute: string;
   description: string;
   review: string;
+  photoURL?: string;
   year?: string;
   createdAt?: string; // ISO string
   updatedAt?: string; // ISO string
@@ -55,6 +56,7 @@ const mapDoc = (id: string, data: Record<string, any>): InternshipDiary => ({
   institute: data.institute ?? "",
   description: data.description ?? "",
   review: data.review ?? "",
+  photoURL: data.photoURL ?? "",
   year: data.year ?? "2026",
   createdAt: toISO(data.createdAt),
   updatedAt: toISO(data.updatedAt),
