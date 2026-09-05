@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import IndiaCursorTrail from "../components/IndiaCursorTrail";
 import IndiaMapMotionBg from "../components/IndiaMapMotionBg";
+import { AuthProvider } from "../components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,11 +42,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body className="min-h-full flex flex-col font-sans selection:bg-amber-600 selection:text-white relative">
-        <IndiaMapMotionBg />
-        <IndiaCursorTrail />
-        <Header />
-        <main className="flex-grow flex flex-col">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <IndiaMapMotionBg />
+          <IndiaCursorTrail />
+          <Header />
+          <main className="flex-grow flex flex-col">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

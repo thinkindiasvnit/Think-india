@@ -4,16 +4,19 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
+import { useAuth } from "./AuthProvider";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const { user, loading, logOut } = useAuth();
   
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
     { name: "Blogs", href: "/blogs" },
+    { name: "Articles", href: "/Article" },
     { name: "Gallery", href: "/gallery" },
     { name: "Internships", href: "/internships" },
     { name: "Team", href: "/team" },
@@ -122,6 +125,13 @@ export default function Header() {
               </Link>
             );
           })}
+          <Link
+            href="/submit-article"
+            onClick={() => setIsOpen(false)}
+            className="menu-link-item text-3xl sm:text-4xl lg:text-[2.75rem] font-black tracking-tighter text-amber-700 flex font-heading w-fit group py-1"
+          >
+            Write an Article
+          </Link>
         </nav>
 
         {/* Premium Bottom Details Section */}
@@ -140,6 +150,18 @@ export default function Header() {
               Surat, Gujarat 395007
             </p>
           </div>
+          {!loading && (
+            <div className="sm:ml-auto flex flex-col items-start gap-2">
+              {user ? (
+                <>
+                  <p className="text-sm font-bold">Signed in as {user.displayName || user.email}</p>
+                  <button onClick={() => { void logOut(); setIsOpen(false); }} className="text-xs tracking-widest uppercase font-black text-amber-700 hover:text-amber-900">Sign out</button>
+                </>
+              ) : (
+                <Link href="/login" onClick={() => setIsOpen(false)} className="text-xs tracking-widest uppercase font-black text-amber-700 hover:text-amber-900">Sign in to write</Link>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

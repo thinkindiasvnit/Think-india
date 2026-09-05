@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAdminSession, AdminUser } from "../lib/adminAuth";
 
@@ -11,13 +11,18 @@ import { getAdminSession, AdminUser } from "../lib/adminAuth";
  */
 export function useRequireAdminAuth(): AdminUser | null {
   const router = useRouter();
-  const session = getAdminSession();
+  // sessionStorage only exists in the browser. Reading it during initial render
+  // makes the server render differ from the hydrated client render.
+  const [session, setSession] = useState<AdminUser | null>(null);
 
   useEffect(() => {
-    if (!session) {
+    const storedSession = getAdminSession();
+    if (!storedSession) {
       router.replace("/admin/login");
+      return;
     }
-  }, [session, router]);
+    setSession(storedSession);
+  }, [router]);
 
   return session;
 }

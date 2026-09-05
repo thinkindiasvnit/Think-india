@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Globe } from "lucide-react";
+import { Article, ARTICLE_CATEGORY_LABELS, getArticlePreview, getPublishedArticles } from "../../lib/articleService";
 
 const Instagram = ({ style }: { style?: React.CSSProperties }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
@@ -188,6 +189,7 @@ type PageData = {
   photoAlt: string;
   imageCaption: string;
   columns: Column[];
+  authorName?: string;
 };
 
 // ─── Content ─────────────────────────────────────────────────────────────────
@@ -287,6 +289,31 @@ const PAGES: PageData[] = [
   },
 ];
 
+function articleToPage(article: Article, index: number): PageData {
+  const paragraphs = article.content.split(/\n\s*\n|\r?\n/).map((item) => item.trim()).filter(Boolean);
+  const opening = paragraphs.shift() || article.content;
+  const firstCharacter = opening.trim().charAt(0).toUpperCase() || "A";
+  return {
+    id: 1000 + index,
+    label: (ARTICLE_CATEGORY_LABELS[article.category] || "ARTICLE").toUpperCase(),
+    headline: article.title,
+    deck: article.summary,
+    dropCapLetter: firstCharacter,
+    dropCapRest: opening.trim().slice(1),
+    paragraphs,
+    pullQuote: { text: article.tags.length ? article.tags.map((tag) => `#${tag}`).join("  ") : "A contribution from the Think India SVNIT community.", attribution: `â€“ ${article.authorName}` },
+    photo: article.coverImageURL || "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=600&fit=crop&auto=format",
+    photoAlt: article.title,
+    imageCaption: `Article submitted by ${article.authorName}.`,
+    columns: [
+      { title: "AUTHOR", body: article.authorName },
+      { title: "CATEGORY", body: ARTICLE_CATEGORY_LABELS[article.category] || article.category },
+      { title: "THINK INDIA SVNIT", body: "Published after editorial review." },
+    ],
+    authorName: article.authorName,
+  };
+}
+
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
 const ThinkIndiaLogo = ({ className = "", style }: { className?: string, style?: React.CSSProperties }) => (
@@ -384,6 +411,11 @@ const PageContent = ({ page }: { page: PageData }) => (
       <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(0.6rem,1.1vw,0.8rem)", color: "#1a1209", lineHeight: 1.4, textAlign: "center", fontStyle: "italic", borderBottom: "1px solid #1a1209", paddingBottom: "7px", margin: "0 0 7px" }}>
         {page.deck}
       </p>
+      {page.authorName && (
+        <p style={{ fontFamily: "'Oswald',sans-serif", fontSize: "clamp(6.5px,0.85vw,8.5px)", letterSpacing: "0.15em", color: "#1a1209", textAlign: "center", margin: "-3px 0 7px" }}>
+          WRITTEN BY {page.authorName.toUpperCase()}
+        </p>
+      )}
 
       {/* 2-column body */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "8px" }}>
@@ -513,6 +545,7 @@ const NavButton = ({
 const FLIP_DUR = "1.05s";
 
 export default function App() {
+  const [pages, setPages] = useState<PageData[]>(PAGES);
   const [currentPage, setCurrentPage] = useState(0);
   const [pendingPage,  setPendingPage]  = useState<number | null>(null);
   const [isFlipping,   setIsFlipping]   = useState(false);
@@ -526,8 +559,25 @@ export default function App() {
     return () => { document.head.removeChild(el); };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    const isPreview = new URLSearchParams(window.location.search).get("preview") === "1";
+    const preview = isPreview ? getArticlePreview() : null;
+    if (preview) {
+      setPages([...PAGES, articleToPage(preview, 0)]);
+      setCurrentPage(PAGES.length);
+      return () => { cancelled = true; };
+    }
+    getPublishedArticles()
+      .then((articles) => {
+        if (!cancelled) setPages([...PAGES, ...articles.map(articleToPage)]);
+      })
+      .catch((error) => console.error("Unable to load published articles", error));
+    return () => { cancelled = true; };
+  }, []);
+
   const flipTo = (target: number) => {
-    if (isFlipping || target < 0 || target >= PAGES.length || target === currentPage) return;
+    if (isFlipping || target < 0 || target >= pages.length || target === currentPage) return;
     if (timerRef.current) clearTimeout(timerRef.current);
     setDirection(target > currentPage ? "forward" : "backward");
     setPendingPage(target);
@@ -548,7 +598,7 @@ export default function App() {
 
         {/* Bottom layer: page being revealed */}
         <div style={{ position: "absolute", inset: 0 }}>
-          <PageContent page={PAGES[pendingPage ?? currentPage]} />
+          <PageContent page={pages[pendingPage ?? currentPage]} />
         </div>
 
         {/* Shadow on revealed page */}
@@ -575,7 +625,7 @@ export default function App() {
             className={`page-flip-${direction}`}
             style={({ "--flip-dur": FLIP_DUR, position: "absolute", inset: 0, zIndex: 2 } as React.CSSProperties)}
           >
-            <PageContent page={PAGES[currentPage]} />
+            <PageContent page={pages[currentPage]} />
 
             {/* Glare on turning page */}
             <div style={{
@@ -596,7 +646,7 @@ export default function App() {
 
       {/* ── Large side nav buttons ── */}
       <NavButton direction="prev" onClick={() => flipTo(currentPage - 1)} disabled={currentPage === 0 || isFlipping} />
-      <NavButton direction="next" onClick={() => flipTo(currentPage + 1)} disabled={currentPage === PAGES.length - 1 || isFlipping} />
+      <NavButton direction="next" onClick={() => flipTo(currentPage + 1)} disabled={currentPage === pages.length - 1 || isFlipping} />
 
       {/* ── Bottom page-dot indicator ── */}
       <div style={{
@@ -624,7 +674,7 @@ export default function App() {
           />
         ))}
         <span style={{ position: "absolute", right: 16, fontFamily: "'Oswald',sans-serif", fontSize: "9px", letterSpacing: "0.2em", color: "#5a4a35" }}>
-          {currentPage + 1} / {PAGES.length}
+          {currentPage + 1} / {pages.length}
         </span>
       </div>
     </div>
