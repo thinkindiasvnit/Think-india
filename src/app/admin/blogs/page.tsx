@@ -233,7 +233,7 @@ export default function AdminBlogPage() {
   /* ── render ─────────────────────────────────────────────────── */
   if (!admin) return null;
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans pt-32 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AdminNav />
 

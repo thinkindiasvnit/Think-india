@@ -171,7 +171,7 @@ export default function AdminTeamPage() {
 
   if (!admin) return null;
   return (
-    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans py-10 selection:bg-amber-600 selection:text-white">
+    <div className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 font-sans pt-32 pb-10 selection:bg-amber-600 selection:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Admin Sub-nav ── */}
