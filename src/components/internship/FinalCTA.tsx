@@ -135,7 +135,7 @@ export function InternshipDiaries() {
                   }`}
               >
                 {/* Left Column (approx 25-30%) */}
-                <div className="flex flex-col sm:w-1/3 md:w-1/4 sm:min-w-[200px] border-b sm:border-b-0 sm:border-r border-amber-100 pb-6 sm:pb-0 sm:pr-8 items-center sm:items-start text-center sm:text-left h-auto sm:h-full justify-center">
+                <div className="flex flex-col sm:w-1/3 md:w-1/4 sm:min-w-[200px] border-b sm:border-b-0 sm:border-r border-amber-100 pb-6 sm:pb-0 sm:pr-8 items-center sm:items-start text-center sm:text-left h-auto sm:h-full justify-start">
                   {student.photoURL ? (
                     <img src={student.photoURL} alt={student.name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-[#FEF0E0] mb-4 shadow-sm" />
                   ) : (
@@ -156,7 +156,7 @@ export function InternshipDiaries() {
                 </div>
 
                 {/* Right Column (approx 70-75%) */}
-                <div className="flex flex-col sm:w-2/3 md:w-3/4 justify-center h-full overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex flex-col sm:w-2/3 md:w-3/4 justify-start h-full overflow-y-auto pr-2 custom-scrollbar">
                   <div className="inline-flex items-center px-4 py-2 bg-[#FEF0E0] rounded-full border border-amber-200 mb-6 self-start">
                     <span className="text-xs font-bold text-[#E28941] uppercase tracking-wider">
                       Interned at @{student.institute}
