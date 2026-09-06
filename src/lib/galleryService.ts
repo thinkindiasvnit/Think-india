@@ -178,12 +178,8 @@ export const createAlbum = async (
   const now = new Date().toISOString();
   const payload: Album = { ...data, imageCount: 0, createdAt: now, updatedAt: now };
   if (isFirebaseConfigured()) {
-    try {
-      const ref = await addDoc(collection(db, ALBUMS_COL), payload);
-      return { ...payload, id: ref.id };
-    } catch (err) {
-      console.warn("Firestore write failed:", err);
-    }
+    const ref = await addDoc(collection(db, ALBUMS_COL), payload);
+    return { ...payload, id: ref.id };
   }
   const local = { ...payload, id: `local_${Date.now()}` };
   const albums = getLocalAlbums();
@@ -198,14 +194,10 @@ export const updateAlbum = async (
 ): Promise<Album> => {
   const now = new Date().toISOString();
   if (isFirebaseConfigured() && !albumId.startsWith("local_")) {
-    try {
-      const ref = doc(db, ALBUMS_COL, albumId);
-      await updateDoc(ref, { ...data, updatedAt: now });
-      const snap = await getDoc(ref);
-      return mapAlbum(snap.id, snap.data()!);
-    } catch (err) {
-      console.warn("Firestore update failed:", err);
-    }
+    const ref = doc(db, ALBUMS_COL, albumId);
+    await updateDoc(ref, { ...data, updatedAt: now });
+    const snap = await getDoc(ref);
+    return mapAlbum(snap.id, snap.data()!);
   }
   const albums = getLocalAlbums();
   const idx = albums.findIndex((a) => a.id === albumId);
@@ -218,14 +210,10 @@ export const updateAlbum = async (
 
 export const deleteAlbum = async (albumId: string): Promise<void> => {
   if (isFirebaseConfigured() && !albumId.startsWith("local_")) {
-    try {
-      const photosSnap = await getDocs(collection(db, ALBUMS_COL, albumId, "photos"));
-      await Promise.all(photosSnap.docs.map((d) => deleteDoc(d.ref)));
-      await deleteDoc(doc(db, ALBUMS_COL, albumId));
-      return;
-    } catch (err) {
-      console.warn("Firestore delete failed:", err);
-    }
+    const photosSnap = await getDocs(collection(db, ALBUMS_COL, albumId, "photos"));
+    await Promise.all(photosSnap.docs.map((d) => deleteDoc(d.ref)));
+    await deleteDoc(doc(db, ALBUMS_COL, albumId));
+    return;
   }
   if (typeof window !== "undefined") localStorage.removeItem(photosLocalKey(albumId));
   saveLocalAlbums(getLocalAlbums().filter((a) => a.id !== albumId));
@@ -255,15 +243,11 @@ export const addPhoto = async (
   const payload: Photo = { ...photoData, uploadedAt: now };
 
   if (isFirebaseConfigured() && !albumId.startsWith("local_")) {
-    try {
-      const photosCol = collection(db, ALBUMS_COL, albumId, "photos");
-      const ref = await addDoc(photosCol, payload);
-      const newCount = (await getDocs(photosCol)).size;
-      await updateDoc(doc(db, ALBUMS_COL, albumId), { imageCount: newCount, updatedAt: now });
-      return { ...payload, id: ref.id };
-    } catch (err) {
-      console.warn("Firestore write failed:", err);
-    }
+    const photosCol = collection(db, ALBUMS_COL, albumId, "photos");
+    const ref = await addDoc(photosCol, payload);
+    const newCount = (await getDocs(photosCol)).size;
+    await updateDoc(doc(db, ALBUMS_COL, albumId), { imageCount: newCount, updatedAt: now });
+    return { ...payload, id: ref.id };
   }
 
   const photos = getLocalPhotos(albumId);
@@ -279,15 +263,11 @@ export const addPhoto = async (
 export const deletePhoto = async (albumId: string, photoId: string): Promise<void> => {
   const now = new Date().toISOString();
   if (isFirebaseConfigured() && !albumId.startsWith("local_")) {
-    try {
-      await deleteDoc(doc(db, ALBUMS_COL, albumId, "photos", photoId));
-      const photosCol = collection(db, ALBUMS_COL, albumId, "photos");
-      const newCount = (await getDocs(photosCol)).size;
-      await updateDoc(doc(db, ALBUMS_COL, albumId), { imageCount: newCount, updatedAt: now });
-      return;
-    } catch (err) {
-      console.warn("Firestore delete failed:", err);
-    }
+    await deleteDoc(doc(db, ALBUMS_COL, albumId, "photos", photoId));
+    const photosCol = collection(db, ALBUMS_COL, albumId, "photos");
+    const newCount = (await getDocs(photosCol)).size;
+    await updateDoc(doc(db, ALBUMS_COL, albumId), { imageCount: newCount, updatedAt: now });
+    return;
   }
   const photos = getLocalPhotos(albumId).filter((p) => p.id !== photoId);
   saveLocalPhotos(albumId, photos);
@@ -302,12 +282,8 @@ export const updatePhotoCaption = async (
   caption: string
 ): Promise<void> => {
   if (isFirebaseConfigured() && !albumId.startsWith("local_")) {
-    try {
-      await updateDoc(doc(db, ALBUMS_COL, albumId, "photos", photoId), { caption });
-      return;
-    } catch (err) {
-      console.warn("Firestore update failed:", err);
-    }
+    await updateDoc(doc(db, ALBUMS_COL, albumId, "photos", photoId), { caption });
+    return;
   }
   const photos = getLocalPhotos(albumId);
   const idx = photos.findIndex((p) => p.id === photoId);
