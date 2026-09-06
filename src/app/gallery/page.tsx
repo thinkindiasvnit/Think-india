@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import {
   getPublishedAlbums,
@@ -26,11 +25,18 @@ const formatDate = (iso: string) =>
 
 function SkeletonCard() {
   return (
-    <div className="card-orange-glass-light rounded-3xl overflow-hidden border border-amber-300 bg-white/95 animate-pulse">
-      <div className="aspect-[4/3] bg-amber-100/60" />
-      <div className="p-4 space-y-2">
-        <div className="h-4 bg-amber-200/60 rounded-full w-3/4" />
-        <div className="h-3 bg-amber-100/60 rounded-full w-1/2" />
+    <div className="rounded-3xl overflow-hidden border-2 border-amber-200 bg-white/80 backdrop-blur-sm animate-pulse shadow-lg">
+      <div className="aspect-[16/10] bg-gradient-to-br from-amber-100 to-amber-50" />
+      <div className="p-8 space-y-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="h-8 bg-amber-200/60 rounded-full w-24" />
+          <div className="h-8 bg-amber-100/60 rounded-full w-28" />
+        </div>
+        <div className="h-8 bg-amber-200/60 rounded-lg w-4/5" />
+        <div className="space-y-2">
+          <div className="h-5 bg-amber-100/60 rounded-lg w-full" />
+          <div className="h-5 bg-amber-100/60 rounded-lg w-3/4" />
+        </div>
       </div>
     </div>
   );
@@ -40,11 +46,11 @@ function SkeletonCard() {
 
 function EmptyState({ filtered }: { filtered: boolean }) {
   return (
-    <div className="col-span-full flex flex-col items-center justify-center py-24 gap-4 text-center card-orange-glass-light rounded-3xl border border-amber-300 bg-white/95 shadow-md">
-      <div className="w-20 h-20 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center mb-2 shadow-sm">
+    <div className="col-span-full flex flex-col items-center justify-center py-24 gap-4 text-center rounded-3xl border-2 border-dashed border-amber-300 bg-white/70 backdrop-blur-md shadow-lg">
+      <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 border-2 border-amber-300 flex items-center justify-center mb-2 shadow-md">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-10 h-10 text-amber-700"
+          className="w-12 h-12 text-amber-700"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -62,7 +68,7 @@ function EmptyState({ filtered }: { filtered: boolean }) {
           />
         </svg>
       </div>
-      <h3 className="text-xl font-black text-slate-950 font-heading">
+      <h3 className="text-2xl font-black text-slate-950 font-heading">
         {filtered ? "No albums in this category" : "No albums yet"}
       </h3>
       <p className="text-sm font-semibold text-slate-700 max-w-xs">
@@ -78,79 +84,54 @@ function EmptyState({ filtered }: { filtered: boolean }) {
 
 function AlbumCard({ album }: { album: Album }) {
   return (
-    <Link
-      href={`/gallery/${album.id}`}
-      className="group block rounded-3xl overflow-hidden border border-amber-300 bg-white/95 card-orange-glass-light hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
-    >
-      {/* Image wrapper */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-amber-100">
+    <div className="group rounded-3xl overflow-hidden border-2 border-amber-200 bg-white/80 backdrop-blur-md hover:shadow-2xl hover:-translate-y-2 hover:border-amber-400 transition-all duration-500 ease-out">
+      {/* Image section - display only */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-amber-100 to-orange-50">
         {album.coverImageURL ? (
           <Image
             src={album.coverImageURL}
             alt={album.title}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-500 to-orange-600">
-            <span className="text-white/90 text-5xl font-black font-heading">
+            <span className="text-white/90 text-7xl font-black font-heading">
               {album.title.charAt(0)}
             </span>
           </div>
         )}
 
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-
-        {/* Category badge — top left */}
-        <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-600 text-white shadow-sm font-heading">
-          {CATEGORY_LABELS[album.category as AlbumCategory] ?? album.category}
-        </span>
-
-        {/* Published date — top right */}
-        <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-slate-950/60 text-white backdrop-blur-md border border-white/20">
-          {formatDate(album.takenAt ?? "")}
-        </span>
-
-        {/* Photo count badge — bottom left */}
-        {typeof album.imageCount === "number" && (
-          <span className="absolute bottom-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-slate-950/60 text-white backdrop-blur-md border border-white/20">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 4.5h18"
-              />
-            </svg>
-            {album.imageCount}
-          </span>
-        )}
-
-        {/* Album title overlaid on gradient */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-3 pt-6">
-          <h3 className="text-base font-black text-white leading-snug line-clamp-2 font-heading drop-shadow">
-            {album.title}
-          </h3>
-        </div>
+        {/* Subtle overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
-      {/* Card footer — optional description */}
-      {album.description && (
-        <div className="px-4 py-3">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">
+      {/* Info section */}
+      <div className="p-8 space-y-5">
+        {/* Category badge and date */}
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider bg-amber-600 text-white shadow-md">
+            {CATEGORY_LABELS[album.category as AlbumCategory] ?? album.category}
+          </span>
+          <span className="text-xs font-bold text-amber-700 bg-amber-100 px-4 py-2 rounded-full border-2 border-amber-300 whitespace-nowrap shadow-sm">
+            {formatDate(album.takenAt ?? "")}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 className="text-2xl md:text-3xl font-black text-slate-950 leading-tight font-heading line-clamp-2 group-hover:text-amber-700 transition-colors duration-300">
+          {album.title}
+        </h3>
+
+        {/* Description */}
+        {album.description && (
+          <p className="text-base text-slate-700 line-clamp-3 leading-relaxed">
             {album.description}
           </p>
-        </div>
-      )}
-    </Link>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -175,7 +156,7 @@ function FilterPills({
   ];
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-3">
       {pills.map(({ label, value }) => {
         const isActive = active === value;
         return (
@@ -183,10 +164,10 @@ function FilterPills({
             key={value}
             onClick={() => onChange(value)}
             className={[
-              "px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer",
+              "px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg hover:scale-105",
               isActive
-                ? "bg-amber-600 text-white shadow-sm"
-                : "border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:border-amber-500 hover:text-amber-600 dark:hover:text-amber-400 bg-white dark:bg-zinc-900",
+                ? "bg-amber-600 text-white border-2 border-amber-600"
+                : "border-2 border-amber-300 text-zinc-800 hover:border-amber-500 bg-white/80 backdrop-blur-sm",
             ].join(" ")}
           >
             {label}
@@ -231,15 +212,15 @@ export default function GalleryPage() {
       : albums.filter((a) => a.category === activeFilter);
 
   return (
-    <main className="min-h-screen bg-orange-glow-radial-light bg-amber-grid-pattern-light text-slate-950 flex flex-col font-sans selection:bg-amber-600 selection:text-white">
+    <main className="min-h-screen flex flex-col font-sans selection:bg-amber-600 selection:text-white">
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="card-orange-glass-light rounded-3xl border border-amber-300 shadow-xl py-12 px-6 text-center bg-white/95 backdrop-blur-md">
+      <section className="max-w-7xl mx-auto w-full px-6 md:px-8 pt-10 pb-6">
+        <div className="rounded-3xl border-2 border-amber-300 shadow-xl py-16 px-8 text-center bg-white/80 backdrop-blur-md">
           {/* Eyebrow label */}
-          <span className="inline-flex items-center gap-1.5 mb-4 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-widest border border-amber-300 text-amber-700 bg-amber-100 font-heading shadow-sm">
+          <span className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border-2 border-amber-400 text-amber-700 bg-amber-100 font-heading shadow-md">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5"
+              className="w-4 h-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -259,25 +240,25 @@ export default function GalleryPage() {
             Media Gallery
           </span>
 
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-950 font-heading">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-950 font-heading mb-4">
             Glimpses of Think India SVNIT
           </h1>
 
-          <p className="mt-3 max-w-2xl mx-auto text-slate-800 font-semibold leading-relaxed">
+          <p className="mt-4 max-w-2xl mx-auto text-base md:text-lg text-slate-700 font-semibold leading-relaxed">
             Capturing key moments from our conclaves, workshops, hackathons, and social initiatives.
           </p>
         </div>
       </section>
 
       {/* ── Content ──────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <section className="mx-auto max-w-7xl px-6 md:px-8 py-10 md:py-14">
         {/* Filter pills */}
-        <div className="mb-8">
+        <div className="mb-10">
           <FilterPills active={activeFilter} onChange={setActiveFilter} />
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
           ) : filtered.length === 0 ? (
@@ -289,7 +270,7 @@ export default function GalleryPage() {
 
         {/* Result count */}
         {!loading && filtered.length > 0 && (
-          <p className="mt-8 text-center text-xs text-zinc-400 dark:text-zinc-600">
+          <p className="mt-10 text-center text-sm text-zinc-600 font-medium">
             Showing {filtered.length} album{filtered.length !== 1 ? "s" : ""}
             {activeFilter !== ALL_FILTER
               ? ` in "${CATEGORY_LABELS[activeFilter as AlbumCategory]}"`

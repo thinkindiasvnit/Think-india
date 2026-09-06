@@ -113,6 +113,22 @@ interface MemberCardProps {
 }
 
 function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Listen for resize
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const initials = member.name
     .split(" ")
     .map((n) => n[0])
@@ -127,17 +143,31 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
   const roleType = member.designation || "Core";
   const cellName = member.position || "General";
 
+  const handleCardClick = () => {
+    if (isMobile) {
+      setIsFlipped(prev => !prev);
+    }
+  };
+
+  // For mobile: use click state, for desktop: use hover state
+  const shouldFlip = isMobile ? isFlipped : isThisHovered;
+
   return (
     <div
-      onMouseEnter={() => member.id && onHover(member.id)}
-      onMouseLeave={onLeave}
+      onMouseEnter={() => !isMobile && member.id && onHover(member.id)}
+      onMouseLeave={() => !isMobile && onLeave()}
+      onClick={handleCardClick}
       className={`w-full h-[320px] flex items-center justify-center [perspective:1000px] transition-all duration-300 ${
-        isOtherHovered ? "opacity-25 scale-[0.98]" : "opacity-100 scale-100"
+        isOtherHovered && !isMobile ? "opacity-25 scale-[0.98]" : "opacity-100 scale-100"
       }`}
     >
       <div
         className={`relative w-full h-full duration-300 [transform-style:preserve-3d] transition-all ease-out cursor-pointer will-change-transform ${
-          isThisHovered ? "[transform:rotateY(180deg)_scale(1.15)] z-50 shadow-2xl" : "[transform:rotateY(0deg)_scale(1.0)] z-0"
+          shouldFlip 
+            ? isMobile 
+              ? "[transform:rotateY(180deg)] z-50 shadow-2xl" 
+              : "[transform:rotateY(180deg)_scale(1.15)] z-50 shadow-2xl"
+            : "[transform:rotateY(0deg)_scale(1.0)] z-0"
         }`}
       >
         
@@ -165,13 +195,13 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
             {member.position}
           </p>
           <span className="inline-block mt-2.5 text-[9px] font-black tracking-wider uppercase text-amber-950/60 bg-amber-100/50 border border-amber-300/40 px-2.5 py-0.5 rounded-lg shadow-sm">
-            Hover to connect →
+            {isMobile ? 'Tap to connect →' : 'Hover to connect →'}
           </span>
         </div>
 
-        {/* ── Back Side (Metallic Orange Gradient) ── */}
+        {/* ── Back Side (Darker Beige/Cream Tones) ── */}
         {/* Added [backface-visibility:hidden], [transform:rotateY(180deg)_translateZ(1px)], and antialiased rendering properties */}
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-tr from-amber-600 via-orange-400 to-yellow-500 border border-amber-300 shadow-2xl rounded-2xl p-4 flex flex-col items-center justify-between text-center [transform:rotateY(180deg)_translateZ(1px)] [backface-visibility:hidden] [backface-visibility:_hidden] [transform-style:preserve-3d] [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale]">
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-amber-200 via-amber-100 to-stone-100 border border-amber-300 shadow-2xl rounded-2xl p-4 flex flex-col items-center justify-between text-center [transform:rotateY(180deg)_translateZ(1px)] [backface-visibility:hidden] [backface-visibility:_hidden] [transform-style:preserve-3d] [-webkit-font-smoothing:antialiased] [-moz-osx-font-smoothing:grayscale]">
           
           {/* Top row: Avatar & Identity + Two Info Boxes */}
           <div className="w-full space-y-2">
@@ -191,20 +221,20 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
                 )}
               </div>
               <div className="overflow-hidden">
-                <h4 className="font-black text-white font-heading text-[20px] truncate tracking-tight drop-shadow-sm">{member.name}</h4>
-                <p className="text-amber-100 text-[11px] font-extrabold truncate">{member.position}</p>
+                <h4 className="font-black text-slate-900 font-heading text-[20px] truncate tracking-tight drop-shadow-sm">{member.name}</h4>
+                <p className="text-amber-900 text-[11px] font-extrabold truncate">{member.position}</p>
               </div>
             </div>
 
             {/* Two boxes showing Role Type & Cell Name */}
             <div className="grid grid-cols-2 gap-2 w-full">
-              <div className="bg-white/20 border border-amber-200/40 backdrop-blur-sm rounded-lg py-1 px-2 text-center shadow-sm">
-                <span className="block text-[8px] uppercase tracking-widest text-amber-100 font-bold">Role</span>
-                <span className="block text-[11px] font-black text-white truncate">{roleType}</span>
+              <div className="bg-white/60 border border-amber-300/60 backdrop-blur-sm rounded-lg py-1 px-2 text-center shadow-sm">
+                <span className="block text-[8px] uppercase tracking-widest text-amber-800 font-bold">Role</span>
+                <span className="block text-[11px] font-black text-slate-900 truncate">{roleType}</span>
               </div>
-              <div className="bg-white/20 border border-amber-200/40 backdrop-blur-sm rounded-lg py-1 px-2 text-center shadow-sm">
-                <span className="block text-[8px] uppercase tracking-widest text-amber-100 font-bold">Cell</span>
-                <span className="block text-[11px] font-black text-white truncate">{cellName}</span>
+              <div className="bg-white/60 border border-amber-300/60 backdrop-blur-sm rounded-lg py-1 px-2 text-center shadow-sm">
+                <span className="block text-[8px] uppercase tracking-widest text-amber-800 font-bold">Cell</span>
+                <span className="block text-[11px] font-black text-slate-900 truncate">{cellName}</span>
               </div>
             </div>
           </div>
@@ -212,17 +242,17 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
           {/* Middle: Description */}
           <div className="my-1 flex-1 flex items-center justify-center w-full">
             {member.description ? (
-              <p className="text-amber-50 text-xs line-clamp-2 leading-relaxed font-medium">
+              <p className="text-slate-800 text-xs line-clamp-2 leading-relaxed font-medium">
                 &ldquo;{member.description}&rdquo;
               </p>
             ) : (
-              <p className="text-amber-200/70 text-[11px] italic">No description provided.</p>
+              <p className="text-amber-700/70 text-[11px] italic">No description provided.</p>
             )}
           </div>
 
           {/* Bottom: Social Links */}
-          <div className="w-full flex items-center justify-between pt-2 border-t border-amber-300/40">
-            <span className="text-[9px] uppercase tracking-widest text-amber-100 font-extrabold">Connect</span>
+          <div className="w-full flex items-center justify-between pt-2 border-t border-amber-400/40">
+            <span className="text-[9px] uppercase tracking-widest text-amber-900 font-extrabold">Connect</span>
             {hasSocials ? (
               <div className="flex items-center gap-1.5">
                 {member.socialLinks.linkedin && (
@@ -231,7 +261,8 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${member.name} on LinkedIn`}
-                    className="w-7 h-7 rounded-lg bg-white/90 border border-amber-300 flex items-center justify-center text-amber-900 hover:bg-slate-900 hover:text-white transition-colors shadow-sm"
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-7 h-7 rounded-lg bg-white/90 border border-amber-400 flex items-center justify-center text-amber-900 hover:bg-slate-900 hover:text-white transition-colors shadow-sm"
                   >
                     <LinkedInIcon />
                   </a>
@@ -240,14 +271,15 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
                   <a
                     href={`mailto:${member.socialLinks.email}`}
                     aria-label={`Email ${member.name}`}
-                    className="w-7 h-7 rounded-lg bg-white/90 border border-amber-300 flex items-center justify-center text-amber-900 hover:bg-slate-900 hover:text-white transition-colors shadow-sm"
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-7 h-7 rounded-lg bg-white/90 border border-amber-400 flex items-center justify-center text-amber-900 hover:bg-slate-900 hover:text-white transition-colors shadow-sm"
                   >
                     <EmailIcon />
                   </a>
                 )}
               </div>
             ) : (
-              <span className="text-[11px] text-amber-200/70 italic">None</span>
+              <span className="text-[11px] text-amber-700/70 italic">None</span>
             )}
           </div>
 

@@ -114,13 +114,13 @@ export function InternshipDiaries() {
         )}
 
         {/* Viewport for cards */}
-        <div className="diary-anim relative w-full h-[500px] sm:h-[400px] overflow-hidden mb-12">
+        <div className="diary-anim relative w-full h-[550px] sm:h-[450px] overflow-hidden mb-12">
           {loading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-10 h-10 border-4 border-amber-600 border-t-transparent rounded-full animate-spin" />
             </div>
           ) : filteredDiaries.length === 0 ? (
-            <div className="absolute inset-0 flex items-center justify-center text-zinc-500 font-medium bg-white rounded-3xl border border-amber-100">
+            <div className="absolute inset-0 flex items-center justify-center text-zinc-500 font-medium bg-white/80 backdrop-blur-md rounded-3xl border-2 border-amber-200 shadow-xl">
               No diaries found for {selectedYear}.
             </div>
           ) : (
@@ -129,45 +129,55 @@ export function InternshipDiaries() {
             return (
               <div
                 key={student.id}
-                className={`absolute inset-0 w-full h-full p-6 sm:p-10 bg-white rounded-3xl shadow-lg border border-amber-100 flex flex-col sm:flex-row gap-6 sm:gap-10 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive
-                  ? "opacity-100 translate-x-0 pointer-events-auto z-10"
-                  : "opacity-0 translate-x-12 pointer-events-none z-0"
+                className={`absolute inset-0 w-full h-full p-8 sm:p-12 bg-white rounded-3xl shadow-xl border-2 border-amber-200 flex flex-col sm:flex-row gap-8 sm:gap-12 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] backdrop-blur-sm ${isActive
+                  ? "opacity-100 translate-x-0 scale-100 pointer-events-auto z-10"
+                  : "opacity-0 translate-x-16 scale-95 pointer-events-none z-0"
                   }`}
               >
-                {/* Left Column (approx 25-30%) */}
-                <div className="flex flex-col sm:w-1/3 md:w-1/4 sm:min-w-[200px] border-b sm:border-b-0 sm:border-r border-amber-100 pb-6 sm:pb-0 sm:pr-8 items-center sm:items-start text-center sm:text-left h-auto sm:h-full justify-start">
+                {/* Left Column - Profile */}
+                <div className="flex flex-col sm:w-1/3 md:w-1/4 sm:min-w-[220px] border-b sm:border-b-0 sm:border-r-2 border-amber-200 pb-8 sm:pb-0 sm:pr-10 items-center sm:items-start text-center sm:text-left h-auto sm:h-full justify-start">
                   {student.photoURL ? (
-                    <img src={student.photoURL} alt={student.name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-[#FEF0E0] mb-4 shadow-sm" />
+                    <div className="relative group mb-6">
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+                      <img 
+                        src={student.photoURL} 
+                        alt={student.name} 
+                        className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500" 
+                      />
+                    </div>
                   ) : (
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#FEF0E0] flex items-center justify-center border-4 border-white shadow-sm mb-4">
-                      <span className="text-[#E28941] font-black text-4xl font-heading">{student.name.charAt(0)}</span>
+                    <div className="relative group mb-6">
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity duration-500" />
+                      <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center border-4 border-white shadow-lg group-hover:scale-105 transition-transform duration-500">
+                        <span className="text-amber-700 font-black text-5xl font-heading">{student.name.charAt(0)}</span>
+                      </div>
                     </div>
                   )}
                   
-                  <h3 className="font-heading text-2xl font-black text-[#1A1A1A] mb-1 leading-tight">
+                  <h3 className="font-heading text-2xl sm:text-3xl font-black text-slate-950 mb-2 leading-tight">
                     {student.name}
                   </h3>
-                  <p className="text-xs font-bold tracking-widest text-[#E28941] uppercase mb-3">
+                  <p className="text-xs font-black tracking-[0.15em] text-amber-700 uppercase mb-4 bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
                     {student.college}
                   </p>
-                  <p className="text-sm font-medium text-[#666666]">
+                  <p className="text-sm font-semibold text-slate-600 leading-relaxed">
                     {student.description}
                   </p>
                 </div>
 
-                {/* Right Column (approx 70-75%) */}
+                {/* Right Column - Testimonial */}
                 <div className="flex flex-col sm:w-2/3 md:w-3/4 justify-start h-full overflow-y-auto pr-2 custom-scrollbar">
-                  <div className="inline-flex items-center px-4 py-2 bg-[#FEF0E0] rounded-full border border-amber-200 mb-6 self-start">
-                    <span className="text-xs font-bold text-[#E28941] uppercase tracking-wider">
+                  <div className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-full border-2 border-amber-300 mb-8 self-start shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <span className="text-xs font-black text-amber-700 uppercase tracking-[0.15em]">
                       Interned at @{student.institute}
                     </span>
                   </div>
                   
                   <div className="relative">
-                    <svg className="absolute -top-4 -left-4 w-10 h-10 text-amber-100/60 z-0" fill="currentColor" viewBox="0 0 32 32">
+                    <svg className="absolute -top-6 -left-6 w-16 h-16 text-amber-200/40 z-0" fill="currentColor" viewBox="0 0 32 32">
                       <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm18 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
                     </svg>
-                    <p className="relative z-10 text-lg sm:text-xl md:text-2xl text-[#333333] leading-relaxed italic font-medium">
+                    <p className="relative z-10 text-xl sm:text-2xl md:text-3xl text-slate-800 leading-relaxed italic font-medium">
                       "{student.review}"
                     </p>
                   </div>
@@ -177,19 +187,19 @@ export function InternshipDiaries() {
           }))}
         </div>
 
-        {/* Controls - Strictly separated from cards */}
+        {/* Controls */}
         <div className="diary-anim flex items-center justify-between px-2">
           <div className="flex gap-4">
             <button
               onClick={handlePrev}
-              className="w-12 h-12 flex items-center justify-center rounded-full border border-amber-200 text-[#1A1A1A] hover:border-[#E28941] hover:text-[#E28941] hover:bg-white transition-all shadow-sm"
+              className="w-14 h-14 flex items-center justify-center rounded-full border-2 border-amber-300 bg-white text-slate-900 hover:border-amber-600 hover:bg-amber-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110 font-bold text-xl"
               aria-label="Previous student"
             >
               ←
             </button>
             <button
               onClick={handleNext}
-              className="w-12 h-12 flex items-center justify-center rounded-full border border-amber-200 text-[#1A1A1A] hover:border-[#E28941] hover:text-[#E28941] hover:bg-white transition-all shadow-sm"
+              className="w-14 h-14 flex items-center justify-center rounded-full border-2 border-amber-300 bg-white text-slate-900 hover:border-amber-600 hover:bg-amber-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg hover:scale-110 font-bold text-xl"
               aria-label="Next student"
             >
               →
@@ -197,12 +207,12 @@ export function InternshipDiaries() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="text-sm font-bold tracking-widest text-[#1A1A1A]">
-              {String(active + 1).padStart(2, '0')} <span className="text-amber-300">/</span> {String(total).padStart(2, '0')}
+            <div className="text-base font-black tracking-[0.15em] text-slate-900">
+              {String(active + 1).padStart(2, '0')} <span className="text-amber-400 mx-1">/</span> {String(total).padStart(2, '0')}
             </div>
-            <div className="w-32 h-1 bg-amber-200 rounded-full overflow-hidden">
+            <div className="w-40 h-2 bg-amber-200 rounded-full overflow-hidden shadow-inner">
               <div
-                className="h-full bg-[#E28941] transition-all duration-300 ease-out"
+                className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500 ease-out shadow-lg"
                 style={{ width: `${((active + 1) / total) * 100}%` }}
               />
             </div>
@@ -357,83 +367,88 @@ export function ApplicationProcess() {
 export default function FinalCTA() {
   return (
     <section id="apply-now" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#FFF8E7]">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-          <div>
-            <p className="text-xs font-bold tracking-[0.3em] text-[#E28941] uppercase mb-4">
-              Join The Movement
-            </p>
-            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1A1A] leading-[1.1] tracking-tight mb-6">
-              YOUR NEXT<br />
-              <span className="text-[#E28941]">EXPERIENCE</span><br />
-              STARTS HERE
-            </h2>
-            <p className="text-[#666666] text-lg mb-10 max-w-md font-medium leading-relaxed">
-              Turn your curiosity into impact. Apply for the Think India Internship
-              Experience and join 340+ interns who have shaped India's future.
-            </p>
-
-            <div className="flex flex-wrap gap-8 mb-10 pb-10 border-b border-amber-200">
-              {[
-                { val: "340+", label: "Interns" },
-                { val: "45", label: "Institutes" },
-                { val: "7", label: "Programs" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <p className="font-heading text-3xl font-black text-[#E28941] leading-none mb-2">
-                    {stat.val}
-                  </p>
-                  <p className="text-xs font-bold tracking-widest text-[#666666] uppercase">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
+      <div className="max-w-7xl mx-auto">
+        <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-white via-amber-50/50 to-orange-50/30 border-2 border-amber-200 shadow-2xl">
+          
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-amber-200/30 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-orange-200/30 to-transparent rounded-full blur-3xl" />
+          
+          <div className="relative z-10 px-8 sm:px-12 lg:px-20 py-16 sm:py-20 lg:py-24">
+            
+            {/* Eyebrow */}
+            <div className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] bg-amber-600 text-white shadow-lg">
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                Join The Movement
+              </span>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 rounded-xl bg-[#E28941] text-white font-bold tracking-wider uppercase shadow-[0_8px_32px_-4px_rgba(226,137,65,0.6)] hover:-translate-y-1 hover:shadow-[0_12px_40px_-4px_rgba(226,137,65,0.8)] transition-all duration-300">
-                Apply Now →
-              </button>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="px-8 py-4 rounded-xl bg-transparent border-2 border-[#E28941] text-[#E28941] font-bold tracking-wider uppercase hover:bg-amber-50 transition-colors duration-300"
-              >
-                Explore Programs
-              </button>
+            {/* Main Heading */}
+            <div className="text-center mb-12">
+              <h2 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-black text-slate-950 leading-[1.1] tracking-tight mb-6">
+                YOUR NEXT<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">EXPERIENCE</span><br />
+                STARTS HERE
+              </h2>
+              <p className="text-slate-700 text-lg sm:text-xl max-w-3xl mx-auto font-semibold leading-relaxed">
+                Turn your curiosity into impact. Join the Think India Internship
+                Experience and be part of a community shaping India's future.
+              </p>
             </div>
-          </div>
 
-          {/* CSS 3D Book */}
-          <div className="flex justify-center items-center perspective-[1200px] h-[400px]">
-            <div className="relative w-[240px] h-[340px] transform-gpu preserve-3d animate-[bookFloat_4s_ease-in-out_infinite] rotate-y-[-20deg] rotate-x-[5deg]">
-              <style>{`
-                @keyframes bookFloat {
-                  0%, 100% { transform: rotateY(-20deg) rotateX(5deg) translateY(0); }
-                  50% { transform: rotateY(-20deg) rotateX(5deg) translateY(-15px); }
-                }
-              `}</style>
-
-              {/* Book cover front */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#E28941] to-[#c47a3a] rounded-r-2xl rounded-l-sm shadow-[16px_24px_64px_rgba(226,137,65,0.4),inset_0_0_0_1px_rgba(255,255,255,0.2)] flex flex-col items-center justify-center p-8 backface-hidden">
-                <div className="w-16 h-16 rounded-xl bg-white/20 mb-8 flex items-center justify-center text-3xl shadow-inner">
-                  🇮🇳
+            {/* Stats - The Star of the Show */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+              
+              {/* Stat 1: Interns */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
+                <div className="relative bg-white rounded-3xl border-2 border-amber-300 p-8 sm:p-10 text-center shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  <div className="mb-4 flex justify-center">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="font-heading text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-600 to-orange-600 leading-none mb-3">
+                    100+
+                  </h3>
+                  <p className="text-sm sm:text-base font-bold tracking-[0.2em] text-slate-700 uppercase">
+                    Interns
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 font-medium">
+                    Building India's future
+                  </p>
                 </div>
-                <p className="text-white text-sm font-bold tracking-[0.2em] uppercase text-center leading-[2] font-heading">
-                  THINK INDIA<br />INTERNSHIP<br />GUIDE<br />2025–26
-                </p>
               </div>
 
-              {/* Book spine */}
-              <div
-                className="absolute w-8 h-full bg-gradient-to-b from-[#a0622d] to-[#8b4d1e] left-[-28px] top-0 rounded-l-sm transform-gpu origin-right rotate-y-[-90deg] translate-x-[-16px]"
-              />
+              {/* Stat 2: Institutes */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
+                <div className="relative bg-white rounded-3xl border-2 border-amber-300 p-8 sm:p-10 text-center shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  <div className="mb-4 flex justify-center">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="font-heading text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-600 to-orange-600 leading-none mb-3">
+                    45+
+                  </h3>
+                  <p className="text-sm sm:text-base font-bold tracking-[0.2em] text-slate-700 uppercase">
+                    Institutes
+                  </p>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 font-medium">
+                    Premier partnerships
+                  </p>
+                </div>
+              </div>
 
-              {/* Shadow underneath */}
-              <div className="absolute -bottom-12 left-4 right-[-20px] h-8 bg-amber-900/10 rounded-[50%] blur-xl" />
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </section>
