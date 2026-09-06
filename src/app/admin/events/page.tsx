@@ -448,12 +448,6 @@ export default function AdminEventsPage() {
             >
               <IconMic size={14} className="text-amber-800" /> Manage Marquee Dignitaries ({dignitaries.length})
             </button>
-            <button
-              onClick={handleResetSampleEvents}
-              className="px-4 py-2.5 rounded-xl font-extrabold bg-white border border-amber-300 text-xs text-amber-950 hover:bg-amber-100/60 shadow-sm transition-colors"
-            >
-              Reset Sample Events
-            </button>
             {!isFormOpen && (
               <button
                 onClick={() => setIsFormOpen(true)}
@@ -462,12 +456,6 @@ export default function AdminEventsPage() {
                 <IconPlus size={16} /> Add New Event
               </button>
             )}
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2.5 rounded-xl font-extrabold bg-rose-100 border border-rose-200 text-xs text-rose-800 hover:bg-rose-200 shadow-sm transition-colors"
-            >
-              Sign Out
-            </button>
           </div>
         </div>
 
