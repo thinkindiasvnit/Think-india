@@ -175,14 +175,11 @@ export const createInternshipDiary = async (
   const payload: InternshipDiary = { ...data, createdAt: now, updatedAt: now };
 
   if (isFirebaseConfigured()) {
-    try {
-      const docRef = await addDoc(collection(db, DIARY_COLLECTION), payload);
-      return { ...payload, id: docRef.id };
-    } catch (error) {
-      console.warn("Firestore write failed, falling back to LocalStorage:", error);
-    }
+    const docRef = await addDoc(collection(db, DIARY_COLLECTION), payload);
+    return { ...payload, id: docRef.id };
   }
 
+  // localStorage-only fallback (Firebase not configured at all)
   const diaries = getLocalDiaries();
   const local = { ...payload, id: `local_${Date.now()}` };
   diaries.push(local);
@@ -197,14 +194,10 @@ export const updateInternshipDiary = async (
   const now = new Date().toISOString();
 
   if (isFirebaseConfigured() && !id.startsWith("local_")) {
-    try {
-      const docRef = doc(db, DIARY_COLLECTION, id);
-      await updateDoc(docRef, { ...data, updatedAt: now });
-      const snap = await getDoc(docRef);
-      return mapDoc(snap.id, snap.data()!);
-    } catch (error) {
-      console.warn("Firestore update failed, falling back to LocalStorage:", error);
-    }
+    const docRef = doc(db, DIARY_COLLECTION, id);
+    await updateDoc(docRef, { ...data, updatedAt: now });
+    const snap = await getDoc(docRef);
+    return mapDoc(snap.id, snap.data()!);
   }
 
   const diaries = getLocalDiaries();
@@ -218,12 +211,8 @@ export const updateInternshipDiary = async (
 
 export const deleteInternshipDiary = async (id: string): Promise<void> => {
   if (isFirebaseConfigured() && !id.startsWith("local_")) {
-    try {
-      await deleteDoc(doc(db, DIARY_COLLECTION, id));
-      return;
-    } catch (error) {
-      console.warn("Firestore delete failed, falling back to LocalStorage:", error);
-    }
+    await deleteDoc(doc(db, DIARY_COLLECTION, id));
+    return;
   }
   saveLocalDiaries(getLocalDiaries().filter((d) => d.id !== id));
 };
