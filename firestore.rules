@@ -42,6 +42,12 @@ service cloud.firestore {
         allow read, write: if true;
       }
     }
+    match /albums/{albumId} {
+      allow read, write: if true;
+      match /photos/{photoId} {
+        allow read, write: if true;
+      }
+    }
 
     // ── User Submissions (Forms, Comments, Registrations) ──
     match /queries/{queryId} { allow read, write: if true; }
