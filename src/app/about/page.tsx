@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function SectionLabel({ text }: { text: string }) {
   return (
-    <p className="text-amber-600 font-bold text-sm tracking-[0.25em] uppercase mb-4" style={{ fontFamily: "'Barlow', sans-serif" }}>
+    <p className="text-amber-700 font-bold text-xs md:text-sm tracking-[0.2em] uppercase mb-3 md:mb-4" style={{ fontFamily: "'Barlow', sans-serif" }}>
       {text}
     </p>
   );
@@ -12,31 +12,31 @@ function SectionLabel({ text }: { text: string }) {
 
 function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 bg-transparent">
-      <div className="relative z-10 max-w-6xl mx-auto px-8 md:px-16 py-20">
+    <section className="relative min-h-[85vh] md:min-h-screen flex flex-col justify-center overflow-hidden pt-20 md:pt-24 pb-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-16 py-12 md:py-20">
         <div className="fade-up">
           <SectionLabel text="ABOUT THINK INDIA SVNIT" />
         </div>
         <h1
           className="font-bold leading-[0.92] tracking-[-0.01em] fade-up fade-up-delay-1 text-zinc-900"
-          style={{ fontFamily: "'Barlow', sans-serif", fontSize: "clamp(4rem, 11vw, 10rem)" }}
+          style={{ fontFamily: "'Barlow', sans-serif", fontSize: "clamp(3rem, 11vw, 10rem)" }}
         >
           THINK.<br />
           LEAD.<br />
           <span className="text-amber-600">TRANSFORM.</span>
         </h1>
-        <p className="mt-8 text-zinc-600 text-xl md:text-2xl max-w-xl leading-relaxed fade-up fade-up-delay-2">
+        <p className="mt-6 md:mt-8 text-zinc-700 text-lg md:text-2xl max-w-2xl leading-relaxed fade-up fade-up-delay-2">
           Building a generation of young thinkers, leaders, innovators and nation-builders.
         </p>
       </div>
 
       <button
-        className="absolute bottom-12 right-10 md:right-16 w-14 h-14 rounded-full bg-zinc-900 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg"
+        className="absolute bottom-8 md:bottom-12 right-6 md:right-16 w-12 h-12 md:w-14 md:h-14 rounded-full bg-amber-600 text-white flex items-center justify-center hover:scale-110 hover:bg-amber-700 transition-all shadow-lg"
         onClick={() => document.getElementById("who-we-are")?.scrollIntoView({ behavior: "smooth" })}
         aria-label="Scroll down"
       >
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M5 17L17 5M17 5H8M17 5V14" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M11 5v12M11 17l-4-4m4 4l4-4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
     </section>
@@ -45,30 +45,30 @@ function Hero() {
 
 function WhoWeAre() {
   return (
-    <section id="who-we-are" className="bg-transparent py-24 md:py-32 px-8 md:px-16">
-      <div className="max-w-7xl mx-auto bg-white/60 backdrop-blur-sm rounded-3xl p-10 md:p-16 border border-amber-200/50 shadow-sm">
-        <div className="grid md:grid-cols-[1fr_2px_1fr] gap-12 md:gap-16 items-start">
+    <section id="who-we-are" className="py-16 md:py-24 px-6 md:px-16">
+      <div className="max-w-7xl mx-auto bg-white/70 backdrop-blur-md rounded-3xl p-8 md:p-16 border border-amber-200 shadow-lg">
+        <div className="grid md:grid-cols-[1fr_2px_1fr] gap-10 md:gap-16 items-start">
           <div>
             <SectionLabel text="01 / WHO WE ARE" />
-            <h2 className="font-bold text-5xl md:text-6xl leading-tight mt-2 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
+            <h2 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight mt-2 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
               Young minds.<br />
               One vision.<br />
               A stronger nation.
             </h2>
           </div>
-          <div className="hidden md:block w-px bg-amber-200 self-stretch mx-auto" />
-          <div className="flex flex-col justify-center gap-6 text-zinc-700 text-lg leading-relaxed">
+          <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-amber-300 to-transparent self-stretch mx-auto" />
+          <div className="flex flex-col justify-center gap-5 text-zinc-700 text-base md:text-lg leading-relaxed">
             <p>
               Think India is a youth-driven platform that brings together students and young minds who believe in leadership, innovation, national development and meaningful contribution to society.
             </p>
             <p>
               At SVNIT, the chapter creates opportunities for students to engage with ideas, people and initiatives that encourage critical thinking, leadership, technological excellence and a spirit of service.
             </p>
-            <div className="mt-4 pt-4 border-t border-amber-200 flex flex-wrap gap-8 text-center">
+            <div className="mt-6 pt-6 border-t border-amber-200 flex flex-wrap gap-6 md:gap-8">
               {[["200+", "Active Members"], ["50+", "Events Hosted"], ["10+", "Initiatives"]].map(([n, l]) => (
-                <div key={l}>
-                  <p className="font-black text-4xl text-amber-600" style={{ fontFamily: "'Barlow', sans-serif" }}>{n}</p>
-                  <p className="text-sm text-zinc-500 tracking-wide mt-1">{l}</p>
+                <div key={l} className="text-center">
+                  <p className="font-black text-3xl md:text-4xl text-amber-600" style={{ fontFamily: "'Barlow', sans-serif" }}>{n}</p>
+                  <p className="text-xs md:text-sm text-zinc-600 tracking-wide mt-1 font-medium">{l}</p>
                 </div>
               ))}
             </div>
@@ -86,21 +86,21 @@ function OurPurpose() {
     { n: "03", title: "TRANSFORM", desc: "Turning ideas into meaningful initiatives that contribute to campus, society and the nation." },
   ];
   return (
-    <section className="bg-transparent py-24 md:py-32 px-8 md:px-16">
+    <section className="py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">
         <SectionLabel text="02 / OUR PURPOSE" />
-        <h2 className="font-bold text-5xl md:text-7xl mb-14 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
+        <h2 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-10 md:mb-14 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
           From ideas to impact.
         </h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {cards.map((c) => (
             <div
               key={c.n}
-              className="bg-white/60 backdrop-blur-sm border border-amber-200/60 rounded-2xl p-8 flex flex-col gap-4 hover:-translate-y-1 hover:shadow-[0_12px_40px_-8px_rgba(217,119,6,0.2)] transition-all duration-300 cursor-default"
+              className="bg-white/70 backdrop-blur-md border-2 border-amber-200 rounded-2xl p-6 md:p-8 flex flex-col gap-3 md:gap-4 hover:-translate-y-2 hover:shadow-xl hover:border-amber-400 transition-all duration-300 cursor-default group"
             >
-              <span className="font-black text-5xl text-amber-200" style={{ fontFamily: "'Barlow', sans-serif" }}>{c.n}</span>
-              <h3 className="font-bold text-3xl tracking-wide text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{c.title}</h3>
-              <p className="text-zinc-600 leading-relaxed">{c.desc}</p>
+              <span className="font-black text-4xl md:text-5xl text-amber-300 group-hover:text-amber-500 transition-colors" style={{ fontFamily: "'Barlow', sans-serif" }}>{c.n}</span>
+              <h3 className="font-bold text-2xl md:text-3xl tracking-wide text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{c.title}</h3>
+              <p className="text-zinc-700 leading-relaxed text-sm md:text-base">{c.desc}</p>
             </div>
           ))}
         </div>
@@ -117,26 +117,26 @@ function WhatWeDo() {
     { n: "04", icon: "◉", title: "Youth Development", desc: "Platforms that help students develop communication, confidence, teamwork, leadership and problem-solving skills." },
   ];
   return (
-    <section className="bg-transparent py-24 md:py-32 px-8 md:px-16">
+    <section className="py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-14">
+        <div className="mb-10 md:mb-14">
           <SectionLabel text="03 / WHAT WE DO" />
-          <h2 className="font-bold text-5xl md:text-7xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
+          <h2 className="font-bold text-4xl md:text-5xl lg:text-6xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>
             Where ideas<br />meet action.
           </h2>
         </div>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-5">
           {items.map((item) => (
             <div
               key={item.n}
-              className="bg-white/60 backdrop-blur-sm border border-amber-200/60 rounded-2xl p-10 flex flex-col gap-4 hover:bg-white/80 transition-colors duration-200"
+              className="bg-white/70 backdrop-blur-md border-2 border-amber-200 rounded-2xl p-8 md:p-10 flex flex-col gap-3 md:gap-4 hover:bg-white/90 hover:border-amber-400 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start justify-between">
-                <span className="font-black text-6xl text-amber-600" style={{ fontFamily: "'Barlow', sans-serif" }}>{item.n}</span>
-                <span className="text-3xl text-amber-300">{item.icon}</span>
+                <span className="font-black text-5xl md:text-6xl text-amber-600" style={{ fontFamily: "'Barlow', sans-serif" }}>{item.n}</span>
+                <span className="text-2xl md:text-3xl text-amber-400">{item.icon}</span>
               </div>
-              <h3 className="font-bold text-2xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{item.title}</h3>
-              <p className="text-zinc-600 leading-relaxed text-base">{item.desc}</p>
+              <h3 className="font-bold text-xl md:text-2xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{item.title}</h3>
+              <p className="text-zinc-700 leading-relaxed text-sm md:text-base">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -153,24 +153,24 @@ function OurJourney() {
     { n: "04", year: "Year 4", title: "A Growing Community", desc: "Building a network of students united by curiosity, responsibility and the desire to contribute." },
   ];
   return (
-    <section className="bg-transparent py-24 md:py-32 px-8 md:px-16">
+    <section className="py-16 md:py-24 px-6 md:px-16 bg-gradient-to-br from-amber-50/50 to-orange-50/30">
       <div className="max-w-7xl mx-auto">
         <SectionLabel text="04 / OUR JOURNEY" />
-        <h2 className="font-bold text-5xl md:text-7xl mb-4 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>OUR JOURNEY</h2>
-        <p className="text-zinc-600 text-lg mb-16">Growing a community of young changemakers.</p>
+        <h2 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-3 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>OUR JOURNEY</h2>
+        <p className="text-zinc-700 text-base md:text-lg mb-12 md:mb-16">Growing a community of young changemakers.</p>
 
         {/* Desktop horizontal timeline */}
         <div className="hidden md:block relative">
-          <div className="absolute top-5 left-0 right-0 h-px bg-amber-200" />
-          <div className="grid grid-cols-4 gap-8">
+          <div className="absolute top-5 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300" />
+          <div className="grid grid-cols-4 gap-6 lg:gap-8">
             {milestones.map((m) => (
-              <div key={m.n} className="relative flex flex-col gap-4">
-                <div className="w-10 h-10 rounded-full border-2 border-amber-500 bg-white/80 flex items-center justify-center z-10">
-                  <div className="w-3 h-3 rounded-full bg-amber-500" />
+              <div key={m.n} className="relative flex flex-col gap-3 md:gap-4">
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border-3 border-amber-500 bg-white shadow-md flex items-center justify-center z-10">
+                  <div className="w-3 h-3 md:w-3.5 md:h-3.5 rounded-full bg-amber-600" />
                 </div>
-                <span className="font-black text-amber-600 text-sm tracking-widest" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.year}</span>
-                <h4 className="font-bold text-xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.title}</h4>
-                <p className="text-zinc-600 text-sm leading-relaxed">{m.desc}</p>
+                <span className="font-black text-amber-700 text-xs md:text-sm tracking-widest" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.year}</span>
+                <h4 className="font-bold text-lg md:text-xl text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.title}</h4>
+                <p className="text-zinc-700 text-xs md:text-sm leading-relaxed">{m.desc}</p>
               </div>
             ))}
           </div>
@@ -179,17 +179,17 @@ function OurJourney() {
         {/* Mobile timeline */}
         <div className="md:hidden flex flex-col gap-0">
           {milestones.map((m, i) => (
-            <div key={m.n} className="flex gap-6">
+            <div key={m.n} className="flex gap-5">
               <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full border-2 border-amber-500 bg-white/80 flex items-center justify-center flex-shrink-0">
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                <div className="w-9 h-9 rounded-full border-3 border-amber-500 bg-white shadow-md flex items-center justify-center flex-shrink-0">
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-600" />
                 </div>
-                {i < milestones.length - 1 && <div className="w-px flex-1 bg-amber-200 mt-2 mb-2" />}
+                {i < milestones.length - 1 && <div className="w-0.5 flex-1 bg-gradient-to-b from-amber-400 to-amber-300 mt-2 mb-2" />}
               </div>
-              <div className="pb-10">
-                <span className="font-bold text-amber-600 text-xs tracking-widest" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.year}</span>
-                <h4 className="font-black text-xl mt-1 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.title}</h4>
-                <p className="text-zinc-600 text-sm leading-relaxed mt-2">{m.desc}</p>
+              <div className="pb-8">
+                <span className="font-bold text-amber-700 text-xs tracking-widest" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.year}</span>
+                <h4 className="font-black text-lg mt-1 text-zinc-900" style={{ fontFamily: "'Barlow', sans-serif" }}>{m.title}</h4>
+                <p className="text-zinc-700 text-sm leading-relaxed mt-2">{m.desc}</p>
               </div>
             </div>
           ))}
@@ -202,20 +202,20 @@ function OurJourney() {
 function OurValues() {
   const values = ["NATION FIRST", "LEADERSHIP", "INNOVATION", "INTEGRITY", "SERVICE", "COLLABORATION"];
   return (
-    <section className="bg-zinc-900/95 backdrop-blur-sm py-24 md:py-32 px-8 md:px-16 overflow-hidden relative">
-      <div className="relative z-10 max-w-7xl mx-auto">
+    <section className="py-16 md:py-24 px-6 md:px-16">
+      <div className="max-w-7xl mx-auto">
         <SectionLabel text="05 / OUR VALUES" />
-        <h2 className="font-bold text-white text-5xl md:text-6xl mb-16" style={{ fontFamily: "'Barlow', sans-serif" }}>WHAT DRIVES US</h2>
-        <div className="flex flex-wrap gap-4 md:gap-6">
+        <h2 className="font-bold text-zinc-900 text-4xl md:text-5xl lg:text-6xl mb-10 md:mb-16" style={{ fontFamily: "'Barlow', sans-serif" }}>WHAT DRIVES US</h2>
+        <div className="flex flex-wrap gap-3 md:gap-5">
           {values.map((v, i) => (
             <div
               key={v}
-              className={`border rounded-xl px-6 py-4 hover:bg-amber-600 hover:border-amber-600 transition-all duration-300 cursor-default group
-                ${i === 0 ? "border-amber-500 bg-amber-600/20 md:px-12 md:py-7" : "border-white/10 bg-white/5"}`}
+              className={`border-2 rounded-2xl px-5 py-3 md:px-8 md:py-5 hover:bg-amber-600 hover:border-amber-600 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default group
+                ${i === 0 ? "border-amber-500 bg-gradient-to-br from-amber-100 to-amber-50 shadow-md md:px-10 md:py-6" : "border-amber-200 bg-white/70 backdrop-blur-md"}`}
             >
               <span
-                className={`font-black tracking-[0.12em] group-hover:text-white transition-colors
-                  ${i === 0 ? "text-amber-500 text-2xl md:text-4xl" : "text-white/80 text-lg md:text-2xl"}`}
+                className={`font-black tracking-[0.08em] md:tracking-[0.12em] group-hover:text-white transition-colors
+                  ${i === 0 ? "text-amber-700 text-xl md:text-3xl lg:text-4xl" : "text-zinc-800 text-base md:text-xl lg:text-2xl"}`}
                 style={{ fontFamily: "'Barlow', sans-serif" }}
               >
                 {v}
@@ -230,9 +230,9 @@ function OurValues() {
 
 function Community() {
   return (
-    <section className="bg-transparent py-24 md:py-32 px-8 md:px-16">
+    <section className="py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-7xl mx-auto">
-        <div className="relative rounded-[2rem] overflow-hidden min-h-[500px] flex items-end">
+        <div className="relative rounded-3xl overflow-hidden min-h-[400px] md:min-h-[550px] flex items-end shadow-2xl">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1758270704763-22072a90d3b6?w=1400&h=700&fit=crop&auto=format"
@@ -241,30 +241,30 @@ function Community() {
           />
           <div
             className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(217,119,6,0.85) 0%, rgba(15,14,12,0.6) 50%, transparent 100%)" }}
+            style={{ background: "linear-gradient(to top, rgba(217,119,6,0.9) 0%, rgba(15,14,12,0.6) 50%, transparent 100%)" }}
           />
-          <div className="relative z-10 p-10 md:p-16 max-w-2xl">
-            <h2 className="font-black text-white text-4xl md:text-6xl leading-tight mb-4" style={{ fontFamily: "'Barlow', sans-serif" }}>
+          <div className="relative z-10 p-8 md:p-16 max-w-3xl">
+            <h2 className="font-black text-white text-3xl md:text-5xl lg:text-6xl leading-tight mb-3 md:mb-4" style={{ fontFamily: "'Barlow', sans-serif" }}>
               More than a chapter.<br />
               <span className="text-amber-200">A community of thinkers.</span>
             </h2>
-            <p className="text-white/80 text-lg mb-8 leading-relaxed">
+            <p className="text-white/90 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
               Think India SVNIT brings together students who want to learn, question, collaborate and create meaningful change.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 md:gap-4">
               <Link
                 href="/team"
-                className="bg-amber-600 text-white font-bold text-sm tracking-widest px-7 py-3.5 rounded-full hover:bg-amber-700 transition-colors"
+                className="bg-white text-amber-700 font-bold text-xs md:text-sm tracking-widest px-6 md:px-8 py-3 md:py-3.5 rounded-full hover:bg-amber-100 transition-colors shadow-lg"
                 style={{ fontFamily: "'Barlow', sans-serif" }}
               >
                 MEET OUR TEAM →
               </Link>
               <Link
                 href="/events"
-                className="text-white/80 font-bold text-sm tracking-widest px-4 py-3.5 underline underline-offset-4 hover:text-white transition-colors"
+                className="bg-transparent border-2 border-white text-white font-bold text-xs md:text-sm tracking-widest px-6 md:px-8 py-3 md:py-3.5 rounded-full hover:bg-white hover:text-amber-700 transition-colors"
                 style={{ fontFamily: "'Barlow', sans-serif" }}
               >
-                EXPLORE OUR INITIATIVES →
+                EXPLORE INITIATIVES →
               </Link>
             </div>
           </div>
@@ -276,7 +276,7 @@ function Community() {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-transparent relative z-10 w-full">
+    <div className="flex flex-col min-h-screen relative z-10 w-full">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap');
         @keyframes fadeUp {
@@ -286,7 +286,6 @@ export default function AboutPage() {
         .fade-up { animation: fadeUp 0.7s ease forwards; }
         .fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards; }
         .fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
-        .fade-up-delay-3 { animation-delay: 0.35s; opacity: 0; animation-fill-mode: forwards; }
       `}</style>
       <Hero />
       <WhoWeAre />
