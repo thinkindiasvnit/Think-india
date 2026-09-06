@@ -28,12 +28,14 @@ service cloud.firestore {
     // ── Website Content ──
     match /events/{eventId} { allow read, write: if true; }
     match /blogs/{blogId} { allow read, write: if true; }
-    match /team_members/{memberId} { allow read, write: if true; }
+    match /team_members/{memberId} { allow read, write: if true; }  // legacy name kept
+    match /team/{memberId} { allow read, write: if true; }          // actual name used by teamService.ts
     match /internships/{internshipId} { allow read, write: if true; }
     match /internship_diaries/{diaryId} { allow read, write: if true; }
     match /internshipDiaries/{diaryId} { allow read, write: if true; }
     match /articles/{articleId} { allow read, write: if true; }
     match /article_editions/{editionId} { allow read, write: if true; }
+    match /settings/{settingId} { allow read, write: if true; }     // eventsService dignitaries
     
     // ── Gallery & Photos ──
     match /gallery_albums/{albumId} {
@@ -50,7 +52,8 @@ service cloud.firestore {
     }
 
     // ── User Submissions (Forms, Comments, Registrations) ──
-    match /queries/{queryId} { allow read, write: if true; }
+    match /queries/{queryId} { allow read, write: if true; }             // legacy name kept
+    match /contact_queries/{queryId} { allow read, write: if true; }     // actual name used by queriesService.ts
     match /event_registrations/{regId} { allow read, write: if true; }
     match /blog_comments/{commentId} { allow read, write: if true; }
     match /blog_bookmarks/{bookmarkId} { allow read, write: if true; }

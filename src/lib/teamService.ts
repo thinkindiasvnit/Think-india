@@ -214,12 +214,8 @@ export const createTeamMember = async (
   const payload: TeamMember = { ...data, createdAt: now, updatedAt: now };
 
   if (isFirebaseConfigured()) {
-    try {
-      const docRef = await addDoc(collection(db, TEAM_COLLECTION), payload);
-      return { ...payload, id: docRef.id };
-    } catch (error) {
-      console.warn("Firestore write failed, falling back to LocalStorage:", error);
-    }
+    const docRef = await addDoc(collection(db, TEAM_COLLECTION), payload);
+    return { ...payload, id: docRef.id };
   }
 
   const members = getLocalMembers();
@@ -236,14 +232,10 @@ export const updateTeamMember = async (
   const now = new Date().toISOString();
 
   if (isFirebaseConfigured() && !id.startsWith("local_")) {
-    try {
-      const docRef = doc(db, TEAM_COLLECTION, id);
-      await updateDoc(docRef, { ...data, updatedAt: now });
-      const snap = await getDoc(docRef);
-      return mapDoc(snap.id, snap.data()!);
-    } catch (error) {
-      console.warn("Firestore update failed, falling back to LocalStorage:", error);
-    }
+    const docRef = doc(db, TEAM_COLLECTION, id);
+    await updateDoc(docRef, { ...data, updatedAt: now });
+    const snap = await getDoc(docRef);
+    return mapDoc(snap.id, snap.data()!);
   }
 
   const members = getLocalMembers();
@@ -257,12 +249,8 @@ export const updateTeamMember = async (
 
 export const deleteTeamMember = async (id: string): Promise<void> => {
   if (isFirebaseConfigured() && !id.startsWith("local_")) {
-    try {
-      await deleteDoc(doc(db, TEAM_COLLECTION, id));
-      return;
-    } catch (error) {
-      console.warn("Firestore delete failed, falling back to LocalStorage:", error);
-    }
+    await deleteDoc(doc(db, TEAM_COLLECTION, id));
+    return;
   }
   saveLocalMembers(getLocalMembers().filter((m) => m.id !== id));
 };
