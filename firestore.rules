@@ -50,6 +50,10 @@ service cloud.firestore {
     match /blog_bookmarks/{bookmarkId} { allow read, write: if true; }
     match /blog_subscribers/{subscriberId} { allow read, write: if true; }
 
+    // ── Newspaper Editions ──
+    match /newspaper_editions/{editionId} { allow read, write: if true; }
+    match /deleted_newspaper_editions/{editionId} { allow read, write: if true; }
+
     // ── Default Deny ──
     // Security Best Practice: Explicitly block access to any collection 
     // that is not defined above. This prevents attackers from creating 
