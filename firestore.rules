@@ -31,6 +31,7 @@ service cloud.firestore {
     match /team_members/{memberId} { allow read, write: if true; }
     match /internships/{internshipId} { allow read, write: if true; }
     match /internship_diaries/{diaryId} { allow read, write: if true; }
+    match /internshipDiaries/{diaryId} { allow read, write: if true; }
     match /articles/{articleId} { allow read, write: if true; }
     match /article_editions/{editionId} { allow read, write: if true; }
     
@@ -48,6 +49,10 @@ service cloud.firestore {
     match /blog_comments/{commentId} { allow read, write: if true; }
     match /blog_bookmarks/{bookmarkId} { allow read, write: if true; }
     match /blog_subscribers/{subscriberId} { allow read, write: if true; }
+
+    // ── Newspaper Editions ──
+    match /newspaper_editions/{editionId} { allow read, write: if true; }
+    match /deleted_newspaper_editions/{editionId} { allow read, write: if true; }
 
     // ── Default Deny ──
     // Security Best Practice: Explicitly block access to any collection 
