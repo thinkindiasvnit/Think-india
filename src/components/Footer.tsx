@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconInstagram, IconLinkedin, IconYoutube, IconTwitterX, IconFacebook } from "./Icons";
+import { IconInstagram, IconLinkedin, IconFacebook, IconTwitterX, IconYoutube } from "./Icons";
 
 export default function Footer() {
   return (
@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               {/* Instagram */}
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/thinkindia.svnit" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
@@ -37,9 +37,33 @@ export default function Footer() {
                 <IconInstagram size={20} />
               </a>
 
+              {/* Facebook */}
+              <a 
+                href="https://www.facebook.com/thinkindiasvnit/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-[#1877F2] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="Facebook"
+                title="Facebook"
+              >
+                <IconFacebook size={20} />
+              </a>
+
+              {/* X (Twitter) */}
+              <a 
+                href="https://x.com/thinkindiaorg" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
+                aria-label="X (Twitter)"
+                title="X (Twitter)"
+              >
+                <IconTwitterX size={17} />
+              </a>
+
               {/* LinkedIn */}
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/company/thinkindiaorg/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-[#0A66C2] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
@@ -51,7 +75,7 @@ export default function Footer() {
 
               {/* YouTube */}
               <a 
-                href="https://youtube.com" 
+                href="https://youtube.com/@thinkindiaorg" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-xl bg-[#FF0000] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
@@ -59,30 +83,6 @@ export default function Footer() {
                 title="YouTube"
               >
                 <IconYoutube size={20} />
-              </a>
-
-              {/* X (Twitter) */}
-              <a 
-                href="https://x.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
-                aria-label="X (Twitter)"
-                title="X (Twitter)"
-              >
-                <IconTwitterX size={17} />
-              </a>
-
-              {/* Facebook */}
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-xl bg-[#1877F2] flex items-center justify-center text-white shadow-md hover:scale-110 hover:shadow-lg transition-all duration-300" 
-                aria-label="Facebook"
-                title="Facebook"
-              >
-                <IconFacebook size={20} />
               </a>
             </div>
             <p className="text-xs text-slate-700 font-medium leading-relaxed">
@@ -104,7 +104,7 @@ export default function Footer() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-amber-700 shrink-0">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.47-5.116-3.762-6.586-6.586l1.293-.97c.362-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
-                <span>+91 98765 43210</span>
+                <span>+91 94848 86294</span>
               </li>
               <li className="flex items-start gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-amber-700 shrink-0 mt-0.5">
