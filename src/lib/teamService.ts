@@ -77,6 +77,7 @@ const mapDoc = (id: string, data: Record<string, any>): TeamMember => ({
   name: data.name ?? "",
   photoURL: data.photoURL ?? "",
   designation: (data.designation as Designation) ?? "Core",
+  description: data.description ?? "",
   position: data.position ?? data.teamName ?? "",  // graceful fallback for old data
   teamOrder: data.teamOrder ?? 0,
   overallOrder: data.overallOrder ?? 0,
