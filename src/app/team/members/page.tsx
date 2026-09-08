@@ -242,7 +242,7 @@ function MemberCard({ member, hoveredCardId, onHover, onLeave }: MemberCardProps
           {/* Middle: Description */}
           <div className="my-1 flex-1 flex items-center justify-center w-full">
             {member.description ? (
-              <p className="text-slate-800 text-xs line-clamp-2 leading-relaxed font-medium">
+              <p className="text-slate-800 text-xs line-clamp-6 leading-relaxed font-medium">
                 &ldquo;{member.description}&rdquo;
               </p>
             ) : (
