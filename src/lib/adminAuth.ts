@@ -65,10 +65,15 @@ export async function loginAdmin(
   }
 
   // Domain check — only @svnit.ac.in addresses are permitted
+  // const normalizedEmail = email.trim().toLowerCase();
+  // const domain = normalizedEmail.split("@")[1];
+  // if (domain !== ALLOWED_DOMAIN) {
+  //   throw new Error(`Access restricted to @${ALLOWED_DOMAIN} email addresses only.`);
+  // }
   const normalizedEmail = email.trim().toLowerCase();
-  const domain = normalizedEmail.split("@")[1];
-  if (domain !== ALLOWED_DOMAIN) {
-    throw new Error(`Access restricted to @${ALLOWED_DOMAIN} email addresses only.`);
+  const [, domain] = normalizedEmail.split("@");
+  if (!domain || !domain.endsWith("svnit.ac.in")) {
+    throw new Error("Access restricted to svnit.ac.in email addresses only.");
   }
 
   let snap;
