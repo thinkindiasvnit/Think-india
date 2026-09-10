@@ -1,37 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🇮🇳 Think India SVNIT
 
-## Getting Started
+> Empowering youth through leadership, dialogue, and nation-building
 
-First, run the development server:
+Think India is a student-driven forum dedicated to binding the youth of India with nationalistic spirit and channelizing creative energies towards building a stronger nation through education, innovation, and civic engagement.
+
+## ✨ Features
+
+- **Events & Conclaves**: Leadership events, panel discussions, and keynote sessions
+- **Social Initiatives**: Community outreach and civic engagement programs
+- **Gallery**: Visual documentation of activities and impact
+- **Blog Platform**: Youth perspectives and opinion pieces
+- **Admin Dashboard**: Content management system for team members
+- **Internship Program**: Track internships and testimonials
+- **Team Management**: Showcase core team and volunteers
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **Animations**: GSAP, Lenis (smooth scroll)
+- **3D Graphics**: Three.js, React Three Fiber
+- **Backend**: Firebase (Firestore, Storage, Auth)
+- **Icons**: Lucide React
+
+## 📦 Installation
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd Think-india
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Add your Firebase config to .env
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the root directory:
 
-## Learn More
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📜 Available Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🗂️ Project Structure
 
-## Deploy on Vercel
+```
+Think-india/
+├── src/
+│   ├── app/              # Next.js app directory (pages & routes)
+│   │   ├── about/        # About page
+│   │   ├── admin/        # Admin dashboard & management
+│   │   ├── blogs/        # Blog listing & detail pages
+│   │   ├── events/       # Events listing & detail pages
+│   │   ├── gallery/      # Gallery & albums
+│   │   ├── internships/  # Internship program page
+│   │   └── team/         # Team showcase
+│   ├── components/       # React components
+│   ├── lib/              # Services & utilities (Firebase, etc.)
+│   └── data/             # Static data files
+├── public/               # Static assets
+└── scripts/              # Utility scripts (admin seeding, etc.)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Admin Access
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Navigate to `/admin/login`
+2. Use admin credentials (set up via `scripts/seedAdmin.mjs`)
+3. Access admin dashboard to manage:
+   - Events
+   - Blogs
+   - Gallery albums
+   - Team members
+   - User queries
+   - Articles submissions
 
+## 🎨 Design Philosophy
+
+- **Minimalist & Premium**: Clean layouts with amber/beige color palette
+- **Smooth Animations**: GSAP-powered entrance animations
+- **Responsive**: Mobile-first approach with touch-friendly interactions
+- **Accessibility**: Semantic HTML and ARIA compliance
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📱 Connect With Us
+
+- **Instagram**: [@thinkindia.svnit](https://www.instagram.com/thinkindia.svnit)
+- **Facebook**: [Think India SVNIT](https://www.facebook.com/thinkindiasvnit/)
+- **LinkedIn**: [Think India Org](https://www.linkedin.com/company/thinkindiaorg/)
+- **X (Twitter)**: [@thinkindiaorg](https://x.com/thinkindiaorg)
+- **YouTube**: [@thinkindiaorg](https://youtube.com/@thinkindiaorg)
+
+## 📄 License
+
+This project is private and maintained by Think India SVNIT.
+
+---
+
+**Made with ❤️ by Think India Team**
