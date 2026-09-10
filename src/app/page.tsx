@@ -93,70 +93,70 @@ export default function Home() {
             <div className="w-full md:w-5/12 flex flex-col items-start">
               <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">01 / Events</span>
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
-                Technical & Social Initiatives
+                Conclaves & Dialogues
               </h2>
               <p className="text-zinc-700 text-lg leading-relaxed mb-8">
-                Participate in national hackathons, technical workshops, seminars, and social contribution activities organized on campus.
+                Engage in leadership conclaves, keynote sessions, panel discussions, and seminars with national leaders and changemakers.
               </p>
               <Link href="/events" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
                 Explore Events
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
+                </svg> */}
               </Link>
             </div>
             <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://picsum.photos/seed/eventtech/800/600" alt="Events" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+              <img src="https://res.cloudinary.com/sbnycgli/image/upload/v1789059916/DSC_6213.JPG.jpg" alt="Events" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
             </div>
           </div>
 
           {/* Block 2: Blogs (Reversed) */}
           <div className="reveal-section flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-24">
             <div className="w-full md:w-5/12 flex flex-col items-start">
-              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">02 / Insights</span>
+              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">02 / Social Impact</span>
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
-                Youth Opinions & Research
+                Community & Service
               </h2>
               <p className="text-zinc-600 text-lg leading-relaxed mb-8">
-                Read blogs, youth opinions, and research highlights published by members of the Think India network across various domains.
+                Discover our social initiatives, community outreach programs, and civic engagement efforts aimed at building a stronger, more united nation.
               </p>
               <Link href="/blogs" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
-                Read Blogs
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                Read More
+                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
+                </svg> */}
               </Link>
             </div>
             <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://picsum.photos/seed/writingblog/800/600" alt="Blogs" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+              <img src="https://res.cloudinary.com/sbnycgli/image/upload/v1789056957/tiov.jpg" alt="Blogs" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
             </div>
           </div>
 
           {/* Block 3: Gallery */}
           <div className="reveal-section flex flex-col md:flex-row items-center gap-12 lg:gap-24">
             <div className="w-full md:w-5/12 flex flex-col items-start">
-              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">03 / Gallery</span>
+              <span className="text-amber-600 font-black tracking-widest uppercase text-xs mb-4">03 / Activities</span>
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 tracking-tight font-heading mb-6">
-                Memories & Milestones
+                Initiatives & Action
               </h2>
               <p className="text-zinc-700 text-lg leading-relaxed mb-8">
-                A visual journey through our past events, workshops, and community gatherings. Relive the moments that shape our nationalistic spirit.
+                Explore our diverse activities including workshops, student forums, awareness campaigns, and collaborative projects driving positive change.
               </p>
               <Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-amber-600 transition-colors uppercase tracking-widest border-b-2 border-zinc-900 hover:border-amber-600 pb-1">
                 View Gallery
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
+                </svg> */}
               </Link>
             </div>
             <div className="w-full md:w-7/12 aspect-[4/3] bg-amber-50/60 border border-amber-300/60 rounded-3xl overflow-hidden relative shadow-xl group">
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://picsum.photos/seed/galleryphotos/800/600" alt="Gallery" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
+              <img src="https://res.cloudinary.com/sbnycgli/image/upload/v1788691119/rsrkgefcqt7yev3lllvn.jpg" alt="Gallery" className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out" />
             </div>
           </div>
 
