@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Optimize for better performance and SEO
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: true,
+  // Enable strict mode for better React practices
+  reactStrictMode: true,
 };
 
 export default nextConfig;
