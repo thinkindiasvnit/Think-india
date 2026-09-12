@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Disallow admin and authentication pages
+Disallow: /admin/
+Disallow: /login/
+
+# Sitemap
+Sitemap: https://thinkindiasvnit.org/sitemap.xml
