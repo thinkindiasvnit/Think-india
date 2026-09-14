@@ -166,7 +166,7 @@ export default function SubmitArticlePage() {
             <span>← Open Newspaper Stand</span>
           </Link>
           <div className="font-mono text-xs text-zinc-500">
-            LOGGED IN AS: <span className="font-bold text-zinc-800">{user.email}</span>
+            LOGGED IN AS: <span className="font-bold text-zinc-800">{user?.email}</span>
           </div>
         </div>
 
