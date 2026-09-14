@@ -158,7 +158,7 @@ export default function AdminArticlesPage() {
 
   function previewInReader(article: Article) {
     saveArticlePreview(article);
-    window.open(`/article?preview=1&edition=${article.editionId || "edition-1"}`, "_blank", "noopener");
+    window.open(`/articles/${article.editionId || "edition-1"}?preview=1`, "_blank", "noopener");
   }
 
   async function handleCreateEdition(e: React.FormEvent) {
@@ -633,7 +633,7 @@ export default function AdminArticlesPage() {
                       <span>Delete</span>
                     </button>
                     <a
-                      href={`/article?edition=${edition.id}`}
+                      href={`/articles/${edition.id}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 rounded-lg bg-[#1a1209] px-3.5 py-1.5 text-xs font-bold text-[#f4ede2] hover:bg-amber-950"
@@ -826,6 +826,16 @@ export default function AdminArticlesPage() {
                     onChange={(e) => setNewEdition({ ...newEdition, coverStoryHeadline: e.target.value })}
                     className="w-full rounded-xl border border-zinc-300 px-4 py-3 font-serif font-bold text-sm"
                     placeholder="Front-page headline for this edition"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-1 block text-xs font-bold uppercase text-zinc-600">Cover Story Deck (Subheadline)</label>
+                  <input
+                    value={newEdition.coverStoryDeck}
+                    onChange={(e) => setNewEdition({ ...newEdition, coverStoryDeck: e.target.value })}
+                    className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm"
+                    placeholder="Optional subheadline for the cover story"
                   />
                 </div>
 

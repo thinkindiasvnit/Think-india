@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Globe, Library, X, PenSquare, ArrowLeft, Clock } from "lucide-react";
 import {
@@ -12,7 +13,7 @@ import {
   getPublishedArticles,
   NewspaperEdition,
   NewspaperPage,
-} from "../../lib/articleService";
+} from "../../../lib/articleService";
 
 const Instagram = ({ style }: { style?: React.CSSProperties }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
@@ -235,19 +236,13 @@ function articleToPage(article: Article, index: number): PageData {
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 
 const ThinkIndiaLogo = ({ className = "", style }: { className?: string, style?: React.CSSProperties }) => (
-  <svg viewBox="0 0 50 62" className={className} style={style} fill="none">
-    <line x1="7"  y1="9"  x2="4"  y2="5"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="15" y1="5"  x2="14" y2="1"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="25" y1="3"  x2="25" y2="0"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="35" y1="5"  x2="36" y2="1"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="43" y1="9"  x2="46" y2="5"  stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    <circle cx="25" cy="15" r="5.5" fill="currentColor" />
-    <line x1="25" y1="20.5" x2="25" y2="42" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-    <line x1="25" y1="28"   x2="10" y2="19" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-    <line x1="25" y1="28"   x2="40" y2="19" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-    <line x1="25" y1="42"   x2="16" y2="58" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-    <line x1="25" y1="42"   x2="34" y2="58" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
-  </svg>
+  // eslint-disable-next-line @next/next/no-img-element
+  <img 
+    src="/logo.png" 
+    alt="Think India SVNIT" 
+    className={className} 
+    style={{ ...style, objectFit: 'contain' }} 
+  />
 );
 
 const Masthead = ({ edition }: { edition: NewspaperEdition }) => (
@@ -422,8 +417,8 @@ const NavButton = ({
       onClick={onClick}
       disabled={disabled}
       style={{
-        position: "absolute",
-        top: "calc(50% + 5%)",
+        position: "fixed",
+        top: "50%",
         transform: "translateY(-50%)",
         [isPrev ? "left" : "right"]: "clamp(8px, 2vw, 20px)",
         zIndex: 40,
@@ -478,10 +473,14 @@ const fallbackEdition: NewspaperEdition = {
 };
 
 export default function App() {
+  const params = useParams();
+  const router = useRouter();
+  const volumeId = params.volumeId as string;
+  
   const [editions, setEditions] = useState<NewspaperEdition[]>([]);
-  const [selectedEditionId, setSelectedEditionId] = useState<string>("");
+  const [selectedEditionId, setSelectedEditionId] = useState<string>(volumeId || "");
   const [publishedArticles, setPublishedArticles] = useState<Article[]>([]);
-  const [newsstandOpen, setNewsstandOpen] = useState(true);
+  const [newsstandOpen, setNewsstandOpen] = useState(false);
   const [pages, setPages] = useState<PageData[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pendingPage,  setPendingPage]  = useState<number | null>(null);
@@ -498,29 +497,6 @@ export default function App() {
     return () => { document.head.removeChild(el); };
   }, []);
 
-  // Check URL params for direct edition or preview
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const urlEdition = params.get("edition");
-      const isPreview = params.get("preview") === "1";
-      const forceStand = params.get("stand") === "1";
-
-      if (urlEdition) {
-        setSelectedEditionId(urlEdition);
-      }
-
-      if (forceStand) {
-        setNewsstandOpen(true);
-      } else if (isPreview || (urlEdition && !forceStand)) {
-        setNewsstandOpen(false);
-      } else {
-        // Direct click to /Article opens the newsstand shelf
-        setNewsstandOpen(true);
-      }
-    }
-  }, []);
-
   // Load editions and published articles
   useEffect(() => {
     let cancelled = false;
@@ -528,7 +504,10 @@ export default function App() {
       .then((loaded) => {
         if (!cancelled && loaded) {
           setEditions(loaded);
-          if (loaded.length > 0 && !selectedEditionId) {
+          // Set the selected edition based on the volumeId from URL
+          if (volumeId) {
+            setSelectedEditionId(volumeId);
+          } else if (loaded.length > 0) {
             setSelectedEditionId(loaded[0].id);
           }
         }
@@ -542,7 +521,7 @@ export default function App() {
       .catch((error) => console.error("Unable to load published articles", error));
 
     return () => { cancelled = true; };
-  }, [selectedEditionId]);
+  }, [volumeId]);
 
   // Compute pages whenever activeEdition, publishedArticles, or preview changes
   useEffect(() => {
@@ -584,21 +563,15 @@ export default function App() {
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
   const selectEdition = (editionId: string) => {
-    setSelectedEditionId(editionId);
-    setCurrentPage(0);
     setNewsstandOpen(false);
-    if (typeof window !== "undefined") {
-      const url = new URL(window.location.href);
-      url.searchParams.set("edition", editionId);
-      window.history.pushState({}, "", url.toString());
-    }
+    router.push(`/articles/${editionId}`);
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh", overflow: "hidden", position: "relative", background: "#d0c4b4" }}>
+    <div style={{ minHeight: "100vh", background: "#d0c4b4", paddingTop: "80px", paddingBottom: "40px" }}>
       {/* ── Floating Header: Navigation & Newsstand Opener ── */}
       <div style={{
-        position: "absolute",
+        position: "fixed",
         top: "14px",
         left: "clamp(10px, 2.5vw, 24px)",
         right: "clamp(10px, 2.5vw, 24px)",
@@ -653,8 +626,8 @@ export default function App() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto" }}>
-          <button
-            onClick={() => setNewsstandOpen(true)}
+          <Link
+            href="/submit-article"
             style={{
               display: "flex",
               alignItems: "center",
@@ -667,67 +640,30 @@ export default function App() {
               fontSize: "11px",
               fontFamily: "'Oswald',sans-serif",
               letterSpacing: "0.15em",
-              cursor: "pointer",
+              textDecoration: "none",
+              fontWeight: 600,
               boxShadow: "0 4px 14px rgba(26,18,9,0.3)",
               transition: "transform 0.15s ease",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <Library size={13} />
-            <span>THE NEWSSTAND ({editions.length} EDITIONS)</span>
-          </button>
-          <Link
-            href="/submit-article?tab=my-articles"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "7px 14px",
-              background: "rgba(245,236,223,0.92)",
-              color: "#1a1209",
-              borderRadius: "9999px",
-              border: "1px solid #1a1209",
-              fontSize: "11px",
-              fontFamily: "'Oswald',sans-serif",
-              letterSpacing: "0.12em",
-              textDecoration: "none",
-              fontWeight: 600,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-              transition: "transform 0.15s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            <Clock size={13} />
-            <span>MY ARTICLES</span>
-          </Link>
-          <Link
-            href="/submit-article"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "7px 14px",
-              background: "#b45309",
-              color: "#ffffff",
-              borderRadius: "9999px",
-              fontSize: "11px",
-              fontFamily: "'Oswald',sans-serif",
-              letterSpacing: "0.12em",
-              textDecoration: "none",
-              fontWeight: 600,
-              boxShadow: "0 3px 10px rgba(180,83,9,0.3)",
-            }}
-          >
             <PenSquare size={13} />
-            <span>SUBMIT ARTICLE</span>
+            <span>WRITE AN ARTICLE</span>
           </Link>
         </div>
       </div>
 
       {/* 3-D stage */}
-      <div style={{ position: "absolute", top: "10%", bottom: 0, left: 0, right: 0, perspective: "3500px", perspectiveOrigin: "50% 50%" }}>
+      <div style={{ 
+        maxWidth: "1400px", 
+        width: "95%", 
+        aspectRatio: "16/10",
+        margin: "0 auto",
+        perspective: "3500px", 
+        perspectiveOrigin: "50% 50%",
+        position: "relative"
+      }}>
         {pages.length === 0 ? (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", zIndex: 10 }}>
             <div style={{
@@ -831,10 +767,18 @@ export default function App() {
 
       {/* ── Bottom page-dot indicator ── */}
       <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 30,
-        display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+        position: "fixed", 
+        bottom: 0, 
+        left: 0, 
+        right: 0, 
+        zIndex: 30,
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        gap: "10px",
         padding: "9px 0 10px",
-        background: "rgba(232,220,208,0.9)", backdropFilter: "blur(6px)",
+        background: "rgba(232,220,208,0.9)", 
+        backdropFilter: "blur(6px)",
         borderTop: "1px solid rgba(26,18,9,0.18)",
       }}>
         {pages.map((_, i) => (

@@ -6,6 +6,9 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useAuth } from "../../components/AuthProvider";
 
 function readableError(error: unknown) {
+  // Log the full error for debugging
+  console.error('Firebase Auth Error:', error);
+  
   if (error instanceof Error && (error.message.includes(".svnit.ac.in") || error.message.includes("@"))) return error.message;
   if (error instanceof Error && error.message.includes("Too many failed attempts")) return error.message;
   const code = (error as { code?: string }).code;
@@ -14,6 +17,7 @@ function readableError(error: unknown) {
   if (code === "auth/weak-password") return "Use a password with at least six characters.";
   if (code === "auth/operation-not-allowed") return "Email/password sign-in is not enabled in Firebase yet.";
   if (code === "auth/network-request-failed") return "Network error. Check your internet connection and try again.";
+  if (code === "auth/invalid-email") return "Invalid email format. Please use your SVNIT email.";
   return "Unable to continue. Please try again.";
 }
 
@@ -62,7 +66,7 @@ function LoginForm() {
         {error && <p className="rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700">{error}</p>}
         <button disabled={submitting} className="w-full rounded-xl bg-amber-600 px-4 py-3 font-bold text-white disabled:opacity-60">{submitting ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}</button>
         <p className="text-center text-sm text-zinc-600">{mode === "signin" ? "New here?" : "Already have an account?"} <button type="button" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(""); }} className="font-bold text-amber-700">{mode === "signin" ? "Create an account" : "Sign in"}</button></p>
-        <Link href="/article" className="block text-center text-sm font-medium text-zinc-500 hover:text-zinc-900">← Back to articles</Link>
+        <Link href="/articles" className="block text-center text-sm font-medium text-zinc-500 hover:text-zinc-900">← Back to articles</Link>
       </form>
     </section>
   );

@@ -17,7 +17,7 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Events", href: "/events" },
     { name: "Blogs", href: "/blogs" },
-    { name: "Articles", href: "/article" },
+    { name: "Articles", href: "/articles" },
     { name: "Gallery", href: "/gallery" },
     { name: "Internships", href: "/internships" },
     { name: "Team", href: "/team" },
@@ -167,15 +167,6 @@ export default function Header() {
           >
             Write an Article
           </Link>
-          {user && (
-            <Link
-              href="/submit-article?tab=my-articles"
-              onClick={() => setIsOpen(false)}
-              className="menu-link-item text-2xl sm:text-3xl font-black tracking-tight text-amber-800 flex font-heading w-fit group py-1"
-            >
-              My Submitted Articles
-            </Link>
-          )}
         </nav>
 
         {/* Premium Bottom Details Section */}

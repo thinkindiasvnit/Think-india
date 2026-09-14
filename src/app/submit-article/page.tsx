@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 
 export default function SubmitArticlePage() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<"submit" | "my-articles">("submit");
@@ -50,10 +50,6 @@ export default function SubmitArticlePage() {
   const [userArticles, setUserArticles] = useState<Article[]>([]);
   const [loadingArticles, setLoadingArticles] = useState(false);
   const [readingArticle, setReadingArticle] = useState<Article | null>(null);
-
-  useEffect(() => {
-    if (!loading && !user) router.replace("/login?next=/submit-article");
-  }, [loading, router, user]);
 
   // Read URL tab query parameter on mount
   useEffect(() => {
@@ -89,6 +85,12 @@ export default function SubmitArticlePage() {
       setLoadingArticles(false);
     }
   };
+
+  useEffect(() => {
+    if (user?.uid) {
+      void loadUserSubmissions(user.uid);
+    }
+  }, [user?.uid]);
 
   useEffect(() => {
     if (user?.uid) {
@@ -147,17 +149,6 @@ export default function SubmitArticlePage() {
     }
   }
 
-  if (loading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f7f2ea] text-zinc-600">
-        <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-amber-600 border-t-transparent" />
-          <p className="mt-3 font-serif text-sm">Verifying SVNIT student authentication…</p>
-        </div>
-      </div>
-    );
-  }
-
   const reviewCount = userArticles.filter((a) => a.status === "review").length;
   const publishedCount = userArticles.filter((a) => a.status === "published").length;
   const rejectedCount = userArticles.filter((a) => a.status === "rejected").length;
@@ -168,14 +159,14 @@ export default function SubmitArticlePage() {
         {/* Navigation Breadcrumb & Newsstand Quick Link */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <Link
-            href="/article"
+            href="/articles"
             className="inline-flex items-center gap-2 rounded-full border border-[#1a1209]/20 bg-[#f4ede2] px-4 py-1.5 font-mono text-xs font-bold text-[#1a1209] transition-all hover:border-[#1a1209] hover:shadow-sm"
           >
             <Library size={13} />
             <span>← Open Newspaper Stand</span>
           </Link>
           <div className="font-mono text-xs text-zinc-500">
-            LOGGED IN AS: <span className="font-bold text-zinc-800">{user.email}</span>
+            LOGGED IN AS: <span className="font-bold text-zinc-800">{user?.email}</span>
           </div>
         </div>
 
@@ -543,7 +534,7 @@ export default function SubmitArticlePage() {
 
                           {article.status === "published" && (
                             <a
-                              href={`/article?edition=${article.editionId || "edition-1"}`}
+                              href={`/articles/${article.editionId || "edition-1"}`}
                               target="_blank"
                               rel="noreferrer"
                               className="flex items-center gap-1.5 rounded-xl bg-[#1a1209] px-4 py-2 text-xs font-bold text-[#f5ecdf] hover:bg-amber-950"
@@ -611,7 +602,7 @@ export default function SubmitArticlePage() {
                 <div className="mt-8 flex justify-end gap-3 border-t border-[#1a1209] pt-4">
                   {readingArticle.status === "published" && (
                     <a
-                      href={`/article?edition=${readingArticle.editionId || "edition-1"}`}
+                      href={`/articles/${readingArticle.editionId || "edition-1"}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1.5 rounded-xl bg-[#1a1209] px-4 py-2 text-xs font-bold text-[#f4ede2]"
