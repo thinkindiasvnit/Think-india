@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://thinkindia-svnit.org'
+  const baseUrl = 'https://thinkindiasvnit.org'
   
   return [
     {
