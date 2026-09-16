@@ -420,15 +420,15 @@ const NavButton = ({
         position: "fixed",
         top: "50%",
         transform: "translateY(-50%)",
-        [isPrev ? "left" : "right"]: "clamp(8px, 2vw, 20px)",
+        [isPrev ? "left" : "right"]: "clamp(4px, 1vw, 20px)",
         zIndex: 40,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         gap: "6px",
-        width: "clamp(48px, 6vw, 68px)",
-        height: "clamp(100px, 16vh, 140px)",
+        width: "clamp(40px, 6vw, 68px)",
+        height: "clamp(80px, 16vh, 140px)",
         background: "rgba(26,18,9,0.84)",
         border: "1px solid rgba(232,220,208,0.22)",
         borderRadius: isPrev ? "0 10px 10px 0" : "10px 0 0 10px",
@@ -568,7 +568,7 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#d0c4b4", paddingTop: "80px", paddingBottom: "40px" }}>
+    <div style={{ minHeight: "100vh", background: "#d0c4b4", paddingTop: "80px", paddingBottom: "40px", paddingLeft: "clamp(8px, 2vw, 16px)", paddingRight: "clamp(8px, 2vw, 16px)" }}>
       {/* ── Floating Header: Navigation & Newsstand Opener ── */}
       <div style={{
         position: "fixed",
@@ -580,8 +580,10 @@ export default function App() {
         alignItems: "center",
         justifyContent: "space-between",
         pointerEvents: "none",
+        flexWrap: "wrap",
+        gap: "8px",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto", flexWrap: "wrap" }}>
           <Link
             href="/"
             style={{
@@ -593,7 +595,7 @@ export default function App() {
               color: "#e8dcd0",
               borderRadius: "9999px",
               border: "1px solid rgba(232,220,208,0.22)",
-              fontSize: "11px",
+              fontSize: "clamp(9px, 2vw, 11px)",
               fontFamily: "'Oswald',sans-serif",
               letterSpacing: "0.14em",
               textDecoration: "none",
@@ -602,7 +604,7 @@ export default function App() {
             }}
           >
             <ArrowLeft size={13} />
-            PORTAL HOME
+            <span>PORTAL HOME</span>
           </Link>
           <div
             style={{
@@ -614,7 +616,7 @@ export default function App() {
               color: "#1a1209",
               borderRadius: "9999px",
               border: "1px solid #1a1209",
-              fontSize: "10.5px",
+              fontSize: "clamp(8px, 1.8vw, 10.5px)",
               fontFamily: "'Oswald',sans-serif",
               letterSpacing: "0.1em",
               backdropFilter: "blur(4px)",
@@ -625,7 +627,7 @@ export default function App() {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", pointerEvents: "auto", flexWrap: "wrap" }}>
           <Link
             href="/submit-article"
             style={{
@@ -637,7 +639,7 @@ export default function App() {
               color: "#f5ecdf",
               borderRadius: "9999px",
               border: "1px solid #8b7355",
-              fontSize: "11px",
+              fontSize: "clamp(9px, 2vw, 11px)",
               fontFamily: "'Oswald',sans-serif",
               letterSpacing: "0.15em",
               textDecoration: "none",
@@ -657,12 +659,13 @@ export default function App() {
       {/* 3-D stage */}
       <div style={{ 
         maxWidth: "1400px", 
-        width: "95%", 
+        width: "100%", 
         aspectRatio: "16/10",
         margin: "0 auto",
         perspective: "3500px", 
         perspectiveOrigin: "50% 50%",
-        position: "relative"
+        position: "relative",
+        minHeight: "300px"
       }}>
         {pages.length === 0 ? (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", zIndex: 10 }}>
